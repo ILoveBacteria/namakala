@@ -18,11 +18,13 @@ class _LoginState extends State<Login> {
           margin: const EdgeInsets.all(40.0),
           child: Column(
             children: [
-            _buildSignIn(),
-            const SizedBox(height: 50),
-            _buildEmail(),
-            const SizedBox(height: 50),
-            _buildPassword()
+              _buildSignIn(),
+              const SizedBox(height: 50),
+              _buildEmail(),
+              const SizedBox(height: 50),
+              _buildPassword(),
+              const SizedBox(height: 50),
+              _buildSignInButton(),
             ],
           ),
         )
@@ -86,6 +88,28 @@ class _LoginState extends State<Login> {
         fontFamily: 'OpenSans',
         fontSize: 30.0,
         fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  Widget _buildSignInButton() {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.green,
+        borderRadius: BorderRadius.circular(30.0)
+      ),
+      child: TextButton(
+        onPressed: () {},
+        child: const Text(
+            'SIGN IN',
+          style: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 20.0,
+            letterSpacing: 3.0,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }
