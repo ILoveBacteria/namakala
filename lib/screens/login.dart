@@ -13,19 +13,34 @@ class _LoginState extends State<Login> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        body: Container(
-          width: double.infinity,
-          margin: const EdgeInsets.all(40.0),
-          child: Column(
-            children: [
-              _buildSignIn(),
-              const SizedBox(height: 50),
-              _buildEmail(),
-              const SizedBox(height: 50),
-              _buildPassword(),
-              const SizedBox(height: 50),
-              _buildSignInButton(),
-            ],
+        body: SingleChildScrollView(
+          child: Container(
+            width: double.infinity,
+            height: 500.0,
+            margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 60.0),
+            padding: const EdgeInsets.all(20.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20.0),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black38,
+                  blurRadius: 6.0,
+                  offset: Offset(2, 2),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                _buildSignIn(),
+                const SizedBox(height: 50),
+                _buildEmail(),
+                const SizedBox(height: 50),
+                _buildPassword(),
+                const SizedBox(height: 50),
+                _buildSignInButton(),
+              ],
+            ),
           ),
         )
       ),
@@ -38,7 +53,7 @@ class _LoginState extends State<Login> {
       alignment: Alignment.centerLeft,
       padding: const EdgeInsets.only(left: 10.0),
       decoration: BoxDecoration(
-        color: const Color(0xFF6CA8F1),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(15.0),
         boxShadow: const [
           BoxShadow(
@@ -57,10 +72,11 @@ class _LoginState extends State<Login> {
       const TextField(
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-          // labelText: 'Email',
-            hintText: 'Enter your email',
-            hintStyle: TextStyle(fontFamily: 'OpenSans', color: Colors.black38),
-            border: InputBorder.none),
+          hintText: 'Enter your email',
+          hintStyle: TextStyle(fontFamily: 'OpenSans', color: Colors.black38),
+          border: InputBorder.none,
+          prefixIcon: Icon(Icons.account_circle_outlined)
+        ),
       )
     );
   }
@@ -70,9 +86,11 @@ class _LoginState extends State<Login> {
       const TextField(
       obscureText: true,
       decoration: InputDecoration(
-          hintText: 'Enter your password',
-          hintStyle: TextStyle(fontFamily: 'OpenSans', color: Colors.black38),
-          border: InputBorder.none),
+        hintText: 'Enter your password',
+        hintStyle: TextStyle(fontFamily: 'OpenSans', color: Colors.black38),
+        border: InputBorder.none,
+        prefixIcon: Icon(Icons.password_outlined)
+      ),
       )
     );
   }
