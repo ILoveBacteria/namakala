@@ -18,9 +18,11 @@ class _LoginState extends State<Login> {
           margin: const EdgeInsets.all(40.0),
           child: Column(
             children: [
-              buildSignIn(),
-              const SizedBox(height: 50),
-              buildEmail()
+            buildSignIn(),
+            const SizedBox(height: 50),
+            buildEmail(),
+            const SizedBox(height: 50),
+            buildPassword()
             ],
           ),
         )
@@ -45,13 +47,34 @@ class _LoginState extends State<Login> {
       child: const TextField(
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-          // labelText: 'Email',
-          hintText: 'Enter your email',
-          hintStyle: TextStyle(
-            fontFamily: 'OpenSans'
+            // labelText: 'Email',
+            hintText: 'Enter your email',
+            hintStyle: TextStyle(fontFamily: 'OpenSans', color: Colors.black38),
+            border: InputBorder.none),
+      ),
+    );
+  }
+
+  Container buildPassword() {
+    return Container(
+      padding: const EdgeInsets.only(left: 10.0),
+      decoration: BoxDecoration(
+        color: const Color(0xFF6CA8F1),
+        borderRadius: BorderRadius.circular(15.0),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black38,
+            blurRadius: 6.0,
+            offset: Offset(2, 2),
           ),
-          border: InputBorder.none
-        ),
+        ],
+      ),
+      child: const TextField(
+        obscureText: true,
+        decoration: InputDecoration(
+            hintText: 'Enter your password',
+            hintStyle: TextStyle(fontFamily: 'OpenSans', color: Colors.black38),
+            border: InputBorder.none),
       ),
     );
   }
@@ -63,6 +86,7 @@ class _LoginState extends State<Login> {
         fontFamily: 'OpenSans',
         fontSize: 30.0,
         fontWeight: FontWeight.bold,
-      ),);
+      ),
+    );
   }
 }
