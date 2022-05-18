@@ -18,11 +18,11 @@ class _LoginState extends State<Login> {
           margin: const EdgeInsets.all(40.0),
           child: Column(
             children: [
-            buildSignIn(),
+            _buildSignIn(),
             const SizedBox(height: 50),
-            buildEmail(),
+            _buildEmail(),
             const SizedBox(height: 50),
-            buildPassword()
+            _buildPassword()
             ],
           ),
         )
@@ -30,7 +30,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Container buildEmail() {
+  Widget _buildEmail() {
     return Container(
       padding: const EdgeInsets.only(left: 10.0),
       decoration: BoxDecoration(
@@ -55,7 +55,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Container buildPassword() {
+  Widget _buildPassword() {
     return Container(
       padding: const EdgeInsets.only(left: 10.0),
       decoration: BoxDecoration(
@@ -79,7 +79,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Text buildSignIn() {
+  Widget _buildSignIn() {
     return const Text(
       'Sign In',
       style: TextStyle(
