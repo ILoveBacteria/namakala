@@ -32,8 +32,10 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget _buildEmail() {
+  Widget _fieldContainer(Widget child) {
     return Container(
+      height: 60.0,
+      alignment: Alignment.centerLeft,
       padding: const EdgeInsets.only(left: 10.0),
       decoration: BoxDecoration(
         color: const Color(0xFF6CA8F1),
@@ -46,38 +48,32 @@ class _LoginState extends State<Login> {
           ),
         ],
       ),
-      child: const TextField(
+      child: child
+    );
+  }
+
+  Widget _buildEmail() {
+    return _fieldContainer(
+      const TextField(
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-            // labelText: 'Email',
+          // labelText: 'Email',
             hintText: 'Enter your email',
             hintStyle: TextStyle(fontFamily: 'OpenSans', color: Colors.black38),
             border: InputBorder.none),
-      ),
+      )
     );
   }
 
   Widget _buildPassword() {
-    return Container(
-      padding: const EdgeInsets.only(left: 10.0),
-      decoration: BoxDecoration(
-        color: const Color(0xFF6CA8F1),
-        borderRadius: BorderRadius.circular(15.0),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black38,
-            blurRadius: 6.0,
-            offset: Offset(2, 2),
-          ),
-        ],
-      ),
-      child: const TextField(
-        obscureText: true,
-        decoration: InputDecoration(
-            hintText: 'Enter your password',
-            hintStyle: TextStyle(fontFamily: 'OpenSans', color: Colors.black38),
-            border: InputBorder.none),
-      ),
+    return _fieldContainer(
+      const TextField(
+      obscureText: true,
+      decoration: InputDecoration(
+          hintText: 'Enter your password',
+          hintStyle: TextStyle(fontFamily: 'OpenSans', color: Colors.black38),
+          border: InputBorder.none),
+      )
     );
   }
 
