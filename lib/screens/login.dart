@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:namakala/widgets/field.dart';
 import 'package:namakala/utilities/decoration.dart';
+import 'package:namakala/widgets/screenSetting.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -13,36 +14,29 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 60.0, left: 30.0, right: 30.0),
+    return ScreenSetting.initSignInAndUp(
+      context: context,
+      child: Column(
+        children: [
+          _buildSignInText(),
+          const SizedBox(height: 50.0),
+          Container(
+            width: double.infinity,
+            height: 500.0,
+            padding: const EdgeInsets.all(20.0),
+            decoration: containerDecoration(),
             child: Column(
               children: [
-                _buildSignInText(),
-                const SizedBox(height: 50.0),
-                Container(
-                  width: double.infinity,
-                  height: 500.0,
-                  padding: const EdgeInsets.all(20.0),
-                  decoration: containerDecoration(),
-                  child: Column(
-                    children: [
-                      _buildEmail(),
-                      const SizedBox(height: 50),
-                      _buildPassword(),
-                      const SizedBox(height: 50),
-                      _buildSignInButton(),
-                    ],
-                  ),
-                ),
+                _buildEmail(),
+                const SizedBox(height: 50),
+                _buildPassword(),
+                const SizedBox(height: 50),
+                _buildSignInButton(),
               ],
             ),
           ),
-        )
-      ),
+        ],
+      )
     );
   }
 
