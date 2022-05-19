@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namakala/screens/sign_in.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 import '../widgets/field.dart';
 
@@ -34,6 +35,17 @@ class _SignUpState extends State<SignUp> {
                 ScreenSetting.buildPasswordConfirmField(),
                 Field.separate(),
                 ScreenSetting.buildSubmitButton('SIGN UP'),
+                Field.separate(),
+                ScreenSetting.buildDetailTextAndButton(
+                  text: 'Already have an account?',
+                  buttonText: 'SIGN IN',
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => const SignIn()),
+                        (Route<dynamic> route) => false,
+                    );
+                  }
+                )
               ],
             ),
           )

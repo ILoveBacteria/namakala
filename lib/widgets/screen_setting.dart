@@ -143,4 +143,30 @@ class ScreenSetting {
       ),
     );
   }
+
+  static buildDetailTextAndButton({required String text, required String buttonText, required VoidCallback? onPressed}) {
+    return Row(
+      children: [
+        Text(
+          text,
+          style: GoogleFonts.nunito(
+            fontWeight: FontWeight.w500,
+            color: Colors.black54,
+            fontSize: 13.0,
+          ),
+        ),
+        TextButton(
+          onPressed: onPressed,
+          child: Text(
+            buttonText,
+            style: GoogleFonts.montserrat(
+              color: Colors.blueAccent,
+              fontWeight: FontWeight.w500,
+              fontSize: 12.0,
+            )
+          ),
+        ),
+      ],
+    );
+  }
 }
