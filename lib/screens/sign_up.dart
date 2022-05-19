@@ -24,6 +24,8 @@ class _SignUpState extends State<SignUp> {
                 ScreenSetting.buildEmailField(),
                 Field.separate(),
                 ScreenSetting.buildPasswordField(),
+                Field.separate(),
+                ScreenSetting.buildSubmitButton('SIGN UP'),
               ],
             ),
           )
