@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -69,11 +70,13 @@ class _LoginState extends State<Login> {
 
   Widget _buildEmail() {
     return _fieldContainer(
-      const TextField(
+      TextField(
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           hintText: 'Enter your email',
-          hintStyle: TextStyle(fontFamily: 'OpenSans', color: Colors.black38),
+            hintStyle: GoogleFonts.nunito(
+              color: Colors.black38,
+            ),
           border: InputBorder.none,
           prefixIcon: Icon(Icons.account_circle_outlined)
         ),
@@ -83,16 +86,16 @@ class _LoginState extends State<Login> {
 
   Widget _buildPassword() {
     return _fieldContainer(
-      const TextField(
-      obscureText: true,
-      decoration: InputDecoration(
-        hintText: 'Enter your password',
-        hintStyle: TextStyle(fontFamily: 'OpenSans', color: Colors.black38),
-        border: InputBorder.none,
-        prefixIcon: Icon(Icons.password_outlined)
-      ),
-      )
-    );
+      TextField(
+        obscureText: true,
+        decoration: InputDecoration(
+          hintText: 'Enter your password',
+          hintStyle: GoogleFonts.nunito(
+            color: Colors.black38,
+          ),
+          border: InputBorder.none,
+          prefixIcon: Icon(Icons.password_outlined)),
+    ));
   }
 
   Widget _buildSignIn() {
@@ -115,14 +118,14 @@ class _LoginState extends State<Login> {
       ),
       child: TextButton(
         onPressed: () {},
-        child: const Text(
+        child: Text(
             'SIGN IN',
-          style: TextStyle(
-            fontFamily: 'OpenSans',
-            fontSize: 20.0,
-            letterSpacing: 3.0,
+          style: GoogleFonts.montserrat(
             color: Colors.white,
-          ),
+            fontWeight: FontWeight.w700,
+            fontSize: 18.0,
+            letterSpacing: 2.0
+          )
         ),
       ),
     );
