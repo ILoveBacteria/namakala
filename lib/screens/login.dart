@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:namakala/widgets/field.dart';
 import 'package:namakala/utilities/decoration.dart';
-import 'package:namakala/widgets/screenSetting.dart';
+import 'package:namakala/widgets/screen_setting.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
