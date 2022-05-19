@@ -21,9 +21,17 @@ class _SignUpState extends State<SignUp> {
           ScreenSetting.fieldsContainer(
             child: Column(
               children: [
+                ScreenSetting.buildFirstNameField(),
+                Field.separate(),
+                ScreenSetting.buildLastNameField(),
+                Field.separate(),
+                ScreenSetting.buildPhoneField(),
+                Field.separate(),
                 ScreenSetting.buildEmailField(),
                 Field.separate(),
                 ScreenSetting.buildPasswordField(),
+                Field.separate(),
+                ScreenSetting.buildPasswordConfirmField(),
                 Field.separate(),
                 ScreenSetting.buildSubmitButton('SIGN UP'),
               ],

@@ -32,6 +32,7 @@ class ScreenSetting {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20.0),
+      margin: const EdgeInsets.only(bottom: 20.0),
       decoration: containerDecoration(),
       child: child
     );
@@ -42,10 +43,10 @@ class ScreenSetting {
       TextField(
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-          hintText: 'Enter your email',
+          hintText: 'Email',
           hintStyle: Field.hintStyle(),
           border: Field.border(),
-          prefixIcon: const Icon(Icons.account_circle_outlined),
+          prefixIcon: const Icon(Icons.mail_outline),
         ),
       )
     );
@@ -56,12 +57,68 @@ class ScreenSetting {
       TextField(
         obscureText: true,
         decoration: InputDecoration(
-          hintText: 'Enter your password',
+          hintText: 'Password',
           hintStyle: Field.hintStyle(),
           border: Field.border(),
           prefixIcon: const Icon(Icons.password_outlined),
         ),
       )
+    );
+  }
+
+  static buildPasswordConfirmField() {
+    return Field.container(
+        TextField(
+          obscureText: true,
+          decoration: InputDecoration(
+            hintText: 'Confirm Password',
+            hintStyle: Field.hintStyle(),
+            border: Field.border(),
+            prefixIcon: const Icon(Icons.password_outlined),
+          ),
+        )
+    );
+  }
+
+  static buildFirstNameField() {
+    return Field.container(
+      TextField(
+        keyboardType: TextInputType.name,
+        decoration: InputDecoration(
+          hintText: 'First Name',
+          hintStyle: Field.hintStyle(),
+          border: Field.border(),
+          prefixIcon: const Icon(Icons.badge_outlined),
+        ),
+      )
+    );
+  }
+
+  static buildLastNameField() {
+    return Field.container(
+      TextField(
+        keyboardType: TextInputType.name,
+        decoration: InputDecoration(
+          hintText: 'Last Name',
+          hintStyle: Field.hintStyle(),
+          border: Field.border(),
+          prefixIcon: const Icon(Icons.badge_outlined),
+        ),
+      )
+    );
+  }
+
+  static buildPhoneField() {
+    return Field.container(
+        TextField(
+          keyboardType: TextInputType.phone,
+          decoration: InputDecoration(
+            hintText: 'Phone',
+            hintStyle: Field.hintStyle(),
+            border: Field.border(),
+            prefixIcon: const Icon(Icons.call_outlined),
+          ),
+        )
     );
   }
 
