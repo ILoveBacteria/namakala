@@ -22,15 +22,14 @@ class _LoginState extends State<Login> {
           const SizedBox(height: 50.0),
           Container(
             width: double.infinity,
-            height: 500.0,
             padding: const EdgeInsets.all(20.0),
             decoration: containerDecoration(),
             child: Column(
               children: [
                 _buildEmail(),
-                const SizedBox(height: 50),
+                Field.separate(),
                 _buildPassword(),
-                const SizedBox(height: 50),
+                Field.separate(),
                 _buildSignInButton(),
               ],
             ),

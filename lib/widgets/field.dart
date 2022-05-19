@@ -13,6 +13,10 @@ class Field {
     return InputBorder.none;
   }
 
+  static separate() {
+    return const SizedBox(height: 50);
+  }
+
   static container(Widget child) {
     return Container(
         height: 60.0,
