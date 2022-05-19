@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:namakala/widgets/field.dart';
+import 'package:namakala/utilities/decoration.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -15,31 +17,27 @@ class _LoginState extends State<Login> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         body: SingleChildScrollView(
-          child: Container(
-            width: double.infinity,
-            height: 500.0,
-            margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 60.0),
-            padding: const EdgeInsets.all(20.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20.0),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black38,
-                  blurRadius: 6.0,
-                  offset: Offset(2, 2),
-                ),
-              ],
-            ),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 60.0, left: 30.0, right: 30.0),
             child: Column(
               children: [
-                _buildSignIn(),
-                const SizedBox(height: 50),
-                _buildEmail(),
-                const SizedBox(height: 50),
-                _buildPassword(),
-                const SizedBox(height: 50),
-                _buildSignInButton(),
+                _buildSignInText(),
+                const SizedBox(height: 50.0),
+                Container(
+                  width: double.infinity,
+                  height: 500.0,
+                  padding: const EdgeInsets.all(20.0),
+                  decoration: containerDecoration(),
+                  child: Column(
+                    children: [
+                      _buildEmail(),
+                      const SizedBox(height: 50),
+                      _buildPassword(),
+                      const SizedBox(height: 50),
+                      _buildSignInButton(),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -48,64 +46,39 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget _fieldContainer(Widget child) {
-    return Container(
-      height: 60.0,
-      alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.only(left: 10.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15.0),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black38,
-            blurRadius: 6.0,
-            offset: Offset(2, 2),
-          ),
-        ],
-      ),
-      child: child
-    );
-  }
-
   Widget _buildEmail() {
-    return _fieldContainer(
+    return Field.container(
       TextField(
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           hintText: 'Enter your email',
-            hintStyle: GoogleFonts.nunito(
-              color: Colors.black38,
-            ),
-          border: InputBorder.none,
-          prefixIcon: Icon(Icons.account_circle_outlined)
+          hintStyle: Field.hintStyle(),
+          border: Field.border(),
+          prefixIcon: const Icon(Icons.account_circle_outlined)
         ),
       )
     );
   }
 
   Widget _buildPassword() {
-    return _fieldContainer(
+    return Field.container(
       TextField(
         obscureText: true,
         decoration: InputDecoration(
           hintText: 'Enter your password',
-          hintStyle: GoogleFonts.nunito(
-            color: Colors.black38,
-          ),
-          border: InputBorder.none,
-          prefixIcon: Icon(Icons.password_outlined)),
+          hintStyle: Field.hintStyle(),
+          border: Field.border(),
+          prefixIcon: const Icon(Icons.password_outlined)),
     ));
   }
 
-  Widget _buildSignIn() {
-    return const Text(
+  Widget _buildSignInText() {
+    return Text(
       'Sign In',
-      style: TextStyle(
-        fontFamily: 'OpenSans',
+      style: GoogleFonts.openSans(
         fontSize: 30.0,
-        fontWeight: FontWeight.bold,
-      ),
+        fontWeight: FontWeight.w700,
+      )
     );
   }
 
