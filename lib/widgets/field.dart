@@ -21,7 +21,7 @@ class Field {
     return Container(
         height: 60.0,
         alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.only(left: 10.0),
+        padding: const EdgeInsets.only(left: 3.0),
         decoration: fieldDecoration(),
         child: child
     );
