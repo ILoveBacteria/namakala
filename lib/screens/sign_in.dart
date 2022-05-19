@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:namakala/widgets/field.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
@@ -26,34 +25,12 @@ class _SignInState extends State<SignIn> {
                 Field.separate(),
                 ScreenSetting.buildPasswordField(),
                 Field.separate(),
-                _buildSignInButton(),
+                ScreenSetting.buildSubmitButton('SIGN IN'),
               ],
             ),
           )
         ],
       )
-    );
-  }
-
-  Widget _buildSignInButton() {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.green,
-        borderRadius: BorderRadius.circular(30.0)
-      ),
-      child: TextButton(
-        onPressed: () {},
-        child: Text(
-            'SIGN IN',
-          style: GoogleFonts.montserrat(
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-            fontSize: 18.0,
-            letterSpacing: 2.0
-          )
-        ),
-      ),
     );
   }
 }

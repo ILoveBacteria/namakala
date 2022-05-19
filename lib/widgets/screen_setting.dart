@@ -64,4 +64,26 @@ class ScreenSetting {
       )
     );
   }
+
+  static buildSubmitButton(String text) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.green,
+        borderRadius: BorderRadius.circular(30.0)
+      ),
+      child: TextButton(
+        onPressed: () {},
+        child: Text(
+          text,
+          style: GoogleFonts.montserrat(
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+            fontSize: 18.0,
+            letterSpacing: 2.0
+          )
+        ),
+      ),
+    );
+  }
 }
