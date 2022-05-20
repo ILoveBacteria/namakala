@@ -7,13 +7,22 @@ class ScreenSetting {
   static initSignInAndUp({required Widget child, required BuildContext context}) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 60.0, left: 30.0, right: 30.0),
-            child: child
+      child: initScreen(child: child, context: context)
+    );
+  }
+
+  static initScreen({required Widget child, required BuildContext context}) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: 50.0,
+            left: 10.0,
+            right: 10.0,
+            bottom: 10.0
           ),
-        )
+          child: child
+        ),
       )
     );
   }
@@ -32,7 +41,6 @@ class ScreenSetting {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20.0),
-      margin: const EdgeInsets.only(bottom: 20.0),
       decoration: containerDecoration(),
       child: child
     );
