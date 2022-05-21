@@ -17,19 +17,36 @@ class Profile extends StatelessWidget {
           child: Column(
             children: [
               ScreenSetting.buildTitleText('Profile'),
-              const SizedBox(height: 50.0,),
+              const SizedBox(height: 30.0),
               Container(
                 width: 100.0,
                 height: 100.0,
-                decoration: const BoxDecoration(
-                  color: Colors.cyanAccent,
+                decoration: BoxDecoration(
+                  border: Border.all(),
                   shape: BoxShape.circle,
                 ),
+                child: const Icon(
+                  Icons.person,
+                  size: 50.0,
+                ),
               ),
-              const SizedBox(height: 20.0,),
-              const Text('Moein Arabi'),
-              const SizedBox(height: 10.0,),
-              const Text('+989120284896'),
+              const SizedBox(height: 10.0),
+              Text(
+                'Moein Arabi',
+                style: GoogleFonts.nunito(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 5.0),
+              Text(
+                '+989120284896',
+                style: GoogleFonts.nunito(
+                  fontSize: 15.0,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
               const SizedBox(height: 20.0,),
               Container(
                 padding: const EdgeInsets.all(20.0),
@@ -37,7 +54,7 @@ class Profile extends StatelessWidget {
                 height: 300.0,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30.0),
-                  color: Colors.green,
+                  color: Colors.black26,
                 ),
                 child: Column(
                   children: [
@@ -46,13 +63,12 @@ class Profile extends StatelessWidget {
                         icon: Icons.account_circle_outlined,
                         onPressed: () {}
                     ),
-                    const SizedBox(height: 20.0,),
+                    const SizedBox(height: 5.0),
                     _button(
                         text: 'Purchase History',
                         icon: Icons.history,
                         onPressed: () {}
                     ),
-                    const SizedBox(height: 20.0,),
                   ],
                 ),
               ),
@@ -80,15 +96,23 @@ class Profile extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(icon),
-            const SizedBox(width: 20.0,),
+            Icon(
+              icon,
+              size: 30.0,
+            ),
+            const SizedBox(width: 15.0,),
             Text(
               text,
               style: GoogleFonts.montserrat(
-                fontSize: 18.0,
+                fontSize: 16.0,
                 fontWeight: FontWeight.w500,
               ),
             ),
+            const Spacer(),
+            const Icon(
+              Icons.navigate_next,
+              size: 30.0,
+            )
           ],
         ),
       ),
