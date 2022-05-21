@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
 class Profile extends StatelessWidget {
@@ -40,49 +41,55 @@ class Profile extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    Container(
-                      width: double.infinity,
-                      height: 30.0,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      child: TextButton(
-                        onPressed: () {},
-                        child: const Text('Account Information'),
-                      ),
+                    _button(
+                        text: 'Account Information',
+                        icon: Icons.account_circle_outlined,
+                        onPressed: () {}
                     ),
                     const SizedBox(height: 20.0,),
-                    Container(
-                      width: double.infinity,
-                      height: 30.0,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      child: TextButton(
-                        onPressed: () {},
-                        child: const Text('Purchase History'),
-                      ),
+                    _button(
+                        text: 'Purchase History',
+                        icon: Icons.history,
+                        onPressed: () {}
                     ),
                     const SizedBox(height: 20.0,),
-                    Container(
-                      width: double.infinity,
-                      height: 30.0,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      child: TextButton(
-                        onPressed: () {},
-                        child: const Text('My Market'),
-                      ),
-                    ),
                   ],
                 ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _button({
+    required String text,
+    required IconData icon,
+    required VoidCallback onPressed
+  }) {
+    return TextButton(
+      onPressed: onPressed,
+      child: Container(
+        padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+        width: double.infinity,
+        height: 50.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        child: Row(
+          children: [
+            Icon(icon),
+            const SizedBox(width: 20.0,),
+            Text(
+              text,
+              style: GoogleFonts.montserrat(
+                fontSize: 18.0,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
         ),
       ),
     );
