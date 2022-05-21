@@ -31,13 +31,56 @@ class Profile extends StatelessWidget {
               const Text('+989120284896'),
               const SizedBox(height: 20.0,),
               Container(
+                padding: const EdgeInsets.all(20.0),
                 width: double.infinity,
                 height: 300.0,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30.0),
                   color: Colors.green,
                 ),
-              )
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: 30.0,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: const Text('Account Information'),
+                      ),
+                    ),
+                    const SizedBox(height: 20.0,),
+                    Container(
+                      width: double.infinity,
+                      height: 30.0,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: const Text('Purchase History'),
+                      ),
+                    ),
+                    const SizedBox(height: 20.0,),
+                    Container(
+                      width: double.infinity,
+                      height: 30.0,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: const Text('My Market'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
