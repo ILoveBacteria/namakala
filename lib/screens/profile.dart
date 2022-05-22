@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
 class Profile extends StatelessWidget {
@@ -12,7 +13,6 @@ class Profile extends StatelessWidget {
       child: Column(
         children: [
           ScreenSetting.buildTitleText('Profile'),
-          const SizedBox(height: 30.0),
           Container(
             width: 100.0,
             height: 100.0,
@@ -71,7 +71,7 @@ class Profile extends StatelessWidget {
                     onPressed: () {}
                 ),
                 const SizedBox(height: 40.0),
-                _signOutButton(),
+                Button.signOut(onPress: () {}),
               ],
             ),
           ),
@@ -121,32 +121,6 @@ class Profile extends StatelessWidget {
             )
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _signOutButton() {
-    return ElevatedButton.icon(
-      onPressed: () {},
-      icon: const Icon(
-        Icons.logout_outlined,
-        color: Colors.white,
-      ),
-      label: Text(
-        'SIGN OUT',
-        style: GoogleFonts.montserrat(
-          color: Colors.white,
-          fontWeight: FontWeight.w700,
-          fontSize: 16.0,
-          letterSpacing: 2.0
-        )
-      ),
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-        primary: Colors.redAccent,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0)
-        )
       ),
     );
   }

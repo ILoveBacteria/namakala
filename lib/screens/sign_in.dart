@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:namakala/screens/sign_up.dart';
+import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/field.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
@@ -18,15 +19,14 @@ class _SignInState extends State<SignIn> {
       child: Column(
         children: [
           ScreenSetting.buildTitleText('Sign In'),
-          const SizedBox(height: 50.0),
-          ScreenSetting.fieldsContainer(
+          Field.parentContainer(
             child: Column(
               children: [
-                ScreenSetting.buildEmailField(),
+                Field.email(),
                 Field.separate(),
-                ScreenSetting.buildPasswordField(),
+                Field.password(),
                 Field.separate(),
-                ScreenSetting.buildSubmitButton('SIGN IN'),
+                Button.signIn(onPress: () {}),
                 Field.separate(),
                 ScreenSetting.buildDetailTextAndButton(
                   text: 'Don\'t have an account?',
