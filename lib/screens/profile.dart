@@ -51,7 +51,7 @@ class Profile extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(20.0),
                 width: double.infinity,
-                height: 300.0,
+                // height: 300.0,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30.0),
                   color: Colors.black26,
@@ -67,6 +67,18 @@ class Profile extends StatelessWidget {
                     _button(
                         text: 'Purchase History',
                         icon: Icons.history,
+                        onPressed: () {}
+                    ),
+                    const SizedBox(height: 5.0),
+                    _button(
+                        text: 'My Market',
+                        icon: Icons.store_outlined,
+                        onPressed: () {}
+                    ),
+                    const SizedBox(height: 5.0),
+                    _button(
+                        text: 'Favorites',
+                        icon: Icons.favorite_outline,
                         onPressed: () {}
                     ),
                   ],
