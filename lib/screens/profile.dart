@@ -70,6 +70,8 @@ class Profile extends StatelessWidget {
                     icon: Icons.favorite_outline,
                     onPressed: () {}
                 ),
+                const SizedBox(height: 40.0),
+                _signOutButton(),
               ],
             ),
           ),
@@ -119,6 +121,32 @@ class Profile extends StatelessWidget {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _signOutButton() {
+    return ElevatedButton.icon(
+      onPressed: () {},
+      icon: const Icon(
+        Icons.logout_outlined,
+        color: Colors.white,
+      ),
+      label: Text(
+        'SIGN OUT',
+        style: GoogleFonts.montserrat(
+          color: Colors.white,
+          fontWeight: FontWeight.w700,
+          fontSize: 16.0,
+          letterSpacing: 2.0
+        )
+      ),
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+        primary: Colors.redAccent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0)
+        )
       ),
     );
   }
