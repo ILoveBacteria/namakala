@@ -15,7 +15,7 @@ class ScreenSetting {
   static initScreen({
     required Widget child,
     required BuildContext context,
-    required var appBar}) {
+    required AppBar appBar}) {
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
@@ -28,6 +28,30 @@ class ScreenSetting {
           ),
           child: child
         ),
+      )
+    );
+  }
+
+  static initScreenWithSliverBar({
+    required Widget child,
+    required BuildContext context,
+    required SliverAppBar appBar}) {
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: <Widget>[
+          appBar,
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 30.0,
+                left: 10.0,
+                right: 10.0,
+                bottom: 10.0
+              ),
+              child: child
+            ),
+          ),
+        ],
       )
     );
   }
@@ -51,6 +75,33 @@ class ScreenSetting {
       ),
       backgroundColor: Colors.white,
       centerTitle: true,
+    );
+  }
+
+  static silverAppBar({required String title}) {
+    return SliverAppBar(
+      backgroundColor: Colors.white,
+      elevation: 5.0,
+      expandedHeight: 160.0,
+      pinned: true,
+      flexibleSpace: FlexibleSpaceBar(
+        // centerTitle: true,
+        background: const FlutterLogo(),
+        title: Text(
+          title,
+          style: GoogleFonts.openSans(
+            fontSize: 25.0,
+            fontWeight: FontWeight.w700,
+            color: Colors.black
+          )
+        ),
+      ),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(15.0),
+          bottomRight: Radius.circular(15.0)
+        )
+      ),
     );
   }
 
