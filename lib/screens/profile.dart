@@ -9,10 +9,10 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenSetting.initScreen(
+      appBar: ScreenSetting.appBar(title: 'Profile'),
       context: context,
       child: Column(
         children: [
-          ScreenSetting.buildTitleText('Profile'),
           Container(
             width: 100.0,
             height: 100.0,

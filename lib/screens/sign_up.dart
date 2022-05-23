@@ -15,10 +15,10 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return ScreenSetting.initSignInAndUp(
+      appBar: ScreenSetting.appBar(title: 'Sign Up'),
       context: context,
       child: Column(
         children: [
-          ScreenSetting.buildTitleText('Sign Up'),
           Field.parentContainer(
             child: Column(
               children: [

@@ -2,19 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ScreenSetting {
-  static initSignInAndUp({required Widget child, required BuildContext context}) {
+  static initSignInAndUp({
+    required Widget child,
+    required BuildContext context,
+    required var appBar}) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: initScreen(child: child, context: context)
+      child: initScreen(child: child, context: context, appBar: appBar)
     );
   }
 
-  static initScreen({required Widget child, required BuildContext context}) {
+  static initScreen({
+    required Widget child,
+    required BuildContext context,
+    required var appBar}) {
     return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(
-            top: 50.0,
+            top: 30.0,
             left: 10.0,
             right: 10.0,
             bottom: 10.0
@@ -25,44 +32,25 @@ class ScreenSetting {
     );
   }
 
-  static buildTitleText(String text) {
-    return Column(
-      children: [
-        Text(
-          text,
-          style: GoogleFonts.openSans(
-            fontSize: 30.0,
-            fontWeight: FontWeight.w700,
-          )
-        ),
-        const SizedBox(height: 30.0)
-      ],
-    );
-  }
-
-
-
-
-
-  static buildSubmitButton(String text) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.green,
-        borderRadius: BorderRadius.circular(30.0)
+  static appBar({required String title}) {
+    return AppBar(
+      title: Text(
+        title,
+        style: GoogleFonts.openSans(
+          fontSize: 25.0,
+          fontWeight: FontWeight.w700,
+          color: Colors.black
+        )
       ),
-      child: TextButton(
-        onPressed: () {},
-        child: Text(
-          text,
-          style: GoogleFonts.montserrat(
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-            fontSize: 18.0,
-            letterSpacing: 2.0
-          )
-        ),
+      elevation: 5.0,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(15.0),
+            bottomRight: Radius.circular(15.0)
+        )
       ),
+      backgroundColor: Colors.white,
+      centerTitle: true,
     );
   }
 
