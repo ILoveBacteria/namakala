@@ -13,36 +13,70 @@ class Profile extends StatelessWidget {
       context: context,
       child: Column(
         children: [
-          Container(
-            width: 100.0,
-            height: 100.0,
-            decoration: BoxDecoration(
-              border: Border.all(),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.person,
-              size: 50.0,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
+              children: [
+                Container(
+                  width: 100.0,
+                  height: 100.0,
+                  decoration: BoxDecoration(
+                    border: Border.all(),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.person,
+                    size: 50.0,
+                  ),
+                ),
+                const SizedBox(width: 20.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Moein Arabi',
+                      style: GoogleFonts.nunito(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 5.0),
+                    Text(
+                      '+989120284896',
+                      style: GoogleFonts.nunito(
+                        fontSize: 15.0,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                )
+              ],
             ),
           ),
-          const SizedBox(height: 10.0),
-          Text(
-            'Moein Arabi',
-            style: GoogleFonts.nunito(
-              fontSize: 20.0,
-              fontWeight: FontWeight.w700,
+          const SizedBox(height: 20.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            child: IntrinsicHeight(
+              child: Row(
+                children: [
+                  _userActivity(title: 'Purchase', number: '5'),
+                  const Spacer(),
+                  const VerticalDivider(
+                    color: Colors.grey,
+                  ),
+                  const Spacer(),
+                  _userActivity(title: 'Sold', number: '2'),
+                  const Spacer(),
+                  const VerticalDivider(
+                    color: Colors.grey,
+                  ),
+                  const Spacer(),
+                  _userActivity(title: 'Products', number: '10'),
+                ],
+              ),
             ),
           ),
-          const SizedBox(height: 5.0),
-          Text(
-            '+989120284896',
-            style: GoogleFonts.nunito(
-              fontSize: 15.0,
-              color: Colors.grey,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 20.0,),
           Container(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -88,7 +122,7 @@ class Profile extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       child: Container(
-        padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
         width: double.infinity,
         height: 55.0,
         decoration: BoxDecoration(
@@ -104,7 +138,7 @@ class Profile extends StatelessWidget {
               color: Colors.black54,
               size: 30.0,
             ),
-            const SizedBox(width: 15.0,),
+            const SizedBox(width: 15.0),
             Text(
               text,
               style: GoogleFonts.montserrat(
@@ -122,6 +156,30 @@ class Profile extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _userActivity({required String title, required String number}) {
+    return Column(
+      children: [
+        Text(
+          title,
+          style: GoogleFonts.nunito(
+            color: Colors.black38,
+            fontSize: 17.0,
+            fontWeight: FontWeight.w700
+          ),
+        ),
+        const SizedBox(height: 5.0),
+        Text(
+          number,
+          style: GoogleFonts.nunito(
+            color: Colors.black54,
+            fontSize: 17.0,
+            fontWeight: FontWeight.w600
+          ),
+        ),
+      ],
     );
   }
 }
