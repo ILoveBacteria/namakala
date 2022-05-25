@@ -77,11 +77,11 @@ class _AccountState extends State<Account> {
   Widget _userEditInformationWidgets() {
     return Column(
       children: [
-        Field.firstName(),
+        Field.firstName(initialValue: 'Moein'),
         Field.separate(),
-        Field.lastName(),
+        Field.lastName(initialValue: 'Arabi'),
         Field.separate(),
-        Field.phone(),
+        Field.phone(initialValue: '+989120284896'),
         Field.separate(),
         Field.email(initialValue: 'moein.mo81@gmail.com'),
         Button.separate(),
@@ -96,7 +96,13 @@ class _AccountState extends State<Account> {
               })
             ),
             const SizedBox(width: 10.0),
-            Button.outlined(text: 'CANCEL', color: Colors.redAccent, onPress: () {}),
+            Button.outlined(
+              text: 'CANCEL',
+              color: Colors.redAccent,
+              onPress: () => setState(() {
+                _editScreen = !_editScreen;
+              })
+            ),
           ],
         )
       ],
