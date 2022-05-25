@@ -104,7 +104,7 @@ class Profile extends StatelessWidget {
                     icon: Icons.favorite_outline,
                     onPressed: () {}
                 ),
-                const SizedBox(height: 40.0),
+                Button.separate(),
                 Button.signOut(onPress: () {}),
               ],
             ),

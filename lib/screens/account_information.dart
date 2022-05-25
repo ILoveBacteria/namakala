@@ -26,7 +26,7 @@ class _AccountState extends State<Account> {
           _userInformation(label: 'Email', text: 'moein.mo81@gmail.com'),
           const Divider(color: Colors.grey),
           _userInformation(label: 'Password', text: 'wsds#vd45'),
-          const SizedBox(height: 40.0),
+          Button.separate(),
           Center(
             child: Button.elevatedIcon(
               icon: Icons.edit,

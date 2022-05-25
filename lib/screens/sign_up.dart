@@ -33,7 +33,7 @@ class _SignUpState extends State<SignUp> {
                 Field.password(),
                 Field.separate(),
                 Field.passwordConfirm(),
-                Field.separate(),
+                Button.separate(),
                 Button.signUp(onPress: () {}),
                 Field.separate(),
                 ScreenSetting.buildDetailTextAndButton(

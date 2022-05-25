@@ -81,4 +81,8 @@ class Button {
         color: Colors.blueAccent,
         onPress: onPress);
   }
+
+  static SizedBox separate() {
+    return const SizedBox(height: 40.0);
+  }
 }

@@ -25,7 +25,7 @@ class _SignInState extends State<SignIn> {
                 Field.email(),
                 Field.separate(),
                 Field.password(),
-                Field.separate(),
+                Button.separate(),
                 Button.signIn(onPress: () {}),
                 Field.separate(),
                 ScreenSetting.buildDetailTextAndButton(
