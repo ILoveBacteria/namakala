@@ -59,6 +59,33 @@ class Button {
     );
   }
 
+  static outlined({
+    required String text,
+    required Color color,
+    required VoidCallback onPress
+  }) {
+    return OutlinedButton(
+      onPressed: onPress,
+      child: Text(
+        text,
+        style: GoogleFonts.montserrat(
+          color: color,
+          fontWeight: FontWeight.w700,
+          fontSize: 16.0,
+          letterSpacing: 2.0
+        )
+      ),
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+        primary: color,
+        side: BorderSide(color: color),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0)
+        )
+      ),
+    );
+  }
+
   static signOut({required VoidCallback onPress}) {
     return elevatedIcon(
         icon: Icons.logout_outlined,
