@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
 class Account extends StatefulWidget {
@@ -23,6 +24,17 @@ class _AccountState extends State<Account> {
           _userInformation(label: 'Phone', text: '+989120284896'),
           const Divider(color: Colors.grey),
           _userInformation(label: 'Email', text: 'moein.mo81@gmail.com'),
+          const Divider(color: Colors.grey),
+          _userInformation(label: 'Password', text: 'wsds#vd45'),
+          const SizedBox(height: 40.0),
+          Center(
+            child: Button.elevatedIcon(
+              icon: Icons.edit,
+              label: 'EDIT',
+              color: Colors.blueGrey,
+              onPress: () {}
+            ),
+          )
         ],
       ),
     );
