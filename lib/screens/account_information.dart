@@ -16,10 +16,13 @@ class _AccountState extends State<Account> {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenSetting.initScreenWithSliverBar(
-      appBar: ScreenSetting.sliverAppBar(context: context),
-      context: context,
-      child: _mainStateWidget(),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: ScreenSetting.initScreenWithSliverBar(
+        appBar: ScreenSetting.sliverAppBar(context: context),
+        context: context,
+        child: _mainStateWidget(),
+      )
     );
   }
 
@@ -72,6 +75,31 @@ class _AccountState extends State<Account> {
   }
 
   Widget _userEditInformationWidgets() {
-    return Container();
+    return Column(
+      children: [
+        Field.firstName(),
+        Field.separate(),
+        Field.lastName(),
+        Field.separate(),
+        Field.phone(),
+        Field.separate(),
+        Field.email(initialValue: 'moein.mo81@gmail.com'),
+        Button.separate(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Button.elevated(
+              text: 'SAVE',
+              color: Colors.lightBlueAccent,
+              onPress: () => setState(() {
+              _editScreen = !_editScreen;
+              })
+            ),
+            const SizedBox(width: 10.0),
+            Button.outlined(text: 'CANCEL', color: Colors.redAccent, onPress: () {}),
+          ],
+        )
+      ],
+    );
   }
 }
