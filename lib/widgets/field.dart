@@ -14,7 +14,7 @@ class Field {
   }
 
   static separate() {
-    return const SizedBox(height: 50);
+    return const SizedBox(height: 30);
   }
 
   static container(Widget child) {
