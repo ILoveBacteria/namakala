@@ -28,13 +28,14 @@ class Field {
     );
   }
 
-  static email() {
+  static email({String? initialValue}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         label(label: 'Email'),
         Field.container(
-          TextField(
+          TextFormField(
+            initialValue: initialValue,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
               hintText: 'example@mail.com',
@@ -48,13 +49,14 @@ class Field {
     );
   }
 
-  static password() {
+  static password({String? initialValue}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         label(label: 'Password'),
         Field.container(
-          TextField(
+          TextFormField(
+            initialValue: initialValue,
             obscureText: true,
             decoration: InputDecoration(
               hintText: 'Contains A-z and 0-9',
@@ -68,13 +70,14 @@ class Field {
     );
   }
 
-  static passwordConfirm() {
+  static passwordConfirm({String? initialValue}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         label(label: 'Confirm Password'),
         Field.container(
-          TextField(
+          TextFormField(
+            initialValue: initialValue,
             obscureText: true,
             decoration: InputDecoration(
               hintText: 'Contains A-z and 0-9',
@@ -88,13 +91,14 @@ class Field {
     );
   }
 
-  static firstName() {
+  static firstName({String? initialValue}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         label(label: 'First Name'),
         Field.container(
-          TextField(
+          TextFormField(
+            initialValue: initialValue,
             keyboardType: TextInputType.name,
             decoration: InputDecoration(
               hintText: 'Lionel',
@@ -108,13 +112,14 @@ class Field {
     );
   }
 
-  static lastName() {
+  static lastName({String? initialValue}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         label(label: 'Last Name'),
         Field.container(
-          TextField(
+          TextFormField(
+            initialValue: initialValue,
             keyboardType: TextInputType.name,
             decoration: InputDecoration(
               hintText: 'Messi',
@@ -128,16 +133,17 @@ class Field {
     );
   }
 
-  static phone() {
+  static phone({String? initialValue}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         label(label: 'Phone'),
         Field.container(
-          TextField(
+          TextFormField(
+            initialValue: initialValue,
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
-              hintText: '+989120284896',
+              hintText: '+989123456789',
               hintStyle: Field.hintStyle(),
               border: Field.border(),
               prefixIcon: const Icon(Icons.call_outlined),
