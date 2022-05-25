@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ScreenSetting {
+  static EdgeInsets _screenPadding() {
+    return const EdgeInsets.symmetric(vertical: 30.0, horizontal: 10.0);
+  }
+
   static initSignInAndUp({
     required Widget child,
     required BuildContext context,
@@ -20,12 +24,7 @@ class ScreenSetting {
       appBar: appBar,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(
-            top: 30.0,
-            left: 10.0,
-            right: 10.0,
-            bottom: 10.0
-          ),
+          padding: _screenPadding(),
           child: child
         ),
       )
@@ -42,12 +41,7 @@ class ScreenSetting {
           appBar,
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(
-                top: 30.0,
-                left: 10.0,
-                right: 10.0,
-                bottom: 10.0
-              ),
+              padding: _screenPadding(),
               child: child
             ),
           ),
@@ -78,16 +72,16 @@ class ScreenSetting {
     );
   }
 
-  static silverAppBar({required String title}) {
+  static sliverAppBar({String? title, required BuildContext context}) {
     return SliverAppBar(
       backgroundColor: Colors.white,
       elevation: 5.0,
-      expandedHeight: 160.0,
+      expandedHeight: MediaQuery.of(context).size.width * 70 / 100,
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
         // centerTitle: true,
         background: const FlutterLogo(),
-        title: Text(
+        title: title == null ? null : Text(
           title,
           style: GoogleFonts.openSans(
             fontSize: 25.0,
