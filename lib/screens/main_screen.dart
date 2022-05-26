@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:namakala/screens/home.dart';
 import 'package:namakala/screens/profile.dart';
 
@@ -11,6 +12,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
+
   static const List<Widget> _widgetOptions = <Widget>[
     Home(),
     Profile(),
@@ -22,24 +24,37 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  final List<BottomNavigationBarItem> _items = [
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.home_outlined),
+      activeIcon: Icon(Icons.home),
+      label: 'Home',
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.person_outline),
+      activeIcon: Icon(Icons.person),
+      label: 'Profile',
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
+        items: _items,
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Colors.lightBlueAccent,
+        unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
+        elevation: 5.0,
+        type: BottomNavigationBarType.fixed,
+        showUnselectedLabels: false,
+        iconSize: 25.0,
+        selectedLabelStyle: GoogleFonts.openSans(
+          fontSize: 13.0,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }
