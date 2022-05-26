@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:namakala/screens/account_information.dart';
+import 'package:namakala/screens/sign_in.dart';
 import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
@@ -112,7 +113,14 @@ class Profile extends StatelessWidget {
                     onPressed: () {}
                 ),
                 Button.separate(),
-                Button.signOut(onPress: () {}),
+                Button.signOut(
+                  onPress: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => const SignIn()),
+                      (Route<dynamic> route) => false,
+                    );
+                  }
+                ),
               ],
             ),
           ),
