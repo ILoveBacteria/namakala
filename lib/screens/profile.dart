@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:namakala/screens/account_information.dart';
 import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
@@ -82,9 +83,15 @@ class Profile extends StatelessWidget {
             child: Column(
               children: [
                 _button(
-                    text: 'Account Information',
-                    icon: Icons.account_circle_outlined,
-                    onPressed: () {}
+                  text: 'Account Information',
+                  icon: Icons.account_circle_outlined,
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const Account()
+                      ),
+                    );
+                  }
                 ),
                 const SizedBox(height: 5.0),
                 _button(
@@ -121,6 +128,12 @@ class Profile extends StatelessWidget {
   }) {
     return TextButton(
       onPressed: onPressed,
+      style: TextButton.styleFrom(
+        primary: Colors.grey,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0)
+        )
+      ),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         width: double.infinity,
