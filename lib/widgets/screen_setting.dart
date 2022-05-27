@@ -17,9 +17,10 @@ class ScreenSetting {
   }
 
   static initScreen({
-    required Widget child,
     required BuildContext context,
-    required AppBar appBar}) {
+    required AppBar appBar,
+    required Widget child,
+  }) {
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(

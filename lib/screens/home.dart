@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:namakala/widgets/screen_setting.dart';
@@ -8,13 +10,28 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenSetting.initScreen(
-        context: context,
-        appBar: ScreenSetting.appBar(title: 'Home'),
-        child: _category(title: 'Electronics')
+      context: context,
+      appBar: ScreenSetting.appBar(title: 'Home'),
+      child: Column(
+        children: [
+          _category(
+            title: 'Electronics',
+            items: <Widget>[
+              _items(image: 'assets/images/iphone.png', title: 'Mobiles'),
+              const VerticalDivider(color: Colors.grey),
+              _items(image: 'assets/images/macbook.png', title: 'Laptops'),
+              const VerticalDivider(color: Colors.grey),
+              _items(image: 'assets/images/camera.png', title: 'Camera'),
+              const VerticalDivider(color: Colors.grey),
+              _items(image: 'assets/images/ipad.png', title: 'Tablets'),
+            ],
+          ),
+        ],
+      )
     );
   }
 
-  Widget _category({required String title}) {
+  Widget _category({required String title, required List<Widget> items}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -48,40 +65,45 @@ class Home extends StatelessWidget {
         ),
         const SizedBox(height: 20.0,),
         SizedBox(
-          height: 250.0,
+          height: 200.0,
           child: ListView(
             scrollDirection: Axis.horizontal,
-            children: <Widget>[
-              SizedBox(
-                width: 250,
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      width: 200,
-                      height: 200,
-                      child: FlutterLogo()),
-                    Text(
-                      'Mobiles',
-                      style: GoogleFonts.nunito(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                color: Colors.red,
-                width: 200,
-              ),
-              Container(
-                color: Colors.yellow,
-                width: 200,
-              ),
-            ],
+            children: items
           ),
         )
       ],
+    );
+  }
+
+  Widget _items({required String image, required String title}) {
+    return Container(
+      padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
+      width: 200.0,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20.0),
+        border: Border.all(color: Colors.black12),
+      ),
+      child: Column(
+        children: [
+          Image.asset(
+            image,
+            height: 140.0,
+          ),
+          SizedBox(
+            height: 48.0,
+            child: Center(
+              child: Text(
+                title,
+                style: GoogleFonts.nunito(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
