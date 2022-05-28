@@ -26,6 +26,28 @@ class Home extends StatelessWidget {
               _items(image: 'assets/images/ipad.png', title: 'Tablets'),
             ],
           ),
+          categorySeparator(),
+          _category(
+            title: 'Clothing',
+            items: <Widget>[
+              _items(image: 'assets/images/men.png', title: 'Men'),
+              const VerticalDivider(color: Colors.grey),
+              _items(image: 'assets/images/women.png', title: 'Women'),
+              const VerticalDivider(color: Colors.grey),
+              _items(image: 'assets/images/child.png', title: 'Kids & Baby'),
+            ]
+          ),
+          categorySeparator(),
+          _category(
+            title: 'Sport & Travel',
+            items: <Widget>[
+              _items(image: 'assets/images/athletic_clothing.png', title: 'Athletic Clothings'),
+              const VerticalDivider(color: Colors.grey),
+              _items(image: 'assets/images/sporting_equipment.png', title: 'Sporting Equipments'),
+              const VerticalDivider(color: Colors.grey),
+              _items(image: 'assets/images/camping_equipment.png', title: 'Camping Equipments'),
+            ]
+          ),
         ],
       )
     );
@@ -71,6 +93,15 @@ class Home extends StatelessWidget {
             children: items
           ),
         )
+      ],
+    );
+  }
+
+  Widget categorySeparator() {
+    return Column(
+      children: const [
+        SizedBox(height: 10.0),
+        Divider(color: Colors.grey),
       ],
     );
   }
