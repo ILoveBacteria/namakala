@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:namakala/utilities/font.dart';
 
 class Button {
   static elevatedIcon({
@@ -16,12 +16,7 @@ class Button {
       ),
       label: Text(
         label,
-        style: GoogleFonts.montserrat(
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-            fontSize: 16.0,
-            letterSpacing: 2.0
-        )
+        style: Font.styleButton1()
       ),
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
@@ -42,12 +37,7 @@ class Button {
       onPressed: onPress,
       child: Text(
         text,
-        style: GoogleFonts.montserrat(
-          color: Colors.white,
-          fontWeight: FontWeight.w700,
-          fontSize: 16.0,
-          letterSpacing: 2.0
-        )
+        style: Font.styleButton1()
       ),
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
@@ -68,12 +58,7 @@ class Button {
       onPressed: onPress,
       child: Text(
         text,
-        style: GoogleFonts.montserrat(
-          color: color,
-          fontWeight: FontWeight.w700,
-          fontSize: 16.0,
-          letterSpacing: 2.0
-        )
+        style: Font.styleButton1(color: color)
       ),
       style: OutlinedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),

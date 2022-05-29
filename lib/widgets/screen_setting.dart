@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:namakala/utilities/font.dart';
 
 class ScreenSetting {
   static EdgeInsets _screenPadding() {
@@ -55,11 +55,7 @@ class ScreenSetting {
     return AppBar(
       title: Text(
         title,
-        style: GoogleFonts.openSans(
-          fontSize: 25.0,
-          fontWeight: FontWeight.w700,
-          color: Colors.black
-        )
+        style: Font.styleHeadline6(color: Colors.black),
       ),
       elevation: 5.0,
       shape: const RoundedRectangleBorder(
@@ -88,11 +84,7 @@ class ScreenSetting {
         background: const FlutterLogo(),
         title: title == null ? null : Text(
           title,
-          style: GoogleFonts.openSans(
-            fontSize: 25.0,
-            fontWeight: FontWeight.w700,
-            color: Colors.black
-          )
+          style: Font.styleHeadline6(color: Colors.black),
         ),
       ),
       shape: const RoundedRectangleBorder(
@@ -109,21 +101,13 @@ class ScreenSetting {
       children: [
         Text(
           text,
-          style: GoogleFonts.nunito(
-            fontWeight: FontWeight.w500,
-            color: Colors.black54,
-            fontSize: 13.0,
-          ),
+          style: Font.styleBody2(color: Colors.black54),
         ),
         TextButton(
           onPressed: onPressed,
           child: Text(
             buttonText,
-            style: GoogleFonts.montserrat(
-              color: Colors.blueAccent,
-              fontWeight: FontWeight.w500,
-              fontSize: 12.0,
-            )
+            style: Font.styleButton2(),
           ),
         ),
       ],

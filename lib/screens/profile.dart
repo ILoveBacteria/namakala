@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:namakala/screens/account_information.dart';
 import 'package:namakala/screens/sign_in.dart';
+import 'package:namakala/utilities/font.dart';
 import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
@@ -37,19 +37,12 @@ class Profile extends StatelessWidget {
                   children: [
                     Text(
                       'Moein Arabi',
-                      style: GoogleFonts.nunito(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w700,
-                      ),
+                      style: Font.styleSubtitle1(),
                     ),
                     const SizedBox(height: 5.0),
                     Text(
                       '+989120284896',
-                      style: GoogleFonts.nunito(
-                        fontSize: 15.0,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Font.styleBody2(color: Colors.grey),
                     ),
                   ],
                 )
@@ -145,7 +138,7 @@ class Profile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         width: double.infinity,
-        height: 55.0,
+        height: 50.0,
         decoration: BoxDecoration(
           border: Border.all(
             color: Colors.black12,
@@ -157,22 +150,18 @@ class Profile extends StatelessWidget {
             Icon(
               icon,
               color: Colors.black54,
-              size: 30.0,
+              size: 26.0,
             ),
             const SizedBox(width: 15.0),
             Text(
               text,
-              style: GoogleFonts.montserrat(
-                fontSize: 16.0,
-                color: Colors.black54,
-                fontWeight: FontWeight.w500,
-              ),
+              style: Font.styleButton2(color: Colors.black54),
             ),
             const Spacer(),
             const Icon(
               Icons.navigate_next,
               color: Colors.grey,
-              size: 30.0,
+              size: 26.0,
             )
           ],
         ),
@@ -185,20 +174,12 @@ class Profile extends StatelessWidget {
       children: [
         Text(
           title,
-          style: GoogleFonts.nunito(
-            color: Colors.black38,
-            fontSize: 17.0,
-            fontWeight: FontWeight.w700
-          ),
+          style: Font.styleSubtitle2(color: Colors.black38),
         ),
         const SizedBox(height: 5.0),
         Text(
           number,
-          style: GoogleFonts.nunito(
-            color: Colors.black54,
-            fontSize: 17.0,
-            fontWeight: FontWeight.w600
-          ),
+          style: Font.styleBody1(color: Colors.black54),
         ),
       ],
     );

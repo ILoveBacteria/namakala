@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:namakala/screens/home.dart';
 import 'package:namakala/screens/profile.dart';
+import 'package:namakala/utilities/font.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -51,10 +51,7 @@ class _MainScreenState extends State<MainScreen> {
         type: BottomNavigationBarType.fixed,
         showUnselectedLabels: false,
         iconSize: 25.0,
-        selectedLabelStyle: GoogleFonts.openSans(
-          fontSize: 13.0,
-          fontWeight: FontWeight.w700,
-        ),
+        selectedLabelStyle: Font.styleSubtitle2(),
       ),
     );
   }

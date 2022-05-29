@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:namakala/utilities/font.dart';
 import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/field.dart';
 import 'package:namakala/widgets/screen_setting.dart';
@@ -38,11 +38,7 @@ class _AccountState extends State<Account> {
         const SizedBox(height: 5.0),
         Text(
           text,
-          style: GoogleFonts.nunito(
-              color: Colors.black,
-              fontSize: 20.0,
-              fontWeight: FontWeight.w600
-          ),
+          style: Font.styleBody1()
         ),
       ],
     );

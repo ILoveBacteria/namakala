@@ -1,7 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:namakala/utilities/font.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
 class Home extends StatelessWidget {
@@ -43,9 +41,9 @@ class Home extends StatelessWidget {
             items: <Widget>[
               _items(image: 'assets/images/athletic_clothing.png', title: 'Athletic Clothings'),
               const VerticalDivider(color: Colors.grey),
-              _items(image: 'assets/images/sporting_equipment.png', title: 'Sporting Equipments'),
+              _items(image: 'assets/images/sporting_equipment.png', title: 'Sports Equipments'),
               const VerticalDivider(color: Colors.grey),
-              _items(image: 'assets/images/camping_equipment.png', title: 'Camping Equipments'),
+              _items(image: 'assets/images/camping_equipment.png', title: 'Camping'),
             ]
           ),
         ],
@@ -61,11 +59,7 @@ class Home extends StatelessWidget {
           children: [
             Text(
               title,
-              style: GoogleFonts.openSans(
-                fontSize: 23.0,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
+              style: Font.styleHeadline6(),
             ),
             const Spacer(),
             TextButton(
@@ -74,10 +68,7 @@ class Home extends StatelessWidget {
                 children: [
                   Text(
                     'All Items',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: Font.styleButton2(),
                   ),
                   const Icon(Icons.navigate_next, size: 20.0,),
                 ],
@@ -87,7 +78,7 @@ class Home extends StatelessWidget {
         ),
         const SizedBox(height: 20.0,),
         SizedBox(
-          height: 200.0,
+          height: 150.0,
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: items
@@ -109,27 +100,24 @@ class Home extends StatelessWidget {
   Widget _items({required String image, required String title}) {
     return Container(
       padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
-      width: 200.0,
+      width: 150.0,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20.0),
-        border: Border.all(color: Colors.black12),
+        border: Border.all(color: Colors.black12, width: 1.3),
       ),
       child: Column(
         children: [
           Image.asset(
             image,
-            height: 140.0,
+            height: 105.0,
           ),
           SizedBox(
-            height: 48.0,
+            height: 32.0,
             child: Center(
               child: Text(
                 title,
-                style: GoogleFonts.nunito(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: Font.styleCaption(),
               ),
             ),
           ),

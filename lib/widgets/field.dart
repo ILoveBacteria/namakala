@@ -1,13 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:namakala/utilities/font.dart';
 import '../utilities/decoration.dart';
 
 class Field {
   static hintStyle() {
-    return GoogleFonts.nunito(
-      color: Colors.black26,
-    );
+    return Font.styleBody2(color: Colors.black26);
   }
 
   static border() {
@@ -20,7 +17,7 @@ class Field {
 
   static container(Widget child) {
     return Container(
-        height: 55.0,
+        height: 50.0,
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.only(left: 3.0),
         decoration: fieldDecoration(),
@@ -33,6 +30,7 @@ class Field {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         label(label: 'Email'),
+        const SizedBox(height: 5.0),
         Field.container(
           TextFormField(
             initialValue: initialValue,
@@ -54,6 +52,7 @@ class Field {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         label(label: 'Password'),
+        const SizedBox(height: 5.0),
         Field.container(
           TextFormField(
             initialValue: initialValue,
@@ -75,6 +74,7 @@ class Field {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         label(label: 'Confirm Password'),
+        const SizedBox(height: 5.0),
         Field.container(
           TextFormField(
             initialValue: initialValue,
@@ -96,6 +96,7 @@ class Field {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         label(label: 'First Name'),
+        const SizedBox(height: 5.0),
         Field.container(
           TextFormField(
             initialValue: initialValue,
@@ -117,6 +118,7 @@ class Field {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         label(label: 'Last Name'),
+        const SizedBox(height: 5.0),
         Field.container(
           TextFormField(
             initialValue: initialValue,
@@ -138,6 +140,7 @@ class Field {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         label(label: 'Phone'),
+        const SizedBox(height: 5.0),
         Field.container(
           TextFormField(
             initialValue: initialValue,
@@ -166,11 +169,7 @@ class Field {
   static Text label({required String label}) {
     return Text(
       label,
-      style: GoogleFonts.nunito(
-        color: Colors.grey,
-        fontSize: 17.0,
-        fontWeight: FontWeight.w700
-      ),
+      style: Font.styleSubtitle2(color: Colors.grey),
     );
   }
 }
