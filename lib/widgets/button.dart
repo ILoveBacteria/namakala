@@ -13,6 +13,7 @@ class Button {
       icon: Icon(
         icon,
         color: Colors.white,
+        size: 20.0,
       ),
       label: Text(
         label,
@@ -52,10 +53,10 @@ class Button {
   static outlined({
     required String text,
     required Color color,
-    required VoidCallback onPress
+    required VoidCallback onPressed
   }) {
     return OutlinedButton(
-      onPressed: onPress,
+      onPressed: onPressed,
       child: Text(
         text,
         style: Font.styleButton1(color: color)
