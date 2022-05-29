@@ -6,10 +6,10 @@ class Button {
     required IconData icon,
     required String label,
     required Color color,
-    required VoidCallback onPress
+    required VoidCallback onPressed
   }) {
     return ElevatedButton.icon(
-      onPressed: onPress,
+      onPressed: onPressed,
       icon: Icon(
         icon,
         color: Colors.white,
@@ -32,10 +32,10 @@ class Button {
   static elevated({
     required String text,
     required Color color,
-    required VoidCallback onPress
+    required VoidCallback onPressed
   }) {
     return ElevatedButton(
-      onPressed: onPress,
+      onPressed: onPressed,
       child: Text(
         text,
         style: Font.styleButton1()
@@ -86,7 +86,7 @@ class Button {
         icon: Icons.logout_outlined,
         label: 'SIGN OUT',
         color: Colors.redAccent,
-        onPress: onPressed);
+        onPressed: onPressed);
   }
 
   static signIn({required VoidCallback onPressed}) {
@@ -94,14 +94,14 @@ class Button {
         icon: Icons.login_outlined,
         label: 'SIGN IN',
         color: Colors.green,
-        onPress: onPressed);
+        onPressed: onPressed);
   }
 
   static signUp({required VoidCallback onPressed}) {
     return elevated(
         text: 'SIGN UP',
         color: Colors.blueAccent,
-        onPress: onPressed);
+        onPressed: onPressed);
   }
 
   static SizedBox separate() {

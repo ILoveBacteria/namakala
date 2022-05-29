@@ -20,7 +20,7 @@ class Home extends StatelessWidget {
               _items(
                 image: 'assets/images/iphone.png',
                 title: 'Mobiles',
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MobileCategory()))
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => MobileCategory()))
               ),
               const VerticalDivider(color: Colors.grey),
               _items(image: 'assets/images/macbook.png', title: 'Laptops'),

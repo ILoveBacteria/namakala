@@ -61,7 +61,7 @@ class _AccountState extends State<Account> {
             icon: Icons.edit,
             label: 'EDIT',
             color: Colors.blueGrey,
-            onPress: () => setState(() {
+            onPressed: () => setState(() {
               _editScreen = !_editScreen;
             }),
           ),
@@ -87,7 +87,7 @@ class _AccountState extends State<Account> {
             Button.elevated(
               text: 'SAVE',
               color: Colors.lightBlueAccent,
-              onPress: () => setState(() {
+              onPressed: () => setState(() {
               _editScreen = !_editScreen;
               })
             ),
@@ -95,7 +95,7 @@ class _AccountState extends State<Account> {
             Button.outlined(
               text: 'CANCEL',
               color: Colors.redAccent,
-              onPress: () => setState(() {
+              onPressed: () => setState(() {
                 _editScreen = !_editScreen;
               })
             ),
