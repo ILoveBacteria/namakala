@@ -38,6 +38,8 @@ class Profile extends StatelessWidget {
                     Text(
                       'Moein Arabi',
                       style: Font.styleSubtitle1(),
+                      overflow: TextOverflow.fade,
+                      maxLines: 1,
                     ),
                     const SizedBox(height: 5.0),
                     Text(
