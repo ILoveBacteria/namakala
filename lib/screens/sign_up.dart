@@ -34,7 +34,7 @@ class _SignUpState extends State<SignUp> {
                 Field.separate(),
                 Field.passwordConfirm(),
                 Button.separate(),
-                Button.signUp(onPress: () {}),
+                Button.signUp(onPressed: () {}),
                 Field.separate(),
                 ScreenSetting.buildDetailTextAndButton(
                   text: 'Already have an account?',
