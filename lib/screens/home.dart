@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:namakala/screens/mobiles.dart';
 import 'package:namakala/utilities/font.dart';
+import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
 class Home extends StatelessWidget {
@@ -15,7 +17,11 @@ class Home extends StatelessWidget {
           _category(
             title: 'Electronics',
             items: <Widget>[
-              _items(image: 'assets/images/iphone.png', title: 'Mobiles'),
+              _items(
+                image: 'assets/images/iphone.png',
+                title: 'Mobiles',
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MobileCategory()))
+              ),
               const VerticalDivider(color: Colors.grey),
               _items(image: 'assets/images/macbook.png', title: 'Laptops'),
               const VerticalDivider(color: Colors.grey),
@@ -97,31 +103,34 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget _items({required String image, required String title}) {
-    return Container(
-      padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
-      width: 150.0,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.0),
-        border: Border.all(color: Colors.black12, width: 1.3),
-      ),
-      child: Column(
-        children: [
-          Image.asset(
-            image,
-            height: 105.0,
-          ),
-          SizedBox(
-            height: 32.0,
-            child: Center(
-              child: Text(
-                title,
-                style: Font.styleCaption(),
+  Widget _items({required String image, required String title, VoidCallback? onPressed}) {
+    return Button.raw(
+      onPressed: onPressed,
+      child: Container(
+        padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
+        width: 150.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20.0),
+          border: Border.all(color: Colors.black12, width: 1.3),
+        ),
+        child: Column(
+          children: [
+            Image.asset(
+              image,
+              height: 105.0,
+            ),
+            SizedBox(
+              height: 32.0,
+              child: Center(
+                child: Text(
+                  title,
+                  style: Font.styleCaption(),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

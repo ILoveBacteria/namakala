@@ -71,27 +71,36 @@ class Button {
     );
   }
 
-  static signOut({required VoidCallback onPress}) {
+  static raw({VoidCallback? onPressed, required Widget child}) {
+    return RawMaterialButton(
+      onPressed: onPressed,
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      child: child,
+    );
+  }
+
+  static signOut({required VoidCallback onPressed}) {
     return elevatedIcon(
         icon: Icons.logout_outlined,
         label: 'SIGN OUT',
         color: Colors.redAccent,
-        onPress: onPress);
+        onPress: onPressed);
   }
 
-  static signIn({required VoidCallback onPress}) {
+  static signIn({required VoidCallback onPressed}) {
     return elevatedIcon(
         icon: Icons.login_outlined,
         label: 'SIGN IN',
         color: Colors.green,
-        onPress: onPress);
+        onPress: onPressed);
   }
 
-  static signUp({required VoidCallback onPress}) {
+  static signUp({required VoidCallback onPressed}) {
     return elevated(
         text: 'SIGN UP',
         color: Colors.blueAccent,
-        onPress: onPress);
+        onPress: onPressed);
   }
 
   static SizedBox separate() {

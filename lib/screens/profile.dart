@@ -72,6 +72,7 @@ class Profile extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(height: 15.0),
           Container(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -87,19 +88,19 @@ class Profile extends StatelessWidget {
                     );
                   }
                 ),
-                const SizedBox(height: 5.0),
+                const SizedBox(height: 20.0),
                 _button(
                     text: 'Purchase History',
                     icon: Icons.history,
                     onPressed: () {}
                 ),
-                const SizedBox(height: 5.0),
+                const SizedBox(height: 20.0),
                 _button(
                     text: 'My Market',
                     icon: Icons.store_outlined,
                     onPressed: () {}
                 ),
-                const SizedBox(height: 5.0),
+                const SizedBox(height: 20.0),
                 _button(
                     text: 'Favorites',
                     icon: Icons.favorite_outline,
@@ -107,7 +108,7 @@ class Profile extends StatelessWidget {
                 ),
                 Button.separate(),
                 Button.signOut(
-                  onPress: () {
+                  onPressed: () {
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (context) => const SignIn()),
                       (Route<dynamic> route) => false,
@@ -127,14 +128,8 @@ class Profile extends StatelessWidget {
     required IconData icon,
     required VoidCallback onPressed
   }) {
-    return TextButton(
+    return Button.raw(
       onPressed: onPressed,
-      style: TextButton.styleFrom(
-        primary: Colors.grey,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0)
-        )
-      ),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         width: double.infinity,
