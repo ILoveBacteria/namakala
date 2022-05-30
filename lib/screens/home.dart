@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:namakala/screens/mobiles.dart';
+import 'package:namakala/screens/product_category.dart';
 import 'package:namakala/utilities/font.dart';
 import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/screen_setting.dart';
@@ -20,7 +20,11 @@ class Home extends StatelessWidget {
               _items(
                 image: 'assets/images/iphone.png',
                 title: 'Mobiles',
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => MobileCategory()))
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ProductCategory('Mobiles')
+                  )
+                )
               ),
               const VerticalDivider(color: Colors.grey),
               _items(image: 'assets/images/macbook.png', title: 'Laptops'),
