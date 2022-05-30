@@ -17,51 +17,35 @@ class Home extends StatelessWidget {
           _category(
             title: 'Electronics',
             items: <Widget>[
-              _items(
-                image: 'assets/images/iphone.png',
-                title: 'Mobiles',
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => ProductCategory('Mobiles')
-                  )
-                )
-              ),
+              _items(image: 'assets/images/iphone.png', title: 'Mobiles', context: context),
               const VerticalDivider(color: Colors.grey),
-              _items(
-                image: 'assets/images/macbook.png',
-                title: 'Laptops',
-                onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => ProductCategory('Laptops')
-                    )
-                  )
-              ),
+              _items(image: 'assets/images/macbook.png', title: 'Laptops', context: context),
               const VerticalDivider(color: Colors.grey),
-              _items(image: 'assets/images/camera.png', title: 'Camera'),
+              _items(image: 'assets/images/camera.png', title: 'Camera', context: context),
               const VerticalDivider(color: Colors.grey),
-              _items(image: 'assets/images/ipad.png', title: 'Tablets'),
+              _items(image: 'assets/images/ipad.png', title: 'Tablets', context: context),
             ],
           ),
           categorySeparator(),
           _category(
             title: 'Clothing',
             items: <Widget>[
-              _items(image: 'assets/images/men.png', title: 'Men'),
+              _items(image: 'assets/images/men.png', title: 'Men', context: context),
               const VerticalDivider(color: Colors.grey),
-              _items(image: 'assets/images/women.png', title: 'Women'),
+              _items(image: 'assets/images/women.png', title: 'Women', context: context),
               const VerticalDivider(color: Colors.grey),
-              _items(image: 'assets/images/child.png', title: 'Kids & Baby'),
+              _items(image: 'assets/images/child.png', title: 'Kids & Baby', context: context),
             ]
           ),
           categorySeparator(),
           _category(
             title: 'Sport & Travel',
             items: <Widget>[
-              _items(image: 'assets/images/athletic_clothing.png', title: 'Athletic Clothings'),
+              _items(image: 'assets/images/athletic_clothing.png', title: 'Athletic Clothings', context: context),
               const VerticalDivider(color: Colors.grey),
-              _items(image: 'assets/images/sporting_equipment.png', title: 'Sports Equipments'),
+              _items(image: 'assets/images/sporting_equipment.png', title: 'Sports Equipments', context: context),
               const VerticalDivider(color: Colors.grey),
-              _items(image: 'assets/images/camping_equipment.png', title: 'Camping'),
+              _items(image: 'assets/images/camping_equipment.png', title: 'Camping', context: context),
             ]
           ),
         ],
@@ -115,9 +99,11 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget _items({required String image, required String title, VoidCallback? onPressed}) {
+  Widget _items({required String image, required String title, required BuildContext context}) {
     return Button.raw(
-      onPressed: onPressed,
+      onPressed: () => Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => ProductCategory(title))
+      ),
       child: Container(
         padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
         width: 150.0,
