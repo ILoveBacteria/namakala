@@ -51,9 +51,9 @@ class ScreenSetting {
     );
   }
 
-  static appBar({required String title, BuildContext? context}) {
+  static appBar({String? title, BuildContext? context, List<Widget>? actions}) {
     return AppBar(
-      title: Text(
+      title: title == null ? null : Text(
         title,
         style: Font.styleHeadline6(color: Colors.black),
       ),
@@ -71,6 +71,7 @@ class ScreenSetting {
         icon: const Icon(Icons.arrow_back),
         color: Colors.blue,
       ),
+      actions: actions,
     );
   }
 
