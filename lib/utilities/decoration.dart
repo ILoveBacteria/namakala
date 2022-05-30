@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-BoxDecoration containerDecoration() {
+BoxDecoration containerDecoration1() {
   return BoxDecoration(
     color: Colors.white,
     borderRadius: BorderRadius.circular(20.0),
@@ -11,6 +11,14 @@ BoxDecoration containerDecoration() {
         offset: Offset(2, 2),
       ),
     ],
+  );
+}
+
+BoxDecoration containerDecoration2() {
+  return BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(10.0),
+    border: Border.all(color: Colors.black12, width: 1.3),
   );
 }
 
