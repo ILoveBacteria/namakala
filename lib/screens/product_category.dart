@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namakala/screens/product_details.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
 import '../utilities/font.dart';
@@ -28,7 +29,15 @@ class ProductCategory extends StatelessWidget {
     return Stack(
       children: [
         Button.raw(
-          onPressed: () => print('pressed'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ProductDetail(),
+              settings: RouteSettings(
+                arguments: product,
+              ),
+            ),
+          ),
           child: Container(
             padding: const EdgeInsets.all(10.0),
             height: 130.0,
