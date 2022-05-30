@@ -96,6 +96,22 @@ class _ProductDetailState extends State<ProductDetail> {
                 Row(
                   children: [
                     const Icon(
+                      Icons.grade_outlined,
+                      color: Colors.grey,
+                    ),
+                    Text(
+                      ' Score: ',
+                      style: Font.styleBody1(color: Colors.grey),
+                    ),
+                    Text(
+                      '${product.score}',
+                      style: Font.styleBody1(),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Icon(
                       Icons.attach_money,
                       color: Colors.grey,
                     ),
