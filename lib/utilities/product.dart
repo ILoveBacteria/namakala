@@ -8,6 +8,8 @@ class Product {
   String category;
   Market? market;
   int? count;
+  double score = 0;
+  int _countVoters = 0;
 
   static final List<Product> mobileProducts = <Product>[
     Product('iPhone 13 pro max - 512Gb', 'assets/images/iphone.png', 999, 'Mobiles', 'This product is in Test!'),
