@@ -3,27 +3,28 @@ import 'package:namakala/utilities/market.dart';
 class Product {
   String name;
   String image;
+  String detail;
   int price;
   String category;
   Market? market;
   int? count;
 
   static final List<Product> mobileProducts = <Product>[
-    Product('iPhone 13 pro max - 512Gb', 'assets/images/iphone.png', 999, 'Mobiles'),
-    Product('iPhone 13 - 256Gb', 'assets/images/iphone13.png', 899, 'Mobiles'),
-    Product('iPhone 13 pro max - 512Gb', 'assets/images/iphone.png', 999, 'Mobiles'),
-    Product('iPhone 13 - 256Gb', 'assets/images/iphone13.png', 899, 'Mobiles'),
-    Product('iPhone 13 pro max - 512Gb', 'assets/images/iphone.png', 999, 'Mobiles'),
+    Product('iPhone 13 pro max - 512Gb', 'assets/images/iphone.png', 999, 'Mobiles', 'This product is in Test!'),
+    Product('iPhone 13 - 256Gb', 'assets/images/iphone13.png', 899, 'Mobiles', 'This product is in Test!'),
+    Product('iPhone 13 pro max - 512Gb', 'assets/images/iphone.png', 999, 'Mobiles', 'This product is in Test!'),
+    Product('iPhone 13 - 256Gb', 'assets/images/iphone13.png', 899, 'Mobiles', 'This product is in Test!'),
+    Product('iPhone 13 pro max - 512Gb', 'assets/images/iphone.png', 999, 'Mobiles', 'This product is in Test!'),
   ];
 
   static final List<Product> laptopProducts = <Product>[
-    Product('Macbook Air', 'assets/images/macbook.png', 999, 'Laptops'),
-    Product('MacBook Pro M1', 'assets/images/macbook.png', 1199, 'Laptops'),
-    Product('Macbook Air', 'assets/images/macbook.png', 999, 'Laptops'),
-    Product('MacBook Pro M1', 'assets/images/macbook.png', 1199, 'Laptops'),
+    Product('Macbook Air', 'assets/images/macbook.png', 999, 'Laptops', 'This product is in Test!'),
+    Product('MacBook Pro M1', 'assets/images/macbook.png', 1199, 'Laptops', 'This product is in Test!'),
+    Product('Macbook Air', 'assets/images/macbook.png', 999, 'Laptops', 'This product is in Test!'),
+    Product('MacBook Pro M1', 'assets/images/macbook.png', 1199, 'Laptops', 'This product is in Test!'),
   ];
 
-  Product(this.name, this.image, this.price, this.category);
+  Product(this.name, this.image, this.price, this.category, this.detail);
 
   @override
   bool operator ==(Object other) =>
