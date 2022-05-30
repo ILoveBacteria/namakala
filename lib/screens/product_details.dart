@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namakala/utilities/decoration.dart';
 import 'package:namakala/utilities/font.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
@@ -55,7 +56,89 @@ class _ProductDetailState extends State<ProductDetail> {
           ],
         ),
       ),
-      child: Container()
+      child: Column(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 40 / 100,
+            child: Image.asset(product.image),
+          ),
+          const SizedBox(height: 20.0),
+          _container(
+            child: Column(
+              children: [
+                Text(
+                  product.name,
+                  style: Font.styleSubtitle1(),
+                )
+              ],
+            ),
+          ),
+          const SizedBox(height: 20.0),
+          _container(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.store_outlined,
+                      color: Colors.grey,
+                    ),
+                    Text(
+                      ' Market: ',
+                      style: Font.styleBody1(color: Colors.grey),
+                    ),
+                    Text(
+                      'product.market.name',
+                      style: Font.styleBody1(),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.attach_money,
+                      color: Colors.grey,
+                    ),
+                    Text(
+                      ' Price: ',
+                      style: Font.styleBody1(color: Colors.grey),
+                    ),
+                    Text(
+                      '${product.price}\$',
+                      style: Font.styleBody1(),
+                    )
+                  ],
+                ),
+              ],
+            )
+          ),
+          const SizedBox(height: 20.0),
+          _container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'More Detail:',
+                  style: Font.styleBody1(color: Colors.grey),
+                ),
+                Text(
+                  product.detail,
+                  style: Font.styleBody2(),
+                ),
+              ],
+            ),
+          ),
+        ],
+      )
+    );
+  }
+
+  Widget _container({required Widget child}) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(10.0),
+      decoration: containerDecoration2(),
+      child: child
     );
   }
 }
