@@ -93,6 +93,8 @@ class ProductCategory extends StatelessWidget {
   List<Product> _getProductList() {
     if (_category == 'Mobiles') {
       return Product.mobileProducts;
+    } else if (_category == 'Laptops') {
+      return Product.laptopProducts;
     }
 
     return [];

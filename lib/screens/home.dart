@@ -27,7 +27,15 @@ class Home extends StatelessWidget {
                 )
               ),
               const VerticalDivider(color: Colors.grey),
-              _items(image: 'assets/images/macbook.png', title: 'Laptops'),
+              _items(
+                image: 'assets/images/macbook.png',
+                title: 'Laptops',
+                onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => ProductCategory('Laptops')
+                    )
+                  )
+              ),
               const VerticalDivider(color: Colors.grey),
               _items(image: 'assets/images/camera.png', title: 'Camera'),
               const VerticalDivider(color: Colors.grey),
