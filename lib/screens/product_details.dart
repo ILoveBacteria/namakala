@@ -104,7 +104,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       style: Font.styleBody1(color: Colors.grey),
                     ),
                     Text(
-                      '${product.score}',
+                      (product.score).toStringAsFixed(1),
                       style: Font.styleBody1(),
                     )
                   ],
