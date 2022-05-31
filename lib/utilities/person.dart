@@ -10,6 +10,13 @@ class Person {
   Market? market;
   List<Product> purchases = [];
   List<Product> favorites = [];
+  List<Product> cart = [];
+
+  static Person samplePerson() {
+    Person p = Person('Moein', 'Arabi', 'abc1234', '0123456789');
+    p.cart = Product.mobileProducts;
+    return p;
+}
 
   Person(this.firstname, this.lastname, this.password, this.phone);
 }
