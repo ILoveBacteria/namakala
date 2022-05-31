@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namakala/screens/cart.dart';
 import 'package:namakala/screens/home.dart';
 import 'package:namakala/screens/profile.dart';
 import 'package:namakala/utilities/font.dart';
@@ -15,6 +16,7 @@ class _MainScreenState extends State<MainScreen> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     Home(),
+    Cart(),
     Profile(),
   ];
 
@@ -29,6 +31,11 @@ class _MainScreenState extends State<MainScreen> {
       icon: Icon(Icons.home_outlined),
       activeIcon: Icon(Icons.home),
       label: 'Home',
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.shopping_cart_outlined),
+      activeIcon: Icon(Icons.shopping_cart),
+      label: 'Cart',
     ),
     const BottomNavigationBarItem(
       icon: Icon(Icons.person_outline),
