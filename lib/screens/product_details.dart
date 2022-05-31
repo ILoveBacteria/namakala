@@ -4,6 +4,7 @@ import 'package:namakala/utilities/font.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
 import '../utilities/product.dart';
+import 'cart.dart';
 
 class ProductDetail extends StatefulWidget {
   const ProductDetail({Key? key}) : super(key: key);
@@ -33,7 +34,12 @@ class _ProductDetailState extends State<ProductDetail> {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Cart(),
+              ),
+            ),
             icon: const Icon(
               Icons.shopping_cart_outlined,
               color: Colors.blue,
