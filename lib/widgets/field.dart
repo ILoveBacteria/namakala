@@ -11,11 +11,11 @@ class Field {
     return InputBorder.none;
   }
 
-  static separate() {
+  static SizedBox separate() {
     return const SizedBox(height: 30);
   }
 
-  static container(Widget child) {
+  static Widget container(Widget child) {
     return Container(
         height: 50.0,
         alignment: Alignment.centerLeft,
@@ -25,21 +25,23 @@ class Field {
     );
   }
 
-  static email({String? initialValue}) {
+  static Widget field({String? initialValue, required String label, TextInputType? keyboardType, String? hintText, IconData? prefixIcon, IconData? suffixIcon, obscureText = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        label(label: 'Email'),
+        Field.label(label: label),
         const SizedBox(height: 5.0),
         Field.container(
           TextFormField(
             initialValue: initialValue,
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: keyboardType,
+            obscureText: obscureText,
             decoration: InputDecoration(
-              hintText: 'example@mail.com',
+              hintText: hintText,
               hintStyle: Field.hintStyle(),
               border: Field.border(),
-              prefixIcon: const Icon(Icons.mail_outline),
+              prefixIcon: prefixIcon == null ? null : Icon(prefixIcon),
+              suffixIcon: suffixIcon == null ? null : Icon(suffixIcon),
             ),
           )
         ),
@@ -47,117 +49,31 @@ class Field {
     );
   }
 
-  static password({String? initialValue}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        label(label: 'Password'),
-        const SizedBox(height: 5.0),
-        Field.container(
-          TextFormField(
-            initialValue: initialValue,
-            obscureText: true,
-            decoration: InputDecoration(
-              hintText: 'Contains A-z and 0-9',
-              hintStyle: Field.hintStyle(),
-              border: Field.border(),
-              prefixIcon: const Icon(Icons.password_outlined),
-            ),
-          )
-        ),
-      ],
-    );
+  static Widget email({String? initialValue}) {
+    return Field.field(label: 'Email', initialValue: initialValue, keyboardType: TextInputType.emailAddress, hintText: 'example@mail.com', prefixIcon: Icons.mail_outline,);
   }
 
-  static passwordConfirm({String? initialValue}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        label(label: 'Confirm Password'),
-        const SizedBox(height: 5.0),
-        Field.container(
-          TextFormField(
-            initialValue: initialValue,
-            obscureText: true,
-            decoration: InputDecoration(
-              hintText: 'Contains A-z and 0-9',
-              hintStyle: Field.hintStyle(),
-              border: Field.border(),
-              prefixIcon: const Icon(Icons.password_outlined),
-            ),
-          )
-        ),
-      ],
-    );
+  static Widget password({String? initialValue}) {
+    return Field.field(label: 'Password', initialValue: initialValue, obscureText: true, hintText: 'Contains A-z and 0-9', prefixIcon: Icons.password_outlined,);
   }
 
-  static firstName({String? initialValue}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        label(label: 'First Name'),
-        const SizedBox(height: 5.0),
-        Field.container(
-          TextFormField(
-            initialValue: initialValue,
-            keyboardType: TextInputType.name,
-            decoration: InputDecoration(
-              hintText: 'Lionel',
-              hintStyle: Field.hintStyle(),
-              border: Field.border(),
-              prefixIcon: const Icon(Icons.badge_outlined),
-            ),
-          )
-        ),
-      ],
-    );
+  static Widget passwordConfirm({String? initialValue}) {
+    return Field.field(label: 'Confirm Password', initialValue: initialValue, obscureText: true, hintText: 'Contains A-z and 0-9', prefixIcon: Icons.password_outlined,);
   }
 
-  static lastName({String? initialValue}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        label(label: 'Last Name'),
-        const SizedBox(height: 5.0),
-        Field.container(
-          TextFormField(
-            initialValue: initialValue,
-            keyboardType: TextInputType.name,
-            decoration: InputDecoration(
-              hintText: 'Messi',
-              hintStyle: Field.hintStyle(),
-              border: Field.border(),
-              prefixIcon: const Icon(Icons.badge_outlined),
-            ),
-          )
-        ),
-      ],
-    );
+  static Widget firstName({String? initialValue}) {
+    return Field.field(label: 'First Name', initialValue: initialValue, keyboardType: TextInputType.name, hintText: 'Lionel', prefixIcon: Icons.badge_outlined,);
   }
 
-  static phone({String? initialValue}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        label(label: 'Phone'),
-        const SizedBox(height: 5.0),
-        Field.container(
-          TextFormField(
-            initialValue: initialValue,
-            keyboardType: TextInputType.phone,
-            decoration: InputDecoration(
-              hintText: '+989123456789',
-              hintStyle: Field.hintStyle(),
-              border: Field.border(),
-              prefixIcon: const Icon(Icons.call_outlined),
-            ),
-          )
-        ),
-      ],
-    );
+  static Widget lastName({String? initialValue}) {
+    return Field.field(label: 'Last Name', initialValue: initialValue, keyboardType: TextInputType.name, hintText: 'Messi', prefixIcon: Icons.badge_outlined,);
   }
 
-  static parentContainer({required Widget child}) {
+  static Widget phone({String? initialValue}) {
+    return Field.field(label: 'Phone', initialValue: initialValue, keyboardType: TextInputType.phone, hintText: '+989123456789', prefixIcon: Icons.call_outlined,);
+  }
+
+  static Widget parentContainer({required Widget child}) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20.0),
