@@ -15,24 +15,27 @@ class Field {
     return const SizedBox(height: 30);
   }
 
-  static Widget container(Widget child) {
+  static Widget container({required Widget child, double height = 50.0, double leftPadding = 0.0}) {
     return Container(
-        height: 50.0,
+        height: height,
         alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.only(left: 3.0),
+        padding: EdgeInsets.only(left: leftPadding, right: 10.0),
         decoration: fieldDecoration(),
         child: child
     );
   }
 
-  static Widget field({String? initialValue, required String label, TextInputType? keyboardType, String? hintText, IconData? prefixIcon, IconData? suffixIcon, obscureText = false}) {
+  static Widget field({String? initialValue, required String label, TextInputType? keyboardType, String? hintText, IconData? prefixIcon, IconData? suffixIcon, obscureText = false, maxLines = 1, double height = 50.0}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Field.label(label: label),
         const SizedBox(height: 5.0),
         Field.container(
-          TextFormField(
+          leftPadding: prefixIcon == null ? 10.0 : 0.0,
+          height: height,
+          child: TextFormField(
+            maxLines: maxLines,
             initialValue: initialValue,
             keyboardType: keyboardType,
             obscureText: obscureText,
@@ -43,7 +46,7 @@ class Field {
               prefixIcon: prefixIcon == null ? null : Icon(prefixIcon),
               suffixIcon: suffixIcon == null ? null : Icon(suffixIcon),
             ),
-          )
+          ),
         ),
       ],
     );
