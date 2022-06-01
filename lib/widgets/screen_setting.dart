@@ -20,7 +20,8 @@ class ScreenSetting {
     required BuildContext context,
     required AppBar appBar,
     required Widget child,
-    FloatingActionButton? floatingActionButton
+    FloatingActionButton? floatingActionButton,
+    FloatingActionButtonLocation floatingActionButtonLocation = FloatingActionButtonLocation.endFloat
   }) {
     return Scaffold(
       appBar: appBar,
@@ -31,6 +32,7 @@ class ScreenSetting {
         ),
       ),
       floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: floatingActionButtonLocation,
     );
   }
 

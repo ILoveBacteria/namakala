@@ -20,6 +20,18 @@ class _CartState extends State<Cart> {
     return ScreenSetting.initScreen(
       context: context,
       appBar: ScreenSetting.appBar(title: 'Cart', context: context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {},
+        backgroundColor: Colors.deepPurple,
+        icon: const Icon(Icons.shopping_cart_checkout_outlined),
+        extendedPadding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 3 /10),
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        label: Text(
+          'CHECK OUT',
+          style: Font.styleButton1(),
+        ),
+      ),
       child: Column(
         children: _buildProductWidgets(context: context, person: Person.samplePerson()),
       ),
