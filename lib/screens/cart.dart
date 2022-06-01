@@ -53,7 +53,7 @@ class _CartState extends State<Cart> {
           ),
           child: Container(
             padding: const EdgeInsets.all(10.0),
-            height: 170.0,
+            height: 190.0,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10.0),
@@ -132,7 +132,16 @@ class _CartState extends State<Cart> {
           ' $label: ',
           style: Font.styleBody1(color: Colors.grey),
         ),
-        value == null ? Container(width: 10.0, height: 10.0, color: color) : Text(value, style: Font.styleBody1()),
+        value == null
+            ? Container(width: 10.0, height: 10.0, color: color)
+            : SizedBox(
+              width: MediaQuery.of(context).size.width - 251,
+              child: Text(
+                value,
+                style: Font.styleBody1(),
+                overflow: TextOverflow.ellipsis,
+              )
+            ),
       ],
     );
   }
@@ -151,6 +160,7 @@ class _CartState extends State<Cart> {
       _productDetailWithIcon(icon: Icons.store_outlined, label: 'Market', value: 'product.market.name'),
       _productDetailWithIcon(icon: Icons.attach_money, label: 'Price', value: '${product.price}\$'),
       _productDetailWithIcon(icon: Icons.palette_outlined, label: 'Color', color: product.color),
+      _productDetailWithIcon(icon: Icons.shopping_bag_outlined, label: 'Count', value: 'person.cart.count(product)'),
     ];
 
     if (product.size != null) {
