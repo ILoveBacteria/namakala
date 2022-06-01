@@ -23,7 +23,7 @@ class _CartState extends State<Cart> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Colors.black,
         icon: const Icon(Icons.shopping_cart_checkout_outlined),
         extendedPadding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 3 /10),
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
@@ -53,7 +53,7 @@ class _CartState extends State<Cart> {
           ),
           child: Container(
             padding: const EdgeInsets.all(10.0),
-            height: 130.0,
+            height: 170.0,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10.0),
@@ -61,11 +61,10 @@ class _CartState extends State<Cart> {
             ),
             child: Row(
               children: [
-                AspectRatio(
-                    aspectRatio: 1/1,
-                    child: SizedBox(
-                        child: Image.asset(product!.image)
-                    )
+                SizedBox(
+                  width: 107.4,
+                  height: 107.4,
+                  child: Image.asset(product!.image),
                 ),
                 const SizedBox(width: 15.0),
                 Column(
@@ -81,12 +80,32 @@ class _CartState extends State<Cart> {
           bottom: 5.0,
           child: Align(
             alignment: Alignment.bottomRight,
-            child: Button.elevatedIcon(
-                icon: Icons.add_shopping_cart,
-                color: Colors.green,
-                label: '${product.price}\$',
-                onPressed: () {}
-            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.delete_outline),
+                  color: Colors.red,
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.remove),
+                  color: Colors.yellow,
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.add),
+                  color: Colors.green,
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                ),
+              ],
+            )
           ),
         )
       ],
