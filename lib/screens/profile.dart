@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:namakala/screens/account_information.dart';
+import 'package:namakala/screens/my_market.dart';
 import 'package:namakala/screens/sign_in.dart';
 import 'package:namakala/utilities/font.dart';
 import 'package:namakala/widgets/button.dart';
@@ -100,7 +101,9 @@ class Profile extends StatelessWidget {
                 _button(
                     text: 'My Market',
                     icon: Icons.store_outlined,
-                    onPressed: () {}
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const MyMarket()),
+                    ),
                 ),
                 const SizedBox(height: 20.0),
                 _button(
