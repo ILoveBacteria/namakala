@@ -15,13 +15,21 @@ class Field {
     return const SizedBox(height: 30);
   }
 
-  static Widget container({required Widget child, Color? borderColor, double height = 50.0, double leftPadding = 0.0, bool selected = false}) {
+  static Widget container({
+    required Widget child,
+    Color? borderColor,
+    double height = 50.0,
+    double leftPadding = 0.0,
+    bool selected = false,
+  }) {
     return Container(
-        height: height,
-        alignment: Alignment.centerLeft,
-        padding: EdgeInsets.only(left: leftPadding, right: 10.0),
-        decoration: selected ? fieldDecorationSelected() : fieldDecorationUnSelected(borderColor: borderColor),
-        child: child
+      height: height,
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.only(left: leftPadding, right: 10.0),
+      decoration: selected
+          ? fieldDecorationSelected()
+          : fieldDecorationUnSelected(borderColor: borderColor),
+      child: child,
     );
   }
 
@@ -38,22 +46,27 @@ class Field {
     TextEditingController? controller,
     ValueChanged<String>? onChanged,
     FieldStatus status = FieldStatus.none,
-    obscureText = false, maxLines = 1,
+    obscureText = false,
+    maxLines = 1,
     double height = 50.0,
-    bool selected = false})
-  {
+    bool selected = false,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Field.label(
           label: label,
-          color: status == FieldStatus.none ? null : (status == FieldStatus.validate ? Colors.green : Colors.red),
+          color: status == FieldStatus.none
+              ? null
+              : (status == FieldStatus.validate ? Colors.green : Colors.red),
         ),
         const SizedBox(height: 5.0),
         Field.container(
           leftPadding: prefixIcon == null ? 10.0 : 0.0,
           height: height,
-          borderColor: status == FieldStatus.none ? null : (status == FieldStatus.validate ? Colors.green : Colors.red),
+          borderColor: status == FieldStatus.none
+              ? null
+              : (status == FieldStatus.validate ? Colors.green : Colors.red),
           selected: focusNode == null ? selected : focusNode.hasFocus,
           child: TextFormField(
             controller: controller,
@@ -71,7 +84,11 @@ class Field {
               border: Field.border(),
               prefixIcon: prefixIcon == null ? null : Icon(prefixIcon),
               suffixIcon: suffixIcon == null ? null : Icon(suffixIcon),
-              prefixIconColor: status == FieldStatus.none ? null : (status == FieldStatus.validate ? Colors.green : Colors.red),
+              prefixIconColor: status == FieldStatus.none
+                  ? null
+                  : (status == FieldStatus.validate
+                      ? Colors.green
+                      : Colors.red),
             ),
           ),
         ),
@@ -79,28 +96,155 @@ class Field {
     );
   }
 
-  static Widget email({String? initialValue}) {
-    return Field.field(label: 'Email', initialValue: initialValue, keyboardType: TextInputType.emailAddress, hintText: 'example@mail.com', prefixIcon: Icons.mail_outline,);
+  static Widget email({
+    String? initialValue,
+    FocusNode? focusNode,
+    VoidCallback? onTap,
+    VoidCallback? onEditingComplete,
+    TextEditingController? controller,
+    ValueChanged<String>? onChanged,
+    FieldStatus status = FieldStatus.none,
+  }) {
+    return Field.field(
+      label: 'Email',
+      initialValue: initialValue,
+      keyboardType: TextInputType.emailAddress,
+      hintText: 'example@mail.com',
+      prefixIcon: Icons.mail_outline,
+      controller: controller,
+      focusNode: focusNode,
+      onEditingComplete: onEditingComplete,
+      onChanged: onChanged,
+      onTap: onTap,
+      status: status,
+    );
   }
 
-  static Widget password({String? initialValue}) {
-    return Field.field(label: 'Password', initialValue: initialValue, obscureText: true, hintText: 'Contains A-z and 0-9', prefixIcon: Icons.password_outlined,);
+  static Widget password({
+    String? initialValue,
+    FocusNode? focusNode,
+    VoidCallback? onTap,
+    VoidCallback? onEditingComplete,
+    TextEditingController? controller,
+    ValueChanged<String>? onChanged,
+    FieldStatus status = FieldStatus.none,
+  }) {
+    return Field.field(
+      label: 'Password',
+      initialValue: initialValue,
+      obscureText: true,
+      hintText: 'Contains A-z and 0-9',
+      prefixIcon: Icons.password_outlined,
+      controller: controller,
+      focusNode: focusNode,
+      onEditingComplete: onEditingComplete,
+      onChanged: onChanged,
+      onTap: onTap,
+      status: status,
+    );
   }
 
-  static Widget passwordConfirm({String? initialValue}) {
-    return Field.field(label: 'Confirm Password', initialValue: initialValue, obscureText: true, hintText: 'Contains A-z and 0-9', prefixIcon: Icons.password_outlined,);
+  static Widget passwordConfirm({
+    String? initialValue,
+    FocusNode? focusNode,
+    VoidCallback? onTap,
+    VoidCallback? onEditingComplete,
+    TextEditingController? controller,
+    ValueChanged<String>? onChanged,
+    FieldStatus status = FieldStatus.none,
+  }) {
+    return Field.field(
+      label: 'Confirm Password',
+      initialValue: initialValue,
+      obscureText: true,
+      hintText: 'Contains A-z and 0-9',
+      prefixIcon: Icons.password_outlined,
+      controller: controller,
+      focusNode: focusNode,
+      onEditingComplete: onEditingComplete,
+      onChanged: onChanged,
+      onTap: onTap,
+      status: status,
+    );
   }
 
-  static Widget firstName({String? initialValue}) {
-    return Field.field(label: 'First Name', initialValue: initialValue, keyboardType: TextInputType.name, hintText: 'Lionel', prefixIcon: Icons.badge_outlined,);
+  static Widget firstName({
+    String? initialValue,
+    FocusNode? focusNode,
+    VoidCallback? onTap,
+    VoidCallback? onEditingComplete,
+    TextEditingController? controller,
+    ValueChanged<String>? onChanged,
+    FieldStatus status = FieldStatus.none,
+  }) {
+    return Field.field(
+      label: 'First Name',
+      initialValue: initialValue,
+      keyboardType: TextInputType.name,
+      hintText: 'Lionel',
+      prefixIcon: Icons.badge_outlined,
+      controller: controller,
+      focusNode: focusNode,
+      onEditingComplete: onEditingComplete,
+      onChanged: onChanged,
+      onTap: onTap,
+      status: status,
+    );
   }
 
-  static Widget lastName({String? initialValue}) {
-    return Field.field(label: 'Last Name', initialValue: initialValue, keyboardType: TextInputType.name, hintText: 'Messi', prefixIcon: Icons.badge_outlined,);
+  static Widget lastName({
+    String? initialValue,
+    FocusNode? focusNode,
+    VoidCallback? onTap,
+    VoidCallback? onEditingComplete,
+    TextEditingController? controller,
+    ValueChanged<String>? onChanged,
+    FieldStatus status = FieldStatus.none,
+  }) {
+    return Field.field(
+      label: 'Last Name',
+      initialValue: initialValue,
+      keyboardType: TextInputType.name,
+      hintText: 'Messi',
+      prefixIcon: Icons.badge_outlined,
+      controller: controller,
+      focusNode: focusNode,
+      onEditingComplete: onEditingComplete,
+      onChanged: onChanged,
+      onTap: onTap,
+      status: status,
+    );
   }
 
-  static Widget phone({String? initialValue}) {
-    return Field.field(label: 'Phone', initialValue: initialValue, keyboardType: TextInputType.phone, hintText: '+989123456789', prefixIcon: Icons.call_outlined,);
+  static Widget phone({
+    String? initialValue,
+    FocusNode? focusNode,
+    VoidCallback? onTap,
+    VoidCallback? onEditingComplete,
+    TextEditingController? controller,
+    ValueChanged<String>? onChanged,
+    FieldStatus status = FieldStatus.none,
+  }) {
+    return Field.field(
+      label: 'Phone',
+      initialValue: initialValue,
+      keyboardType: TextInputType.phone,
+      hintText: '+989123456789',
+      prefixIcon: Icons.call_outlined,
+      controller: controller,
+      focusNode: focusNode,
+      onEditingComplete: onEditingComplete,
+      onChanged: onChanged,
+      onTap: onTap,
+      status: status,
+    );
+  }
+
+  static bool emailValidate(String? value) {
+    if (value == null || !RegExp(r"""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])""").hasMatch(value) || value.isEmpty) {
+      return false;
+    }
+    return true;
   }
 
   static Widget parentContainer({required Widget child}) {
@@ -108,7 +252,7 @@ class Field {
       width: double.infinity,
       padding: const EdgeInsets.all(20.0),
       decoration: containerDecoration1(),
-      child: child
+      child: child,
     );
   }
 
@@ -120,6 +264,4 @@ class Field {
   }
 }
 
-enum FieldStatus {
-  error, validate, none
-}
+enum FieldStatus { error, validate, none }
