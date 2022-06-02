@@ -15,12 +15,12 @@ class Field {
     return const SizedBox(height: 30);
   }
 
-  static Widget container({required Widget child, double height = 50.0, double leftPadding = 0.0, bool selected = false}) {
+  static Widget container({required Widget child, Color? borderColor, double height = 50.0, double leftPadding = 0.0, bool selected = false}) {
     return Container(
         height: height,
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.only(left: leftPadding, right: 10.0),
-        decoration: selected ? fieldDecorationSelected() : fieldDecorationUnSelected(),
+        decoration: selected ? fieldDecorationSelected() : fieldDecorationUnSelected(borderColor: borderColor),
         child: child
     );
   }
@@ -34,6 +34,9 @@ class Field {
     IconData? suffixIcon,
     FocusNode? focusNode,
     VoidCallback? onTap,
+    VoidCallback? onEditingComplete,
+    TextEditingController? controller,
+    FieldStatus status = FieldStatus.none,
     obscureText = false, maxLines = 1,
     double height = 50.0,
     bool selected = false})
@@ -41,14 +44,20 @@ class Field {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Field.label(label: label),
+        Field.label(
+          label: label,
+          color: status == FieldStatus.none ? null : (status == FieldStatus.validate ? Colors.green : Colors.red),
+        ),
         const SizedBox(height: 5.0),
         Field.container(
           leftPadding: prefixIcon == null ? 10.0 : 0.0,
           height: height,
+          borderColor: status == FieldStatus.none ? null : (status == FieldStatus.validate ? Colors.green : Colors.red),
           selected: focusNode == null ? selected : focusNode.hasFocus,
           child: TextFormField(
+            controller: controller,
             focusNode: focusNode,
+            onEditingComplete: onEditingComplete,
             onTap: onTap,
             maxLines: maxLines,
             initialValue: initialValue,
@@ -60,6 +69,7 @@ class Field {
               border: Field.border(),
               prefixIcon: prefixIcon == null ? null : Icon(prefixIcon),
               suffixIcon: suffixIcon == null ? null : Icon(suffixIcon),
+              prefixIconColor: status == FieldStatus.none ? null : (status == FieldStatus.validate ? Colors.green : Colors.red),
             ),
           ),
         ),
@@ -100,10 +110,14 @@ class Field {
     );
   }
 
-  static Text label({required String label}) {
+  static Text label({required String label, Color? color}) {
     return Text(
       label,
-      style: Font.styleSubtitle2(color: Colors.grey),
+      style: Font.styleSubtitle2(color: color ?? Colors.grey),
     );
   }
+}
+
+enum FieldStatus {
+  error, validate, none
 }
