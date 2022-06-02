@@ -15,17 +15,29 @@ class Field {
     return const SizedBox(height: 30);
   }
 
-  static Widget container({required Widget child, double height = 50.0, double leftPadding = 0.0}) {
+  static Widget container({required Widget child, double height = 50.0, double leftPadding = 0.0, bool selected = false}) {
     return Container(
         height: height,
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.only(left: leftPadding, right: 10.0),
-        decoration: fieldDecoration(),
+        decoration: selected ? fieldDecorationSelected() : fieldDecorationUnSelected(),
         child: child
     );
   }
 
-  static Widget field({String? initialValue, required String label, TextInputType? keyboardType, String? hintText, IconData? prefixIcon, IconData? suffixIcon, obscureText = false, maxLines = 1, double height = 50.0}) {
+  static Widget field({
+    String? initialValue,
+    required String label,
+    TextInputType? keyboardType,
+    String? hintText,
+    IconData? prefixIcon,
+    IconData? suffixIcon,
+    FocusNode? focusNode,
+    VoidCallback? onTap,
+    obscureText = false, maxLines = 1,
+    double height = 50.0,
+    bool selected = false})
+  {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -34,7 +46,10 @@ class Field {
         Field.container(
           leftPadding: prefixIcon == null ? 10.0 : 0.0,
           height: height,
+          selected: focusNode == null ? selected : focusNode.hasFocus,
           child: TextFormField(
+            focusNode: focusNode,
+            onTap: onTap,
             maxLines: maxLines,
             initialValue: initialValue,
             keyboardType: keyboardType,

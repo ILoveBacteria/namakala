@@ -22,10 +22,17 @@ BoxDecoration containerDecoration2() {
   );
 }
 
-BoxDecoration fieldDecoration() {
+BoxDecoration fieldDecorationUnSelected() {
+  return BoxDecoration(
+    borderRadius: BorderRadius.circular(10.0),
+    border: Border.all(color: Colors.black12, width: 1.3),
+  );
+}
+
+BoxDecoration fieldDecorationSelected() {
   return BoxDecoration(
     color: Colors.white,
-    borderRadius: BorderRadius.circular(15.0),
+    borderRadius: BorderRadius.circular(10.0),
     boxShadow: const [
       BoxShadow(
         color: Colors.black38,
