@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:namakala/data/sample_data.dart';
 import 'package:namakala/utilities/decoration.dart';
 import 'package:namakala/utilities/font.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
 import '../utilities/product.dart';
+import '../utilities/selected_product.dart';
 import 'cart.dart';
 
 class ProductDetail extends StatefulWidget {
@@ -48,7 +50,7 @@ class _ProductDetailState extends State<ProductDetail> {
         ]
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => SampleData.person.cart.add(SelectedProduct(product, product.color[0], null)),
         backgroundColor: Colors.green,
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
         child: Column(
