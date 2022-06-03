@@ -18,6 +18,7 @@ class _SignInState extends State<SignIn> {
   FieldStatus _passwordStatus = FieldStatus.none;
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
+  VoidCallback? _submitButton;
 
   @override
   void dispose() {
@@ -50,8 +51,12 @@ class _SignInState extends State<SignIn> {
                       _phoneFocus.unfocus();
                     });
                   },
-                  onChanged: (_) =>
-                      setState(() => _phoneStatus = FieldStatus.none),
+                  onChanged: (_) {
+                    setState(() {
+                      _phoneStatus = FieldStatus.none;
+                      _changeButtonEnabled();
+                    });
+                  },
                 ),
                 Field.separate(),
                 Field.password(
@@ -68,11 +73,15 @@ class _SignInState extends State<SignIn> {
                       _passwordFocus.unfocus();
                     });
                   },
-                  onChanged: (_) =>
-                      setState(() => _passwordStatus = FieldStatus.none),
+                  onChanged: (_) {
+                    setState(() {
+                      _passwordStatus = FieldStatus.none;
+                      _changeButtonEnabled();
+                    });
+                  },
                 ),
                 Button.separate(),
-                Button.signIn(onPressed: () {}),
+                Button.signIn(onPressed: _submitButton),
                 Field.separate(),
                 ScreenSetting.buildDetailTextAndButton(
                   text: 'Don\'t have an account?',
@@ -90,5 +99,13 @@ class _SignInState extends State<SignIn> {
         ],
       ),
     );
+  }
+
+  void _changeButtonEnabled() {
+    setState(() {
+      _phoneController.text.isNotEmpty && _passwordController.text.isNotEmpty
+          ? _submitButton = () {}
+          : _submitButton = null;
+    });
   }
 }

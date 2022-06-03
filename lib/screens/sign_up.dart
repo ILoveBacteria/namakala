@@ -30,6 +30,7 @@ class _SignUpState extends State<SignUp> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _passwordConfirmController = TextEditingController();
+  VoidCallback? _submitButton;
 
   @override
   void dispose() {
@@ -66,7 +67,12 @@ class _SignUpState extends State<SignUp> {
                       _firstNameFocus.unfocus();
                     });
                   },
-                  onChanged: (_) => setState(() => _firstNameStatus = FieldStatus.none),
+                  onChanged: (_) {
+                    setState(() {
+                      _firstNameStatus = FieldStatus.none;
+                      _changeButtonEnabled();
+                    });
+                  },
                 ),
                 Field.separate(),
                 Field.lastName(
@@ -83,7 +89,12 @@ class _SignUpState extends State<SignUp> {
                       _lastNameFocus.unfocus();
                     });
                   },
-                  onChanged: (_) => setState(() => _lastNameStatus = FieldStatus.none),
+                  onChanged: (_) {
+                    setState(() {
+                      _lastNameStatus = FieldStatus.none;
+                      _changeButtonEnabled();
+                    });
+                  },
                 ),
                 Field.separate(),
                 Field.phone(
@@ -100,7 +111,12 @@ class _SignUpState extends State<SignUp> {
                       _phoneFocus.unfocus();
                     });
                   },
-                  onChanged: (_) => setState(() => _phoneStatus = FieldStatus.none),
+                  onChanged: (_) {
+                    setState(() {
+                      _phoneStatus = FieldStatus.none;
+                      _changeButtonEnabled();
+                    });
+                  },
                 ),
                 Field.separate(),
                 Field.email(
@@ -117,7 +133,8 @@ class _SignUpState extends State<SignUp> {
                       _emailFocus.unfocus();
                     });
                   },
-                  onChanged: (_) => setState(() => _emailStatus = FieldStatus.none),
+                  onChanged: (_) =>
+                      setState(() => _emailStatus = FieldStatus.none),
                 ),
                 Field.separate(),
                 Field.password(
@@ -134,7 +151,12 @@ class _SignUpState extends State<SignUp> {
                       _passwordFocus.unfocus();
                     });
                   },
-                  onChanged: (_) => setState(() => _passwordStatus = FieldStatus.none),
+                  onChanged: (_) {
+                    setState(() {
+                      _passwordStatus = FieldStatus.none;
+                      _changeButtonEnabled();
+                    });
+                  },
                 ),
                 Field.separate(),
                 Field.passwordConfirm(
@@ -144,17 +166,23 @@ class _SignUpState extends State<SignUp> {
                   onTap: () => setState(() {}),
                   onEditingComplete: () {
                     setState(() {
-                      _passwordConfirmController.text == _passwordController.text
+                      _passwordConfirmController.text ==
+                              _passwordController.text
                           ? _passwordConfirmStatus = FieldStatus.validate
                           : _passwordConfirmStatus = FieldStatus.error;
 
                       _passwordConfirmFocus.unfocus();
                     });
                   },
-                  onChanged: (_) => setState(() => _passwordConfirmStatus = FieldStatus.none),
+                  onChanged: (_) {
+                    setState(() {
+                      _passwordConfirmStatus = FieldStatus.none;
+                      _changeButtonEnabled();
+                    });
+                  },
                 ),
                 Button.separate(),
-                Button.signUp(onPressed: () {}),
+                Button.signUp(onPressed: _submitButton),
                 Field.separate(),
                 ScreenSetting.buildDetailTextAndButton(
                   text: 'Already have an account?',
@@ -172,5 +200,17 @@ class _SignUpState extends State<SignUp> {
         ],
       ),
     );
+  }
+
+  void _changeButtonEnabled() {
+    setState(() {
+      _firstNameController.text.isNotEmpty &&
+              _lastNameController.text.isNotEmpty &&
+              _phoneController.text.isNotEmpty &&
+              _passwordController.text.isNotEmpty &&
+              _passwordConfirmController.text.isNotEmpty
+          ? _submitButton = () {}
+          : _submitButton = null;
+    });
   }
 }
