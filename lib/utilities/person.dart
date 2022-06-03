@@ -1,3 +1,4 @@
+import 'package:namakala/utilities/cart.dart';
 import 'package:namakala/utilities/market.dart';
 import 'package:namakala/utilities/product.dart';
 
@@ -10,13 +11,7 @@ class Person {
   Market? market;
   List<Product> purchases = [];
   List<Product> favorites = [];
-  List<Product> cart = [];
-
-  static Person samplePerson() {
-    Person p = Person('Moein', 'Arabi', 'abc1234', '0123456789');
-    p.cart = Product.mobileProducts;
-    return p;
-}
+  Cart cart = Cart();
 
   Person(this.firstname, this.lastname, this.password, this.phone);
 }
