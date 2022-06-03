@@ -19,6 +19,7 @@ class _SignInState extends State<SignIn> {
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   VoidCallback? _submitButton;
+  bool _obscurePassword = true;
 
   @override
   void dispose() {
@@ -60,6 +61,7 @@ class _SignInState extends State<SignIn> {
                 ),
                 Field.separate(),
                 Field.password(
+                  obscureText: _obscurePassword,
                   focusNode: _passwordFocus,
                   status: _passwordStatus,
                   controller: _passwordController,
@@ -79,6 +81,15 @@ class _SignInState extends State<SignIn> {
                       _changeButtonEnabled();
                     });
                   },
+                  suffixButton: IconButton(
+                    icon: _obscurePassword ? const Icon(Icons.visibility_off_outlined) : const Icon(Icons.visibility_outlined),
+                    color: Colors.grey,
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                  ),
                 ),
                 Button.separate(),
                 Button.signIn(onPressed: _submitButton),

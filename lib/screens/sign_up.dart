@@ -31,6 +31,8 @@ class _SignUpState extends State<SignUp> {
   final _passwordController = TextEditingController();
   final _passwordConfirmController = TextEditingController();
   VoidCallback? _submitButton;
+  bool _obscurePassword = true;
+  bool _obscurePasswordConfirm = true;
 
   @override
   void dispose() {
@@ -138,6 +140,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 Field.separate(),
                 Field.password(
+                  obscureText: _obscurePassword,
                   focusNode: _passwordFocus,
                   status: _passwordStatus,
                   controller: _passwordController,
@@ -157,9 +160,19 @@ class _SignUpState extends State<SignUp> {
                       _changeButtonEnabled();
                     });
                   },
+                  suffixButton: IconButton(
+                    icon: _obscurePassword ? const Icon(Icons.visibility_off_outlined) : const Icon(Icons.visibility_outlined),
+                    color: Colors.grey,
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                  ),
                 ),
                 Field.separate(),
                 Field.passwordConfirm(
+                  obscureText: _obscurePasswordConfirm,
                   focusNode: _passwordConfirmFocus,
                   status: _passwordConfirmStatus,
                   controller: _passwordConfirmController,
@@ -180,6 +193,15 @@ class _SignUpState extends State<SignUp> {
                       _changeButtonEnabled();
                     });
                   },
+                  suffixButton: IconButton(
+                    icon: _obscurePasswordConfirm ? const Icon(Icons.visibility_off_outlined) : const Icon(Icons.visibility_outlined),
+                    color: Colors.grey,
+                    onPressed: () {
+                      setState(() {
+                        _obscurePasswordConfirm = !_obscurePasswordConfirm;
+                      });
+                    },
+                  ),
                 ),
                 Button.separate(),
                 Button.signUp(onPressed: _submitButton),
