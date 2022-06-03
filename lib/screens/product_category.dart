@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namakala/data/sample_data.dart';
 import 'package:namakala/screens/product_details.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
@@ -101,9 +102,9 @@ class ProductCategory extends StatelessWidget {
 
   List<Product> _getProductList() {
     if (_category == 'Mobiles') {
-      return Product.mobileProducts;
+      return SampleData.mobileProducts;
     } else if (_category == 'Laptops') {
-      return Product.laptopProducts;
+      return SampleData.laptopProducts;
     }
 
     return [];
