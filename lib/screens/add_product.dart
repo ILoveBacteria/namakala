@@ -100,7 +100,7 @@ class _AddProductState extends State<AddProduct> {
               onTap: () => setState(() {}),
               onEditingComplete: () {
                 setState(() {
-                  _marketValidate(_marketController.text)
+                  Field.marketValidate(_marketController.text)
                       ? _marketStatus = FieldStatus.validate
                       : _marketStatus = FieldStatus.error;
 
@@ -176,13 +176,6 @@ class _AddProductState extends State<AddProduct> {
 
   bool _priceValidate(String? value) {
     if (value == null || !RegExp(r'^[0-9]*$').hasMatch(value) || value.isEmpty) {
-      return false;
-    }
-    return true;
-  }
-
-  bool _marketValidate(String? value) {
-    if (value == null || RegExp(r'^[a-zA-Z0-9-() ]*$').hasMatch(value) || value.isEmpty) {
       return false;
     }
     return true;
