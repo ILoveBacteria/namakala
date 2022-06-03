@@ -12,19 +12,65 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  final _phoneFocus = FocusNode();
+  final _passwordFocus = FocusNode();
+  FieldStatus _phoneStatus = FieldStatus.none;
+  FieldStatus _passwordStatus = FieldStatus.none;
+  final _phoneController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _phoneFocus.dispose();
+    _passwordFocus.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenSetting.initSignInAndUp(
       appBar: ScreenSetting.appBar(title: 'Sign In'),
       context: context,
       child: Column(
-        children: [
+        children: <Widget>[
           Field.parentContainer(
             child: Column(
-              children: [
-                Field.email(),
+              children: <Widget>[
+                Field.phone(
+                  focusNode: _phoneFocus,
+                  status: _phoneStatus,
+                  controller: _phoneController,
+                  onTap: () => setState(() {}),
+                  onEditingComplete: () {
+                    setState(() {
+                      Field.phoneValidate(_phoneController.text)
+                          ? _phoneStatus = FieldStatus.validate
+                          : _phoneStatus = FieldStatus.error;
+
+                      _phoneFocus.unfocus();
+                    });
+                  },
+                  onChanged: (_) =>
+                      setState(() => _phoneStatus = FieldStatus.none),
+                ),
                 Field.separate(),
-                Field.password(),
+                Field.password(
+                  focusNode: _passwordFocus,
+                  status: _passwordStatus,
+                  controller: _passwordController,
+                  onTap: () => setState(() {}),
+                  onEditingComplete: () {
+                    setState(() {
+                      Field.passwordValidate(_passwordController.text)
+                          ? _passwordStatus = FieldStatus.validate
+                          : _passwordStatus = FieldStatus.error;
+
+                      _passwordFocus.unfocus();
+                    });
+                  },
+                  onChanged: (_) =>
+                      setState(() => _passwordStatus = FieldStatus.none),
+                ),
                 Button.separate(),
                 Button.signIn(onPressed: () {}),
                 Field.separate(),
@@ -36,13 +82,13 @@ class _SignInState extends State<SignIn> {
                       MaterialPageRoute(builder: (context) => const SignUp()),
                       (Route<dynamic> route) => false,
                     );
-                  }
-                )
+                  },
+                ),
               ],
             ),
           )
         ],
-      )
+      ),
     );
   }
 }
