@@ -4,8 +4,9 @@ import 'package:namakala/widgets/screen_setting.dart';
 
 import '../utilities/font.dart';
 import '../utilities/person.dart';
-import '../utilities/product.dart';
+import '../utilities/selected_product.dart';
 import '../widgets/button.dart';
+import '../data/sample_data.dart';
 
 class Cart extends StatefulWidget {
   const Cart({Key? key}) : super(key: key);
@@ -15,13 +16,15 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
+  final Person _person = SampleData.person;
+
   @override
   Widget build(BuildContext context) {
     return ScreenSetting.initScreen(
       context: context,
       appBar: ScreenSetting.appBar(title: 'Cart', context: context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: _person.cart.products.isEmpty ? null : FloatingActionButton.extended(
         onPressed: () {},
         backgroundColor: Colors.black,
         icon: const Icon(Icons.shopping_cart_checkout_outlined),
@@ -33,12 +36,12 @@ class _CartState extends State<Cart> {
         ),
       ),
       child: Column(
-        children: _buildProductWidgets(context: context, person: Person.samplePerson()),
+        children: _buildProductWidgets(context: context),
       ),
     );
   }
 
-  Widget _productWidget({Product? product, required BuildContext context}) {
+  Widget _productWidget({required SelectedProduct product, required BuildContext context}) {
     return Stack(
       children: [
         Button.raw(
@@ -47,7 +50,7 @@ class _CartState extends State<Cart> {
             MaterialPageRoute(
               builder: (context) => const ProductDetail(),
               settings: RouteSettings(
-                arguments: product,
+                arguments: product.product,
               ),
             ),
           ),
@@ -64,7 +67,7 @@ class _CartState extends State<Cart> {
                 SizedBox(
                   width: 107.4,
                   height: 107.4,
-                  child: Image.asset(product!.image),
+                  child: Image.asset(product.product.image),
                 ),
                 const SizedBox(width: 15.0),
                 Column(
@@ -112,10 +115,10 @@ class _CartState extends State<Cart> {
     );
   }
 
-  List<Widget> _buildProductWidgets({required BuildContext context, required Person person}) {
+  List<Widget> _buildProductWidgets({required BuildContext context}) {
     List<Widget> list = [];
-    for (int i = 0; i < person.cart.length; i++) {
-      list.add(_productWidget(context: context, product: person.cart[i]));
+    for (SelectedProduct product in _person.cart.products.keys) {
+      list.add(_productWidget(context: context, product: product));
       list.add(const SizedBox(height: 20.0));
     }
     return list;
@@ -146,21 +149,21 @@ class _CartState extends State<Cart> {
     );
   }
 
-  List<Widget> _buildProductDetails(Product product) {
+  List<Widget> _buildProductDetails(SelectedProduct product) {
     List<Widget> list = [
       SizedBox(
         child: Text(
-          product.name,
+          product.product.name,
           style: Font.styleSubtitle1(),
           overflow: TextOverflow.ellipsis,
           maxLines: 2,
         ),
         width: MediaQuery.of(context).size.width - 165,
       ),
-      _productDetailWithIcon(icon: Icons.store_outlined, label: 'Market', value: 'product.market.name'),
-      _productDetailWithIcon(icon: Icons.attach_money, label: 'Price', value: '${product.price}\$'),
+      _productDetailWithIcon(icon: Icons.store_outlined, label: 'Market', value: '${product.product.market.name}'),
+      _productDetailWithIcon(icon: Icons.attach_money, label: 'Price', value: '${product.product.price}\$'),
       _productDetailWithIcon(icon: Icons.palette_outlined, label: 'Color', color: product.color),
-      _productDetailWithIcon(icon: Icons.shopping_bag_outlined, label: 'Count', value: 'person.cart.count(product)'),
+      _productDetailWithIcon(icon: Icons.shopping_bag_outlined, label: 'Count', value: '${_person.cart.products[product]}'),
     ];
 
     if (product.size != null) {
