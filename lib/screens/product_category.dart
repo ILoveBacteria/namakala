@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:namakala/data/sample_data.dart';
-import 'package:namakala/screens/product_details.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
 import '../utilities/font.dart';
+import '../utilities/person.dart';
 import '../utilities/product.dart';
-import '../widgets/button.dart';
+import '../utilities/selected_product.dart';
+import '../widgets/card/detail.dart';
+import '../widgets/card/product_card.dart';
 
 class ProductCategory extends StatelessWidget {
   final String _category;
@@ -21,80 +23,40 @@ class ProductCategory extends StatelessWidget {
       context: context,
       appBar: ScreenSetting.appBar(title: _category, context: context),
       child: Column(
-        children: _buildProductWidgets(context: context),
-      )
+        children: _buildScreen(context: context),
+      ),
     );
   }
 
-  Widget _productWidget({Product? product, required BuildContext context}) {
+  Widget _buildProductCard(Widget card, BuildContext context) {
     return Stack(
       children: [
-        Button.raw(
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const ProductDetail(),
-              settings: RouteSettings(
-                arguments: product,
-              ),
-            ),
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(10.0),
-            height: 130.0,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.0),
-              border: Border.all(color: Colors.black12, width: 1.3),
-            ),
-            child: Row(
-              children: [
-                AspectRatio(
-                    aspectRatio: 1/1,
-                    child: SizedBox(
-                        child: Image.asset(product!.image)
-                    )
-                ),
-                const SizedBox(width: 15.0),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      child: Text(
-                        product.name,
-                        style: Font.styleSubtitle1(),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                      ),
-                      width: MediaQuery.of(context).size.width - 165,
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-        ),
+        card,
         Positioned.fill(
           right: 5.0,
           bottom: 5.0,
           child: Align(
-            alignment: Alignment.bottomRight,
-            child: Button.elevatedIcon(
-                icon: Icons.add_shopping_cart,
-                color: Colors.green,
-                label: '${product.price}\$',
-                onPressed: () {}
-            ),
-          ),
+              alignment: Alignment.bottomRight,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: _buttonList(),
+              )),
         )
       ],
     );
   }
 
-  List<Widget> _buildProductWidgets({required BuildContext context}) {
+  List<Widget> _buildScreen({required BuildContext context}) {
     List<Widget> list = [];
-    for (int i = 0; i < _products.length; i++) {
-      list.add(_productWidget(context: context, product: _products[i]));
+    for (Product p in _products) {
+      ProductCard card = ProductCard(
+        p,
+        p.image,
+        p.name,
+        _details(p, context),
+      );
+
+      list.add(_buildProductCard(card.buildCard(context), context));
       list.add(const SizedBox(height: 20.0));
     }
     return list;
@@ -108,5 +70,40 @@ class ProductCategory extends StatelessWidget {
     }
 
     return [];
+  }
+
+  List<Detail> _details(Product p, BuildContext context) {
+    List<Detail> list = <Detail>[
+      Detail.text(Icons.attach_money, 'Price', '${p.price}\$'),
+      Detail.text(Icons.shopping_bag_outlined, 'Remain', '{}'),
+    ];
+
+    return list;
+  }
+
+  List<Widget> _buttonList() {
+    return <Widget>[
+      IconButton(
+        onPressed: () {},
+        icon: const Icon(Icons.delete_outline),
+        color: Colors.red,
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
+      ),
+      IconButton(
+        onPressed: () {},
+        icon: const Icon(Icons.remove),
+        color: Colors.yellow,
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
+      ),
+      IconButton(
+        onPressed: () {},
+        icon: const Icon(Icons.add),
+        color: Colors.green,
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
+      ),
+    ];
   }
 }

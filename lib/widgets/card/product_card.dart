@@ -31,13 +31,13 @@ class ProductCard {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(
+          width: MediaQuery.of(context).size.width - 165,
           child: Text(
             title,
             style: Font.styleSubtitle1(),
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
           ),
-          width: MediaQuery.of(context).size.width - 165,
         ),
         _buildDetails(context),
       ],
@@ -56,7 +56,7 @@ class ProductCard {
         ),
       ),
       child: Container(
-        padding: const EdgeInsets.only(top: 10.0, right: 10.0, left: 10.0, bottom: 50.0),
+        padding: const EdgeInsets.only(top: 10.0, right: 5.0, left: 10.0, bottom: 50.0),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10.0),
