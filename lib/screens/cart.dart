@@ -39,8 +39,29 @@ class _CartState extends State<Cart> {
                 style: Font.styleButton1(),
               ),
             ),
-      child: Column(
-        children: _buildScreen(context: context),
+      child: _person.cart.products.isEmpty
+          ? _buildEmptyCartScreen(context)
+          : Column(
+              children: _buildScreen(context: context),
+            ),
+    );
+  }
+
+  Widget _buildEmptyCartScreen(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height / 2,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+          const Icon(
+            Icons.production_quantity_limits_outlined,
+            size: 100.0,
+            color: Color.fromARGB(255, 179, 179, 179),
+          ),
+          Text('Cart is empty!', style: Font.styleBody1(color: const Color.fromARGB(255, 179, 179, 179))),
+        ]),
       ),
     );
   }
