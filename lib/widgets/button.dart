@@ -6,7 +6,7 @@ class Button {
     required IconData icon,
     required String label,
     required Color color,
-    required VoidCallback onPressed
+    required VoidCallback? onPressed
   }) {
     return ElevatedButton.icon(
       onPressed: onPressed,
@@ -32,7 +32,7 @@ class Button {
   static elevated({
     required String text,
     required Color color,
-    required VoidCallback onPressed
+    required VoidCallback? onPressed
   }) {
     return ElevatedButton(
       onPressed: onPressed,
@@ -53,7 +53,7 @@ class Button {
   static outlined({
     required String text,
     required Color color,
-    required VoidCallback onPressed
+    required VoidCallback? onPressed
   }) {
     return OutlinedButton(
       onPressed: onPressed,
@@ -89,7 +89,7 @@ class Button {
         onPressed: onPressed);
   }
 
-  static signIn({required VoidCallback onPressed}) {
+  static signIn({required VoidCallback? onPressed}) {
     return elevatedIcon(
         icon: Icons.login_outlined,
         label: 'SIGN IN',
@@ -97,7 +97,7 @@ class Button {
         onPressed: onPressed);
   }
 
-  static signUp({required VoidCallback onPressed}) {
+  static signUp({required VoidCallback? onPressed}) {
     return elevated(
         text: 'SIGN UP',
         color: Colors.blueAccent,
