@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:namakala/data/sample_data.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
+import '../utilities/font.dart';
 import '../utilities/product.dart';
 import '../widgets/card/detail.dart';
 import '../widgets/card/product_card.dart';
@@ -22,7 +23,7 @@ class _ProductCategoryState extends State<ProductCategory> {
     return ScreenSetting.initScreen(
       context: context,
       appBar: ScreenSetting.appBar(title: category, context: context),
-      child: Column(
+      child: products.isEmpty? _buildEmptyProductScreen(context) : Column(
         children: _buildScreen(context, products),
       ),
     );
@@ -101,5 +102,29 @@ class _ProductCategoryState extends State<ProductCategory> {
         ),
       ),
     ];
+  }
+
+  Widget _buildEmptyProductScreen(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height / 2,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            const Icon(
+              Icons.list_alt_outlined,
+              size: 100.0,
+              color: Color.fromARGB(255, 179, 179, 179),
+            ),
+            Text(
+              'List is empty!',
+              style: Font.styleBody1(
+                  color: const Color.fromARGB(255, 179, 179, 179)),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
