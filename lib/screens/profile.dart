@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:namakala/screens/account_information.dart';
 import 'package:namakala/screens/my_market.dart';
+import 'package:namakala/screens/product_details.dart';
 import 'package:namakala/screens/purchase_history/cart_list.dart';
 import 'package:namakala/screens/sign_in.dart';
 import 'package:namakala/utilities/font.dart';
@@ -87,36 +88,45 @@ class Profile extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const Account()
+                        builder: (context) => const Account(),
                       ),
                     );
-                  }
+                  },
                 ),
                 const SizedBox(height: 20.0),
                 _button(
-                    text: 'Purchase History',
-                    icon: Icons.history,
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => PurchasedCartList()
-                        ),
-                      );
-                    }
+                  text: 'Purchase History',
+                  icon: Icons.history,
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => PurchasedCartList(),
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 20.0),
                 _button(
-                    text: 'My Market',
-                    icon: Icons.store_outlined,
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const MyMarket()),
+                  text: 'My Market',
+                  icon: Icons.store_outlined,
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const MyMarket(),
                     ),
+                  ),
                 ),
                 const SizedBox(height: 20.0),
                 _button(
-                    text: 'Favorites',
-                    icon: Icons.favorite_outline,
-                    onPressed: () {}
+                  text: 'Favorites',
+                  icon: Icons.favorite_outline,
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ProductDetail(),
+                        settings: const RouteSettings(arguments: 'Favorites'),
+                      ),
+                    );
+                  },
                 ),
                 Button.separate(),
                 Button.signOut(
@@ -125,7 +135,7 @@ class Profile extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => const SignIn()),
                       (Route<dynamic> route) => false,
                     );
-                  }
+                  },
                 ),
               ],
             ),
@@ -138,7 +148,7 @@ class Profile extends StatelessWidget {
   Widget _button({
     required String text,
     required IconData icon,
-    required VoidCallback onPressed
+    required VoidCallback onPressed,
   }) {
     return Button.raw(
       onPressed: onPressed,
@@ -153,7 +163,7 @@ class Profile extends StatelessWidget {
           borderRadius: BorderRadius.circular(30.0),
         ),
         child: Row(
-          children: [
+          children: <Widget>[
             Icon(
               icon,
               color: Colors.black54,
@@ -178,7 +188,7 @@ class Profile extends StatelessWidget {
 
   Widget _userActivity({required String title, required String number}) {
     return Column(
-      children: [
+      children: <Widget>[
         Text(
           title,
           style: Font.styleSubtitle2(color: Colors.black38),
