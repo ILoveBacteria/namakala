@@ -102,6 +102,7 @@ class _CartState extends State<Cart> {
     return <Widget>[
       IconButton(
         onPressed: () {
+          SampleData.products[p.product] = SampleData.products[p.product]! + _person.cart.products[p]!;
           _person.cart.removeAll(p);
           setState(() {});
         },
@@ -114,6 +115,7 @@ class _CartState extends State<Cart> {
         onPressed: _person.cart.products[p]! > 1
             ? () {
                 _person.cart.remove(p);
+                SampleData.products[p.product] = SampleData.products[p.product]! + 1;
                 setState(() {});
               }
             : null,
@@ -123,10 +125,11 @@ class _CartState extends State<Cart> {
         splashColor: Colors.transparent,
       ),
       IconButton(
-        onPressed: () {
+        onPressed: SampleData.products[p.product]! > 0 ? () {
           _person.cart.add(p);
+          SampleData.products[p.product] = SampleData.products[p.product]! - 1;
           setState(() {});
-        },
+        } : null,
         icon: const Icon(Icons.add),
         color: Colors.green,
         highlightColor: Colors.transparent,

@@ -271,6 +271,8 @@ class _ProductDetailState extends State<ProductDetail> {
       int j = _selectedSizeChip.indexOf(true);
       SampleData.person.cart
           .add(SelectedProduct(product, product.color[i], product.size[j]));
+      SampleData.products[product] = SampleData.products[product]! - 1;
+      setState(() {});
     } catch (e) {
       SnackMessage('Please select color or size!').build(context);
     }
