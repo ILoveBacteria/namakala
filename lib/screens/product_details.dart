@@ -18,6 +18,7 @@ class ProductDetail extends StatefulWidget {
 
 class _ProductDetailState extends State<ProductDetail> {
   bool _favorite = false;
+  List<bool> _selectedChip = [];
 
   @override
   Widget build(BuildContext context) {
@@ -79,11 +80,7 @@ class _ProductDetailState extends State<ProductDetail> {
             ),
           ),
           const SizedBox(height: 20.0),
-          _container(
-            child: Row(
-              children: <Widget>[],
-            ),
-          ),
+          _buildChips(product),
           const SizedBox(height: 20.0),
           _buildMoreDetail(product),
         ],
@@ -156,13 +153,48 @@ class _ProductDetailState extends State<ProductDetail> {
     );
   }
 
-  Widget _container({required Widget child}) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(10.0),
-      decoration: containerDecoration2(),
-      child: child
+  List<Widget> _chipList(Product product) {
+    List<Widget> chipList = [];
+
+    for (int i = 0; i < product.color.length; i++) {
+      _selectedChip.add(false);
+      chipList.add(
+        ChoiceChip(
+          shape: const CircleBorder(),
+          side: BorderSide(
+            color: _selectedChip[i] ? Colors.grey : Colors.transparent,
+            width: 2.0,
+          ),
+          label: const SizedBox(),
+          elevation: _selectedChip[i] ? 5.0 : 0.0,
+          backgroundColor: product.color[i],
+          selectedColor: product.color[i],
+          selected: _selectedChip[i],
+          onSelected: (value) => setState(() {
+            if (value) {
+              for (int i = 0; i < _selectedChip.length; i++) {
+                _selectedChip[i] = false;
+              }
+            }
+            _selectedChip[i] = value;
+          }),
+        ),
+      );
+    }
+
+    return chipList;
+  }
+
+  Widget _buildChips(Product product) {
+    return _container(
+      child: Column(
+        children: <Widget>[
+          Detail.text(Icons.palette_outlined, 'Color', 'Choose your color').build(context),
+          Row(
+            children: _chipList(product),
+          ),
+        ],
+      ),
     );
   }
 }
-

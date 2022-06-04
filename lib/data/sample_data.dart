@@ -14,7 +14,7 @@ class SampleData {
       999,
       'Mobiles',
       'This product is in Test!',
-      [Colors.blue],
+      [Colors.blue, Colors.yellow],
       Market(SampleData.person, 'Digikala'),
     ),
     Product(
