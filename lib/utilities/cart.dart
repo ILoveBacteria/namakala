@@ -19,4 +19,12 @@ class Cart {
   void removeAll(SelectedProduct product) {
     products.remove(product);
   }
+
+  int sumOfPrice() {
+    int sum = 0;
+    for (SelectedProduct p in products.keys) {
+      sum += p.product.price;
+    }
+    return sum;
+  }
 }
