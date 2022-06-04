@@ -6,6 +6,7 @@ import 'package:namakala/widgets/screen_setting.dart';
 
 import '../utilities/product.dart';
 import '../utilities/selected_product.dart';
+import '../widgets/card/detail.dart';
 import 'cart.dart';
 
 class ProductDetail extends StatefulWidget {
@@ -47,15 +48,17 @@ class _ProductDetailState extends State<ProductDetail> {
               color: Colors.blue,
             ),
           ),
-        ]
+        ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => SampleData.person.cart.add(SelectedProduct(product, product.color[0], null)),
+        onPressed: () => SampleData.person.cart
+            .add(SelectedProduct(product, product.color[0], null)),
         backgroundColor: Colors.green,
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             const Icon(Icons.add_shopping_cart_outlined),
             Text(
               '${product.price}\$',
@@ -65,95 +68,91 @@ class _ProductDetailState extends State<ProductDetail> {
         ),
       ),
       child: Column(
+        children: <Widget>[
+          _buildImage(context, product),
+          const SizedBox(height: 20.0),
+          _buildTitle(product),
+          const SizedBox(height: 20.0),
+          _container(
+            child: Column(
+              children: _buildDetails(product, context),
+            ),
+          ),
+          const SizedBox(height: 20.0),
+          _container(
+            child: Row(
+              children: <Widget>[],
+            ),
+          ),
+          const SizedBox(height: 20.0),
+          _buildMoreDetail(product),
+        ],
+      ),
+    );
+  }
+
+  Widget _container({required Widget child}) {
+    return Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(10.0),
+        decoration: containerDecoration2(),
+        child: child);
+  }
+
+  Widget _buildImage(BuildContext context, Product product) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 40 / 100,
+      child: Image.asset(product.image),
+    );
+  }
+
+  Widget _buildTitle(Product product) {
+    return _container(
+      child: Column(
         children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 40 / 100,
-            child: Image.asset(product.image),
+          Text(
+            product.name,
+            style: Font.styleSubtitle1(),
+          )
+        ],
+      ),
+    );
+  }
+
+  List<Detail> _details(Product p) {
+    List<Detail> list = <Detail>[
+      Detail.text(Icons.store_outlined, 'Market', p.market.name),
+      Detail.text(Icons.grade_outlined, 'Score', (p.score).toStringAsFixed(1)),
+      Detail.text(Icons.attach_money, 'Price', '${p.price}\$'),
+    ];
+
+    return list;
+  }
+
+  List<Widget> _buildDetails(Product p, BuildContext context) {
+    List<Widget> list = [];
+    for (Detail d in _details(p)) {
+      list.add(d.build(context));
+    }
+
+    return list;
+  }
+
+  Widget _buildMoreDetail(Product product) {
+    return _container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'More Detail:',
+            style: Font.styleBody1(color: Colors.grey),
           ),
-          const SizedBox(height: 20.0),
-          _container(
-            child: Column(
-              children: [
-                Text(
-                  product.name,
-                  style: Font.styleSubtitle1(),
-                )
-              ],
-            ),
-          ),
-          const SizedBox(height: 20.0),
-          _container(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.store_outlined,
-                      color: Colors.grey,
-                    ),
-                    Text(
-                      ' Market: ',
-                      style: Font.styleBody1(color: Colors.grey),
-                    ),
-                    Text(
-                      'product.market.name',
-                      style: Font.styleBody1(),
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.grade_outlined,
-                      color: Colors.grey,
-                    ),
-                    Text(
-                      ' Score: ',
-                      style: Font.styleBody1(color: Colors.grey),
-                    ),
-                    Text(
-                      (product.score).toStringAsFixed(1),
-                      style: Font.styleBody1(),
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.attach_money,
-                      color: Colors.grey,
-                    ),
-                    Text(
-                      ' Price: ',
-                      style: Font.styleBody1(color: Colors.grey),
-                    ),
-                    Text(
-                      '${product.price}\$',
-                      style: Font.styleBody1(),
-                    )
-                  ],
-                ),
-              ],
-            )
-          ),
-          const SizedBox(height: 20.0),
-          _container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'More Detail:',
-                  style: Font.styleBody1(color: Colors.grey),
-                ),
-                Text(
-                  product.detail,
-                  style: Font.styleBody2(),
-                ),
-              ],
-            ),
+          Text(
+            product.detail,
+            style: Font.styleBody2(),
           ),
         ],
-      )
+      ),
     );
   }
 
