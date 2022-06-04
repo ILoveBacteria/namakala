@@ -55,7 +55,7 @@ class _ProductDetailState extends State<ProductDetail> {
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const Cart(),
+                builder: (context) => const CartScreen(),
               ),
             ),
             icon: const Icon(

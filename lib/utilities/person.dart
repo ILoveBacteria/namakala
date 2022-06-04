@@ -9,7 +9,7 @@ class Person {
   String password;
   String phone;
   Market? market;
-  List<Product> purchases = [];
+  List<Cart> purchases = [];
   List<Product> favorites = [];
   Cart cart = Cart();
 

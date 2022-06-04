@@ -2,20 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:namakala/widgets/card/product_card.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
+import '../utilities/cart.dart';
 import '../utilities/font.dart';
 import '../utilities/person.dart';
 import '../utilities/selected_product.dart';
 import '../data/sample_data.dart';
 import '../widgets/card/detail.dart';
 
-class Cart extends StatefulWidget {
-  const Cart({Key? key}) : super(key: key);
+class CartScreen extends StatefulWidget {
+  const CartScreen({Key? key}) : super(key: key);
 
   @override
-  State<Cart> createState() => _CartState();
+  State<CartScreen> createState() => _CartScreenState();
 }
 
-class _CartState extends State<Cart> {
+class _CartScreenState extends State<CartScreen> {
   final Person _person = SampleData.person;
 
   @override
@@ -27,7 +28,11 @@ class _CartState extends State<Cart> {
       floatingActionButton: _person.cart.products.isEmpty
           ? null
           : FloatingActionButton.extended(
-              onPressed: () {},
+              onPressed: () {
+                _person.purchases.add(_person.cart);
+                _person.cart = Cart();
+                setState(() {});
+              },
               backgroundColor: Colors.black,
               icon: const Icon(Icons.shopping_cart_checkout_outlined),
               extendedPadding: EdgeInsets.symmetric(
