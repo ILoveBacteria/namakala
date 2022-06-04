@@ -47,9 +47,18 @@ class _ProductCategoryState extends State<ProductCategory> {
 
   Map<Product, int> _getProductMap(String category) {
     Map<Product, int> map = {};
-    for (Product p in SampleData.products.keys) {
-      if (p.category == category) {
-        map[p] = SampleData.products[p]!;
+
+    if (category == 'Favorites') {
+      for (Product p in SampleData.products.keys) {
+        if (SampleData.person.favorites.contains(p)) {
+          map[p] = SampleData.products[p]!;
+        }
+      }
+    } else {
+      for (Product p in SampleData.products.keys) {
+        if (p.category == category) {
+          map[p] = SampleData.products[p]!;
+        }
       }
     }
 
