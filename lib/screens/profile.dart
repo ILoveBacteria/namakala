@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:namakala/screens/account_information.dart';
 import 'package:namakala/screens/my_market.dart';
-import 'package:namakala/screens/product_details.dart';
+import 'package:namakala/screens/product_category.dart';
 import 'package:namakala/screens/purchase_history/cart_list.dart';
 import 'package:namakala/screens/sign_in.dart';
 import 'package:namakala/utilities/font.dart';
@@ -122,7 +122,7 @@ class Profile extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const ProductDetail(),
+                        builder: (context) => const ProductCategory(),
                         settings: const RouteSettings(arguments: 'Favorites'),
                       ),
                     );
