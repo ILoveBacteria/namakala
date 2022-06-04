@@ -17,7 +17,6 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
-  bool _favorite = false;
   final List<bool> _selectedColorChip = [];
   final List<bool> _selectedSizeChip = [];
 
@@ -32,10 +31,19 @@ class _ProductDetailState extends State<ProductDetail> {
         context: context,
         actions: <Widget>[
           IconButton(
-            onPressed: () => setState(() => _favorite = !_favorite),
+            onPressed: () {
+              setState(() {
+                // Add product to person.favorites if not already added or remove if already added
+                if (SampleData.person.favorites.contains(product)) {
+                  SampleData.person.favorites.remove(product);
+                } else {
+                  SampleData.person.favorites.add(product);
+                }
+              });
+            },
             icon: Icon(
-              _favorite ? Icons.favorite : Icons.favorite_outline,
-              color: _favorite ? Colors.red : Colors.blue,
+              SampleData.person.favorites.contains(product) ? Icons.favorite : Icons.favorite_outline,
+              color: SampleData.person.favorites.contains(product) ? Colors.red : Colors.blue,
             ),
           ),
           IconButton(
