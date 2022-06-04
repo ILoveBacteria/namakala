@@ -18,7 +18,8 @@ class ProductDetail extends StatefulWidget {
 
 class _ProductDetailState extends State<ProductDetail> {
   bool _favorite = false;
-  final List<bool> _selectedChip = [];
+  final List<bool> _selectedColorChip = [];
+  final List<bool> _selectedSizeChip = [];
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +80,9 @@ class _ProductDetailState extends State<ProductDetail> {
             ),
           ),
           const SizedBox(height: 20.0),
-          _buildChips(product),
+          _buildColorChips(product),
+          const SizedBox(height: 20.0),
+          _buildSizeChips(product),
           const SizedBox(height: 20.0),
           _buildMoreDetail(product),
         ],
@@ -152,30 +155,30 @@ class _ProductDetailState extends State<ProductDetail> {
     );
   }
 
-  List<Widget> _chipList(Product product) {
+  List<Widget> _colorChipList(Product product) {
     List<Widget> chipList = [];
 
     for (int i = 0; i < product.color.length; i++) {
-      _selectedChip.add(false);
+      _selectedColorChip.add(false);
       chipList.add(
         ChoiceChip(
           shape: const CircleBorder(),
           side: BorderSide(
-            color: _selectedChip[i] ? Colors.grey : Colors.transparent,
+            color: _selectedColorChip[i] ? Colors.grey : Colors.transparent,
             width: 2.0,
           ),
           label: const SizedBox(),
-          elevation: _selectedChip[i] ? 5.0 : 0.0,
+          elevation: _selectedColorChip[i] ? 5.0 : 0.0,
           backgroundColor: product.color[i],
           selectedColor: product.color[i],
-          selected: _selectedChip[i],
+          selected: _selectedColorChip[i],
           onSelected: (value) => setState(() {
             if (value) {
-              for (int i = 0; i < _selectedChip.length; i++) {
-                _selectedChip[i] = false;
+              for (int i = 0; i < _selectedColorChip.length; i++) {
+                _selectedColorChip[i] = false;
               }
             }
-            _selectedChip[i] = value;
+            _selectedColorChip[i] = value;
           }),
         ),
       );
@@ -184,14 +187,60 @@ class _ProductDetailState extends State<ProductDetail> {
     return chipList;
   }
 
-  Widget _buildChips(Product product) {
+  List<Widget> _sizeChipList(Product product) {
+    List<Widget> chipList = [];
+
+    for (int i = 0; i < product.size.length; i++) {
+      _selectedSizeChip.add(false);
+      chipList.add(
+        ChoiceChip(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+          ),
+          label: Text(
+            product.size[i],
+            style: Font.styleButton1(),
+          ),
+          elevation: _selectedSizeChip[i] ? 5.0 : 0.0,
+          backgroundColor: Colors.grey[200],
+          selected: _selectedSizeChip[i],
+          onSelected: (value) => setState(() {
+            if (value) {
+              for (int i = 0; i < _selectedSizeChip.length; i++) {
+                _selectedSizeChip[i] = false;
+              }
+            }
+            _selectedSizeChip[i] = value;
+          }),
+        ),
+      );
+    }
+
+    return chipList;
+  }
+
+  Widget _buildSizeChips(Product product) {
+    return _container(
+      child: Column(
+        children: <Widget>[
+          Detail.text(Icons.straighten_outlined, 'Size', 'Choose your size')
+              .build(context),
+          Row(
+            children: _sizeChipList(product),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildColorChips(Product product) {
     return _container(
       child: Column(
         children: <Widget>[
           Detail.text(Icons.palette_outlined, 'Color', 'Choose your color')
               .build(context),
           Row(
-            children: _chipList(product),
+            children: _colorChipList(product),
           ),
         ],
       ),
@@ -200,9 +249,10 @@ class _ProductDetailState extends State<ProductDetail> {
 
   void _addToCart(Product product) {
     try {
-      int i = _selectedChip.indexOf(true);
+      int i = _selectedColorChip.indexOf(true);
+      int j = _selectedSizeChip.indexOf(true);
       SampleData.person.cart
-          .add(SelectedProduct(product, product.color[i], null));
+          .add(SelectedProduct(product, product.color[i], product.size[j]));
     } catch (e) {
       final snackBar = SnackBar(
         elevation: 5.0,
