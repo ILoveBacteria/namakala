@@ -138,6 +138,7 @@ class _ProductDetailState extends State<ProductDetail> {
       Detail.text(Icons.store_outlined, 'Market', p.market.name),
       Detail.text(Icons.grade_outlined, 'Score', (p.score).toStringAsFixed(1)),
       Detail.text(Icons.attach_money, 'Price', '${p.price}\$'),
+      Detail.text(Icons.shopping_bag_outlined, 'Remain', '${SampleData.products[p]}'),
     ];
 
     return list;
