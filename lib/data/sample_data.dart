@@ -7,7 +7,7 @@ import '../utilities/product.dart';
 class SampleData {
   static Person person = Person('Moein', 'Arabi', 'abc1234', '0123456789');
 
-  static final List<Product> mobileProducts = <Product>[
+  static final Map<Product, int> mobileProducts = <Product, int>{
     Product(
       'iPhone 13 pro max',
       'assets/images/iphone.png',
@@ -17,7 +17,7 @@ class SampleData {
       [Colors.blue, Colors.yellow],
       ['128GB', '256GB', '512GB'],
       Market(SampleData.person, 'Digikala'),
-    ),
+    ): 3,
     Product(
       'iPhone 13',
       'assets/images/iphone13.png',
@@ -27,7 +27,7 @@ class SampleData {
       [Colors.blue, Colors.black],
       ['128GB', '256GB'],
       Market(SampleData.person, 'Digikala'),
-    ),
+    ): 2,
     Product(
       'iPhone 13 pro',
       'assets/images/iphone.png',
@@ -37,7 +37,7 @@ class SampleData {
       [Colors.pink, Colors.green],
       ['128GB', '256GB'],
       Market(SampleData.person, 'Digikala'),
-    ),
+    ): 1,
     Product(
       'iPhone 13 mini',
       'assets/images/iphone13.png',
@@ -47,10 +47,10 @@ class SampleData {
       [Colors.blue],
       ['128GB', '256GB'],
       Market(SampleData.person, 'Digikala'),
-    ),
-  ];
+    ): 0,
+  };
 
-  static final List<Product> laptopProducts = <Product>[
+  static final Map<Product, int> laptopProducts = <Product, int>{
     Product(
       'Macbook Air',
       'assets/images/macbook.png',
@@ -60,7 +60,7 @@ class SampleData {
       [Colors.grey],
       ['default'],
       Market(SampleData.person, 'Digikala'),
-    ),
+    ): 3,
     Product(
       'MacBook Pro M1',
       'assets/images/macbook.png',
@@ -70,6 +70,6 @@ class SampleData {
       [Colors.grey],
       ['default'],
       Market(SampleData.person, 'Digikala'),
-    ),
-  ];
+    ): 2,
+  };
 }
