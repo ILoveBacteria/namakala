@@ -52,16 +52,18 @@ class _CartState extends State<Cart> {
       child: SizedBox(
         height: MediaQuery.of(context).size.height / 2,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-          const Icon(
-            Icons.production_quantity_limits_outlined,
-            size: 100.0,
-            color: Color.fromARGB(255, 179, 179, 179),
-          ),
-          Text('Cart is empty!', style: Font.styleBody1(color: const Color.fromARGB(255, 179, 179, 179))),
-        ]),
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              const Icon(
+                Icons.production_quantity_limits_outlined,
+                size: 100.0,
+                color: Color.fromARGB(255, 179, 179, 179),
+              ),
+              Text('Cart is empty!',
+                  style: Font.styleBody1(
+                      color: const Color.fromARGB(255, 179, 179, 179))),
+            ]),
       ),
     );
   }
@@ -74,7 +76,7 @@ class _CartState extends State<Cart> {
         p.product.image,
         p.product.name,
         _details(p, context),
-        _buttonList(),
+        _buttonList(p),
       );
 
       list.add(card.buildCard(context, setState));
@@ -96,24 +98,35 @@ class _CartState extends State<Cart> {
     return list;
   }
 
-  List<Widget> _buttonList() {
+  List<Widget> _buttonList(SelectedProduct p) {
     return <Widget>[
       IconButton(
-        onPressed: () {},
+        onPressed: () {
+          _person.cart.removeAll(p);
+          setState(() {});
+        },
         icon: const Icon(Icons.delete_outline),
         color: Colors.red,
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
       ),
       IconButton(
-        onPressed: () {},
+        onPressed: _person.cart.products[p]! > 1
+            ? () {
+                _person.cart.remove(p);
+                setState(() {});
+              }
+            : null,
         icon: const Icon(Icons.remove),
         color: Colors.yellow,
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
       ),
       IconButton(
-        onPressed: () {},
+        onPressed: () {
+          _person.cart.add(p);
+          setState(() {});
+        },
         icon: const Icon(Icons.add),
         color: Colors.green,
         highlightColor: Colors.transparent,
