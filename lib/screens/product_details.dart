@@ -42,8 +42,12 @@ class _ProductDetailState extends State<ProductDetail> {
               });
             },
             icon: Icon(
-              SampleData.person.favorites.contains(product) ? Icons.favorite : Icons.favorite_outline,
-              color: SampleData.person.favorites.contains(product) ? Colors.red : Colors.blue,
+              SampleData.person.favorites.contains(product)
+                  ? Icons.favorite
+                  : Icons.favorite_outline,
+              color: SampleData.person.favorites.contains(product)
+                  ? Colors.red
+                  : Colors.blue,
             ),
           ),
           IconButton(
@@ -61,7 +65,10 @@ class _ProductDetailState extends State<ProductDetail> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _addToCart(product),
+        onPressed: SampleData.person.market == null ||
+                !SampleData.person.market!.products.contains(product)
+            ? () => _addToCart(product)
+            : null,
         backgroundColor: Colors.green,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0))),
