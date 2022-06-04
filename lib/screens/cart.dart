@@ -47,7 +47,7 @@ class _CartScreenState extends State<CartScreen> {
       child: _person.cart.products.isEmpty
           ? _buildEmptyCartScreen(context)
           : Column(
-              children: _buildScreen(context: context),
+              children: _buildScreen(),
             ),
     );
   }
@@ -57,23 +57,26 @@ class _CartScreenState extends State<CartScreen> {
       child: SizedBox(
         height: MediaQuery.of(context).size.height / 2,
         child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const Icon(
-                Icons.production_quantity_limits_outlined,
-                size: 100.0,
-                color: Color.fromARGB(255, 179, 179, 179),
-              ),
-              Text('Cart is empty!',
-                  style: Font.styleBody1(
-                      color: const Color.fromARGB(255, 179, 179, 179))),
-            ]),
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            const Icon(
+              Icons.production_quantity_limits_outlined,
+              size: 100.0,
+              color: Color.fromARGB(255, 179, 179, 179),
+            ),
+            Text(
+              'Cart is empty!',
+              style: Font.styleBody1(
+                  color: const Color.fromARGB(255, 179, 179, 179)),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  List<Widget> _buildScreen({required BuildContext context}) {
+  List<Widget> _buildScreen() {
     List<Widget> list = [];
     for (SelectedProduct p in _person.cart.products.keys) {
       ProductCard card = ProductCard(
@@ -96,7 +99,10 @@ class _CartScreenState extends State<CartScreen> {
       Detail.text(Icons.attach_money, 'Price', '${p.product.price}\$'),
       Detail.color(Icons.palette_outlined, 'Color', p.color),
       Detail.text(
-          Icons.shopping_bag_outlined, 'Count', '${_person.cart.products[p]}'),
+        Icons.shopping_bag_outlined,
+        'Count',
+        '${_person.cart.products[p]}',
+      ),
       Detail.text(Icons.straighten_outlined, 'Size', p.size),
     ];
 
@@ -107,7 +113,8 @@ class _CartScreenState extends State<CartScreen> {
     return <Widget>[
       IconButton(
         onPressed: () {
-          SampleData.products[p.product] = SampleData.products[p.product]! + _person.cart.products[p]!;
+          SampleData.products[p.product] =
+              SampleData.products[p.product]! + _person.cart.products[p]!;
           _person.cart.removeAll(p);
           setState(() {});
         },
@@ -120,7 +127,8 @@ class _CartScreenState extends State<CartScreen> {
         onPressed: _person.cart.products[p]! > 1
             ? () {
                 _person.cart.remove(p);
-                SampleData.products[p.product] = SampleData.products[p.product]! + 1;
+                SampleData.products[p.product] =
+                    SampleData.products[p.product]! + 1;
                 setState(() {});
               }
             : null,
@@ -130,11 +138,14 @@ class _CartScreenState extends State<CartScreen> {
         splashColor: Colors.transparent,
       ),
       IconButton(
-        onPressed: SampleData.products[p.product]! > 0 ? () {
-          _person.cart.add(p);
-          SampleData.products[p.product] = SampleData.products[p.product]! - 1;
-          setState(() {});
-        } : null,
+        onPressed: SampleData.products[p.product]! > 0
+            ? () {
+                _person.cart.add(p);
+                SampleData.products[p.product] =
+                    SampleData.products[p.product]! - 1;
+                setState(() {});
+              }
+            : null,
         icon: const Icon(Icons.add),
         color: Colors.green,
         highlightColor: Colors.transparent,
