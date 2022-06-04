@@ -3,6 +3,7 @@ import 'package:namakala/data/sample_data.dart';
 import 'package:namakala/utilities/decoration.dart';
 import 'package:namakala/utilities/font.dart';
 import 'package:namakala/widgets/screen_setting.dart';
+import 'package:namakala/widgets/snack_message.dart';
 
 import '../utilities/product.dart';
 import '../utilities/selected_product.dart';
@@ -65,10 +66,7 @@ class _ProductDetailState extends State<ProductDetail> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: SampleData.person.market == null ||
-                !SampleData.person.market!.products.contains(product)
-            ? () => _addToCart(product)
-            : null,
+        onPressed: () => _onPressFloatingButton(product),
         backgroundColor: Colors.green,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0))),
@@ -138,7 +136,11 @@ class _ProductDetailState extends State<ProductDetail> {
       Detail.text(Icons.store_outlined, 'Market', p.market.name),
       Detail.text(Icons.grade_outlined, 'Score', (p.score).toStringAsFixed(1)),
       Detail.text(Icons.attach_money, 'Price', '${p.price}\$'),
-      Detail.text(Icons.shopping_bag_outlined, 'Remain', '${SampleData.products[p]}'),
+      Detail.text(
+        Icons.shopping_bag_outlined,
+        'Remain',
+        '${SampleData.products[p]}',
+      ),
     ];
 
     return list;
@@ -270,20 +272,18 @@ class _ProductDetailState extends State<ProductDetail> {
       SampleData.person.cart
           .add(SelectedProduct(product, product.color[i], product.size[j]));
     } catch (e) {
-      final snackBar = SnackBar(
-        elevation: 5.0,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0))),
-        content: Text(
-          'Please select color or size!',
-          style: Font.styleBody1(),
-        ),
-        action: SnackBarAction(
-          label: 'OK',
-          onPressed: () {},
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      SnackMessage('Please select color or size!').build(context);
+    }
+  }
+
+  void _onPressFloatingButton(Product product) {
+    if ((SampleData.person.market != null &&
+            SampleData.person.market!.products.contains(product)) ||
+        SampleData.products[product] == 0) {
+
+      SnackMessage('You cannot add this product to your cart').build(context);
+    } else {
+      _addToCart(product);
     }
   }
 }
