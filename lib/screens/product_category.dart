@@ -17,25 +17,23 @@ class ProductCategory extends StatefulWidget {
 }
 
 class _ProductCategoryState extends State<ProductCategory> {
-  late final List<Product> _products;
-
   @override
   Widget build(BuildContext context) {
     String category = ModalRoute.of(context)!.settings.arguments as String;
-    _products = _getProductList(category);
+    List<Product> products = _getProductList(category);
 
     return ScreenSetting.initScreen(
       context: context,
       appBar: ScreenSetting.appBar(title: category, context: context),
       child: Column(
-        children: _buildScreen(context: context),
+        children: _buildScreen(context, products),
       ),
     );
   }
 
-  List<Widget> _buildScreen({required BuildContext context}) {
+  List<Widget> _buildScreen(BuildContext context, List<Product> products) {
     List<Widget> list = [];
-    for (Product p in _products) {
+    for (Product p in products) {
       ProductCard card = ProductCard(
         p,
         p.image,
@@ -44,7 +42,7 @@ class _ProductCategoryState extends State<ProductCategory> {
         _buttonList(p),
       );
 
-      list.add(card.buildCard(context));
+      list.add(card.buildCard(context, setState));
       list.add(const SizedBox(height: 20.0));
     }
     return list;

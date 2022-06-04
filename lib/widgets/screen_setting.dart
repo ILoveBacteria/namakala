@@ -71,7 +71,7 @@ class ScreenSetting {
       backgroundColor: Colors.white,
       centerTitle: true,
       leading: context == null ? null : IconButton(
-        onPressed: () => Navigator.of(context).pop(),
+        onPressed: () => Navigator.pop(context),
         icon: const Icon(Icons.arrow_back),
         color: Colors.blue,
       ),

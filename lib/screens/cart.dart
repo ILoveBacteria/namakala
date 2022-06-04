@@ -77,7 +77,7 @@ class _CartState extends State<Cart> {
         _buttonList(),
       );
 
-      list.add(card.buildCard(context));
+      list.add(card.buildCard(context, setState));
       list.add(const SizedBox(height: 20.0));
     }
     return list;

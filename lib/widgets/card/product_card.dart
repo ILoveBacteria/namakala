@@ -45,17 +45,19 @@ class ProductCard {
     );
   }
 
-  Widget _buildCardWithoutButtons(BuildContext context) {
+  Widget _buildCardWithoutButtons(BuildContext context, Function refresh) {
     return Button.raw(
-      onPressed: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const ProductDetail(),
-          settings: RouteSettings(
-            arguments: product,
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ProductDetail(),
+            settings: RouteSettings(
+              arguments: product,
+            ),
           ),
-        ),
-      ),
+        ).then((_) => refresh(() {}));
+      },
       child: Container(
         padding: const EdgeInsets.only(
           top: 10.0,
@@ -83,10 +85,10 @@ class ProductCard {
     );
   }
 
-  Widget buildCard(BuildContext context) {
+  Widget buildCard(BuildContext context, Function refresh) {
     return Stack(
       children: <Widget>[
-        _buildCardWithoutButtons(context),
+        _buildCardWithoutButtons(context, refresh),
         Positioned.fill(
           right: 5.0,
           bottom: 5.0,
