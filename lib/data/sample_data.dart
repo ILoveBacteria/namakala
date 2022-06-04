@@ -7,7 +7,7 @@ import '../utilities/product.dart';
 class SampleData {
   static Person person = Person('Moein', 'Arabi', 'abc1234', '0123456789');
 
-  static final Map<Product, int> mobileProducts = <Product, int>{
+  static final Map<Product, int> products = <Product, int>{
     Product(
       'iPhone 13 pro max',
       'assets/images/iphone.png',
@@ -48,9 +48,6 @@ class SampleData {
       ['128GB', '256GB'],
       Market(SampleData.person, 'Digikala'),
     ): 0,
-  };
-
-  static final Map<Product, int> laptopProducts = <Product, int>{
     Product(
       'Macbook Air',
       'assets/images/macbook.png',
