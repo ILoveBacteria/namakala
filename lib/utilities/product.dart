@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:namakala/data/sample_data.dart';
 import 'package:namakala/utilities/market.dart';
-import 'package:namakala/utilities/person.dart';
 
 class Product {
   String name;
@@ -13,11 +11,11 @@ class Product {
   int? count;
   double score = 0;
   int _countVoters = 0;
-  List<Color> color = [];
-  List<String> size = [];
+  List<Color> color;
+  List<String> size;
 
   Product(this.name, this.image, this.price, this.category, this.detail,
-      this.color, this.market);
+      this.color,this.size , this.market);
 
   @override
   bool operator ==(Object other) =>
@@ -28,7 +26,9 @@ class Product {
           image == other.image &&
           price == other.price &&
           category == other.category &&
-          market == other.market;
+          market == other.market &&
+          color == other.color &&
+          size == other.size;
 
   @override
   int get hashCode =>
@@ -36,5 +36,7 @@ class Product {
       image.hashCode ^
       price.hashCode ^
       category.hashCode ^
-      market.hashCode;
+      market.hashCode ^
+      color.hashCode ^
+      size.hashCode;
 }
