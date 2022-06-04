@@ -109,11 +109,8 @@ class _CartState extends State<Cart> {
       Detail.color(Icons.palette_outlined, 'Color', p.color),
       Detail.text(
           Icons.shopping_bag_outlined, 'Count', '${_person.cart.products[p]}'),
+      Detail.text(Icons.straighten_outlined, 'Size', p.size),
     ];
-
-    if (p.size != null) {
-      list.add(Detail.text(Icons.straighten_outlined, 'Size', p.size));
-    }
 
     return list;
   }
