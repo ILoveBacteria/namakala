@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:namakala/screens/add_product.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
+import '../utilities/font.dart';
+
 class MyMarket extends StatelessWidget {
   const MyMarket({Key? key}) : super(key: key);
 
@@ -24,7 +26,31 @@ class MyMarket extends StatelessWidget {
           ),
         ],
       ),
-      child: Container(),
+      child: _buildEmptyMarketScreen(context),
+    );
+  }
+
+  Widget _buildEmptyMarketScreen(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height / 2,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            const Icon(
+              Icons.store_outlined,
+              size: 100.0,
+              color: Color.fromARGB(255, 179, 179, 179),
+            ),
+            Text(
+              'You don\'t have any products yet',
+              style: Font.styleBody1(
+                  color: const Color.fromARGB(255, 179, 179, 179)),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
