@@ -9,40 +9,27 @@ import '../utilities/selected_product.dart';
 import '../widgets/card/detail.dart';
 import '../widgets/card/product_card.dart';
 
-class ProductCategory extends StatelessWidget {
-  final String _category;
-  late final List<Product> _products;
+class ProductCategory extends StatefulWidget {
+  const ProductCategory({Key? key}) : super(key: key);
 
-  ProductCategory(this._category, {Key? key}) : super(key: key) {
-    _products = _getProductList();
-  }
+  @override
+  State<ProductCategory> createState() => _ProductCategoryState();
+}
+
+class _ProductCategoryState extends State<ProductCategory> {
+  late final List<Product> _products;
 
   @override
   Widget build(BuildContext context) {
+    String category = ModalRoute.of(context)!.settings.arguments as String;
+    _products = _getProductList(category);
+
     return ScreenSetting.initScreen(
       context: context,
-      appBar: ScreenSetting.appBar(title: _category, context: context),
+      appBar: ScreenSetting.appBar(title: category, context: context),
       child: Column(
         children: _buildScreen(context: context),
       ),
-    );
-  }
-
-  Widget _buildProductCard(Widget card, BuildContext context) {
-    return Stack(
-      children: [
-        card,
-        Positioned.fill(
-          right: 5.0,
-          bottom: 5.0,
-          child: Align(
-              alignment: Alignment.bottomRight,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: _buttonList(),
-              )),
-        )
-      ],
     );
   }
 
@@ -54,18 +41,19 @@ class ProductCategory extends StatelessWidget {
         p.image,
         p.name,
         _details(p, context),
+        _buttonList(p),
       );
 
-      list.add(_buildProductCard(card.buildCard(context), context));
+      list.add(card.buildCard(context));
       list.add(const SizedBox(height: 20.0));
     }
     return list;
   }
 
-  List<Product> _getProductList() {
-    if (_category == 'Mobiles') {
+  List<Product> _getProductList(String category) {
+    if (category == 'Mobiles') {
       return SampleData.mobileProducts;
-    } else if (_category == 'Laptops') {
+    } else if (category == 'Laptops') {
       return SampleData.laptopProducts;
     }
 
@@ -81,28 +69,23 @@ class ProductCategory extends StatelessWidget {
     return list;
   }
 
-  List<Widget> _buttonList() {
+  List<Widget> _buttonList(Product product) {
     return <Widget>[
       IconButton(
-        onPressed: () {},
-        icon: const Icon(Icons.delete_outline),
-        color: Colors.red,
-        highlightColor: Colors.transparent,
-        splashColor: Colors.transparent,
-      ),
-      IconButton(
-        onPressed: () {},
-        icon: const Icon(Icons.remove),
-        color: Colors.yellow,
-        highlightColor: Colors.transparent,
-        splashColor: Colors.transparent,
-      ),
-      IconButton(
-        onPressed: () {},
-        icon: const Icon(Icons.add),
-        color: Colors.green,
-        highlightColor: Colors.transparent,
-        splashColor: Colors.transparent,
+        onPressed: () {
+          setState(() {
+            // Add product to person.favorites if not already added or remove if already added
+            if (SampleData.person.favorites.contains(product)) {
+              SampleData.person.favorites.remove(product);
+            } else {
+              SampleData.person.favorites.add(product);
+            }
+          });
+        },
+        icon: Icon(
+          SampleData.person.favorites.contains(product) ? Icons.favorite : Icons.favorite_outline,
+          color: SampleData.person.favorites.contains(product) ? Colors.red : Colors.blue,
+        ),
       ),
     ];
   }

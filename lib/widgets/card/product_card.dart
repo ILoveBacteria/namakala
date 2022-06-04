@@ -11,8 +11,9 @@ class ProductCard {
   String image;
   String title;
   List<Detail> details;
+  List<Widget> buttons;
 
-  ProductCard(this.product, this.image, this.title, this.details);
+  ProductCard(this.product, this.image, this.title, this.details, this.buttons);
 
   Widget _buildDetails(BuildContext context) {
     List<Widget> list = [];
@@ -44,7 +45,7 @@ class ProductCard {
     );
   }
 
-  Widget buildCard(BuildContext context) {
+  Widget _buildCardWithoutButtons(BuildContext context) {
     return Button.raw(
       onPressed: () => Navigator.push(
         context,
@@ -56,14 +57,19 @@ class ProductCard {
         ),
       ),
       child: Container(
-        padding: const EdgeInsets.only(top: 10.0, right: 5.0, left: 10.0, bottom: 50.0),
+        padding: const EdgeInsets.only(
+          top: 10.0,
+          right: 5.0,
+          left: 10.0,
+          bottom: 50.0,
+        ),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10.0),
           border: Border.all(color: Colors.black12, width: 1.3),
         ),
         child: Row(
-          children: [
+          children: <Widget>[
             SizedBox(
               width: 107.4,
               height: 107.4,
@@ -74,6 +80,25 @@ class ProductCard {
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildCard(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        _buildCardWithoutButtons(context),
+        Positioned.fill(
+          right: 5.0,
+          bottom: 5.0,
+          child: Align(
+            alignment: Alignment.bottomRight,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: buttons,
+            ),
+          ),
+        )
+      ],
     );
   }
 }

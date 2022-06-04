@@ -66,25 +66,6 @@ class _CartState extends State<Cart> {
     );
   }
 
-  Widget _buildProductCard(
-      {required Widget card, required BuildContext context}) {
-    return Stack(
-      children: [
-        card,
-        Positioned.fill(
-          right: 5.0,
-          bottom: 5.0,
-          child: Align(
-              alignment: Alignment.bottomRight,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: _buttonList(),
-              )),
-        )
-      ],
-    );
-  }
-
   List<Widget> _buildScreen({required BuildContext context}) {
     List<Widget> list = [];
     for (SelectedProduct p in _person.cart.products.keys) {
@@ -93,10 +74,10 @@ class _CartState extends State<Cart> {
         p.product.image,
         p.product.name,
         _details(p, context),
+        _buttonList(),
       );
 
-      list.add(
-          _buildProductCard(card: card.buildCard(context), context: context));
+      list.add(card.buildCard(context));
       list.add(const SizedBox(height: 20.0));
     }
     return list;

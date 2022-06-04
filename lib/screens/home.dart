@@ -10,47 +10,70 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenSetting.initScreen(
-      context: context,
-      appBar: ScreenSetting.appBar(title: 'Home'),
-      child: Column(
-        children: [
-          _category(
-            title: 'Electronics',
-            items: <Widget>[
-              _items(image: 'assets/images/iphone.png', title: 'Mobiles', context: context),
+        context: context,
+        appBar: ScreenSetting.appBar(title: 'Home'),
+        child: Column(
+          children: [
+            _category(
+              title: 'Electronics',
+              items: <Widget>[
+                _items(
+                    image: 'assets/images/iphone.png',
+                    title: 'Mobiles',
+                    context: context),
+                const VerticalDivider(color: Colors.grey),
+                _items(
+                    image: 'assets/images/macbook.png',
+                    title: 'Laptops',
+                    context: context),
+                const VerticalDivider(color: Colors.grey),
+                _items(
+                    image: 'assets/images/camera.png',
+                    title: 'Camera',
+                    context: context),
+                const VerticalDivider(color: Colors.grey),
+                _items(
+                    image: 'assets/images/ipad.png',
+                    title: 'Tablets',
+                    context: context),
+              ],
+            ),
+            categorySeparator(),
+            _category(title: 'Clothing', items: <Widget>[
+              _items(
+                  image: 'assets/images/men.png',
+                  title: 'Men',
+                  context: context),
               const VerticalDivider(color: Colors.grey),
-              _items(image: 'assets/images/macbook.png', title: 'Laptops', context: context),
+              _items(
+                  image: 'assets/images/women.png',
+                  title: 'Women',
+                  context: context),
               const VerticalDivider(color: Colors.grey),
-              _items(image: 'assets/images/camera.png', title: 'Camera', context: context),
+              _items(
+                  image: 'assets/images/child.png',
+                  title: 'Kids & Baby',
+                  context: context),
+            ]),
+            categorySeparator(),
+            _category(title: 'Sport & Travel', items: <Widget>[
+              _items(
+                  image: 'assets/images/athletic_clothing.png',
+                  title: 'Athletic Clothings',
+                  context: context),
               const VerticalDivider(color: Colors.grey),
-              _items(image: 'assets/images/ipad.png', title: 'Tablets', context: context),
-            ],
-          ),
-          categorySeparator(),
-          _category(
-            title: 'Clothing',
-            items: <Widget>[
-              _items(image: 'assets/images/men.png', title: 'Men', context: context),
+              _items(
+                  image: 'assets/images/sporting_equipment.png',
+                  title: 'Sports Equipments',
+                  context: context),
               const VerticalDivider(color: Colors.grey),
-              _items(image: 'assets/images/women.png', title: 'Women', context: context),
-              const VerticalDivider(color: Colors.grey),
-              _items(image: 'assets/images/child.png', title: 'Kids & Baby', context: context),
-            ]
-          ),
-          categorySeparator(),
-          _category(
-            title: 'Sport & Travel',
-            items: <Widget>[
-              _items(image: 'assets/images/athletic_clothing.png', title: 'Athletic Clothings', context: context),
-              const VerticalDivider(color: Colors.grey),
-              _items(image: 'assets/images/sporting_equipment.png', title: 'Sports Equipments', context: context),
-              const VerticalDivider(color: Colors.grey),
-              _items(image: 'assets/images/camping_equipment.png', title: 'Camping', context: context),
-            ]
-          ),
-        ],
-      )
-    );
+              _items(
+                  image: 'assets/images/camping_equipment.png',
+                  title: 'Camping',
+                  context: context),
+            ]),
+          ],
+        ));
   }
 
   Widget _category({required String title, required List<Widget> items}) {
@@ -72,19 +95,21 @@ class Home extends StatelessWidget {
                     'All Items',
                     style: Font.styleButton2(),
                   ),
-                  const Icon(Icons.navigate_next, size: 20.0,),
+                  const Icon(
+                    Icons.navigate_next,
+                    size: 20.0,
+                  ),
                 ],
               ),
             ),
           ],
         ),
-        const SizedBox(height: 20.0,),
+        const SizedBox(
+          height: 20.0,
+        ),
         SizedBox(
           height: 150.0,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: items
-          ),
+          child: ListView(scrollDirection: Axis.horizontal, children: items),
         )
       ],
     );
@@ -99,10 +124,19 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget _items({required String image, required String title, required BuildContext context}) {
+  Widget _items({
+    required String image,
+    required String title,
+    required BuildContext context,
+  }) {
     return Button.raw(
       onPressed: () => Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => ProductCategory(title))
+        MaterialPageRoute(
+          builder: (context) => const ProductCategory(),
+          settings: RouteSettings(
+            arguments: title,
+          ),
+        ),
       ),
       child: Container(
         padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
