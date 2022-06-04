@@ -18,27 +18,28 @@ class PurchasedProductList extends StatefulWidget {
 
 class _PurchasedProductListState extends State<PurchasedProductList> {
   final Person person = SampleData.person;
-  final Cart cart = SampleData.person.purchases[0];
 
   @override
   Widget build(BuildContext context) {
+    final Cart cart = ModalRoute.of(context)!.settings.arguments as Cart;
+
     return ScreenSetting.initScreen(
       context: context,
       appBar: ScreenSetting.appBar(context: context, title: 'Products'),
       child: Column(
-        children: _buildScreen(),
+        children: _buildScreen(cart),
       ),
     );
   }
 
-  List<Widget> _buildScreen() {
+  List<Widget> _buildScreen(Cart cart) {
     List<Widget> list = [];
     for (SelectedProduct p in cart.products.keys) {
       ProductCard card = ProductCard(
         p.product,
         p.product.image,
         p.product.name,
-        _details(p, context),
+        _details(p, cart),
         _buttonList(p.product),
       );
 
@@ -48,7 +49,7 @@ class _PurchasedProductListState extends State<PurchasedProductList> {
     return list;
   }
 
-  List<Detail> _details(SelectedProduct p, BuildContext context) {
+  List<Detail> _details(SelectedProduct p, Cart cart) {
     List<Detail> list = <Detail>[
       Detail.text(Icons.store_outlined, 'Market', p.product.market.name),
       Detail.text(Icons.attach_money, 'Price', '${p.product.price}\$'),
