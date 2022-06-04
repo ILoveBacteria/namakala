@@ -90,6 +90,15 @@ class _CartScreenState extends State<CartScreen> {
       list.add(card.buildCard(context, setState));
       list.add(const SizedBox(height: 20.0));
     }
+
+    list.add(
+      Text(
+        'Total: ${_person.cart.sumOfPrice()}\$',
+        style: Font.styleSubtitle1(color: Colors.black54),
+      ),
+    );
+    list.add(const SizedBox(height: 50.0));
+
     return list;
   }
 
