@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:namakala/data/sample_data.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
-import '../utilities/font.dart';
-import '../utilities/person.dart';
 import '../utilities/product.dart';
-import '../utilities/selected_product.dart';
 import '../widgets/card/detail.dart';
 import '../widgets/card/product_card.dart';
 
@@ -20,7 +17,7 @@ class _ProductCategoryState extends State<ProductCategory> {
   @override
   Widget build(BuildContext context) {
     String category = ModalRoute.of(context)!.settings.arguments as String;
-    List<Product> products = _getProductList(category);
+    Map<Product, int> products = _getProductMap(category);
 
     return ScreenSetting.initScreen(
       context: context,
@@ -31,14 +28,14 @@ class _ProductCategoryState extends State<ProductCategory> {
     );
   }
 
-  List<Widget> _buildScreen(BuildContext context, List<Product> products) {
+  List<Widget> _buildScreen(BuildContext context, Map<Product, int> products) {
     List<Widget> list = [];
-    for (Product p in products) {
+    for (Product p in products.keys) {
       ProductCard card = ProductCard(
         p,
         p.image,
         p.name,
-        _details(p, context),
+        _details(products, p, context),
         _buttonList(p),
       );
 
@@ -48,20 +45,25 @@ class _ProductCategoryState extends State<ProductCategory> {
     return list;
   }
 
-  List<Product> _getProductList(String category) {
-    if (category == 'Mobiles') {
-      return SampleData.mobileProducts;
-    } else if (category == 'Laptops') {
-      return SampleData.laptopProducts;
+  Map<Product, int> _getProductMap(String category) {
+    Map<Product, int> map = {};
+    for (Product p in SampleData.products.keys) {
+      if (p.category == category) {
+        map[p] = SampleData.products[p]!;
+      }
     }
 
-    return [];
+    return map;
   }
 
-  List<Detail> _details(Product p, BuildContext context) {
+  List<Detail> _details(
+    Map<Product, int> products,
+    Product p,
+    BuildContext context,
+  ) {
     List<Detail> list = <Detail>[
       Detail.text(Icons.attach_money, 'Price', '${p.price}\$'),
-      Detail.text(Icons.shopping_bag_outlined, 'Remain', '{}'),
+      Detail.text(Icons.shopping_bag_outlined, 'Remain', '${products[p]}'),
     ];
 
     return list;
@@ -81,8 +83,12 @@ class _ProductCategoryState extends State<ProductCategory> {
           });
         },
         icon: Icon(
-          SampleData.person.favorites.contains(product) ? Icons.favorite : Icons.favorite_outline,
-          color: SampleData.person.favorites.contains(product) ? Colors.red : Colors.blue,
+          SampleData.person.favorites.contains(product)
+              ? Icons.favorite
+              : Icons.favorite_outline,
+          color: SampleData.person.favorites.contains(product)
+              ? Colors.red
+              : Colors.blue,
         ),
       ),
     ];
