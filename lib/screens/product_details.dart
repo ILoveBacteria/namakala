@@ -57,7 +57,7 @@ class _ProductDetailState extends State<ProductDetail> {
               MaterialPageRoute(
                 builder: (context) => const CartScreen(),
               ),
-            ),
+            ).then((_) => setState(() {})),
             icon: const Icon(
               Icons.shopping_cart_outlined,
               color: Colors.blue,
