@@ -9,6 +9,7 @@ class Detail {
   Color? colorValue;
 
   Detail.text(this.icon, this.label, this.textValue);
+
   Detail.color(this.icon, this.label, this.colorValue);
 
   Widget build(BuildContext context) {
@@ -23,14 +24,22 @@ class Detail {
           style: Font.styleBody1(color: Colors.grey),
         ),
         textValue == null
-            ? Container(width: 10.0, height: 10.0, color: colorValue)
+            ? Container(
+                width: 10.0,
+                height: 10.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: colorValue,
+                ),
+              )
             : SizedBox(
                 width: MediaQuery.of(context).size.width - 251,
                 child: Text(
                   textValue!,
                   style: Font.styleBody1(),
                   overflow: TextOverflow.ellipsis,
-                )),
+                ),
+              ),
       ],
     );
   }
