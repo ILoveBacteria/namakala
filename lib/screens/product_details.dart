@@ -18,7 +18,7 @@ class ProductDetail extends StatefulWidget {
 
 class _ProductDetailState extends State<ProductDetail> {
   bool _favorite = false;
-  List<bool> _selectedChip = [];
+  final List<bool> _selectedChip = [];
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +52,7 @@ class _ProductDetailState extends State<ProductDetail> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => SampleData.person.cart
-            .add(SelectedProduct(product, product.color[0], null)),
+        onPressed: () => _addToCart(product),
         backgroundColor: Colors.green,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0))),
@@ -189,12 +188,36 @@ class _ProductDetailState extends State<ProductDetail> {
     return _container(
       child: Column(
         children: <Widget>[
-          Detail.text(Icons.palette_outlined, 'Color', 'Choose your color').build(context),
+          Detail.text(Icons.palette_outlined, 'Color', 'Choose your color')
+              .build(context),
           Row(
             children: _chipList(product),
           ),
         ],
       ),
     );
+  }
+
+  void _addToCart(Product product) {
+    try {
+      int i = _selectedChip.indexOf(true);
+      SampleData.person.cart
+          .add(SelectedProduct(product, product.color[i], null));
+    } catch (e) {
+      final snackBar = SnackBar(
+        elevation: 5.0,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        content: Text(
+          'Please select color or size!',
+          style: Font.styleBody1(),
+        ),
+        action: SnackBarAction(
+          label: 'OK',
+          onPressed: () {},
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 }
