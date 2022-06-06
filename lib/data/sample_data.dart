@@ -5,7 +5,7 @@ import '../utilities/person.dart';
 import '../utilities/product.dart';
 
 class SampleData {
-  static Person person = Person('Moein', 'Arabi', 'abc1234', '0123456789');
+  static Person person = Person('Moein', 'Arabi', 'abcd1234', '09234567891');
 
   static final Map<Product, int> products = <Product, int>{
     Product(
