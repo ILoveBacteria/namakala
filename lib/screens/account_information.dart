@@ -277,12 +277,19 @@ class _AccountState extends State<Account> {
 
   void _onSaveButtonPressed() {
     _validateAllFields();
+    setState(() {});
 
     if (_isValidateAllFields()) {
       _changeUserInformation();
       _editScreen = !_editScreen;
+      setState(() {});
+      _firstNameStatus = FieldStatus.none;
+      _lastNameStatus = FieldStatus.none;
+      _phoneStatus = FieldStatus.none;
+      _emailStatus = FieldStatus.none;
+      _passwordStatus = FieldStatus.none;
+      _passwordConfirmStatus = FieldStatus.none;
     }
-    setState(() {});
   }
 
   void _changeUserInformation() {
