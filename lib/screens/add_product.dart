@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:namakala/utilities/font.dart';
+import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/field.dart';
 import 'package:namakala/widgets/screen_setting.dart';
+
+import '../utilities/product.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({Key? key}) : super(key: key);
@@ -28,6 +31,7 @@ class _AddProductState extends State<AddProduct> {
   final _marketController = TextEditingController();
   final _sizeController = TextEditingController();
   final _detailController = TextEditingController();
+  VoidCallback? _submitButton;
 
   @override
   void dispose() {
@@ -45,9 +49,10 @@ class _AddProductState extends State<AddProduct> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: ScreenSetting.initScreen(
         context: context,
-        appBar: ScreenSetting.appBar(title: 'Add A New Product', context: context),
+        appBar:
+            ScreenSetting.appBar(title: 'Add A New Product', context: context),
         child: Column(
-          children: [
+          children: <Widget>[
             Field.field(
               label: 'Product title',
               hintText: 'iPhone 13',
@@ -57,15 +62,14 @@ class _AddProductState extends State<AddProduct> {
               status: _titleStatus,
               onTap: () => setState(() {}),
               onEditingComplete: () {
-                setState(() {
-                  _titleValidate(_titleController.text)
-                      ? _titleStatus = FieldStatus.validate
-                      : _titleStatus = FieldStatus.error;
-
-                  _titleFocus.unfocus();
-                });
+                _titleValidate();
+                setState(() {});
               },
-              onChanged: (_) => setState(() => _titleStatus = FieldStatus.none),
+              onChanged: (_) {
+                _titleStatus = FieldStatus.none;
+                _changeButtonEnabled();
+                setState(() {});
+              },
             ),
             Field.separate(),
             Field.field(
@@ -78,15 +82,14 @@ class _AddProductState extends State<AddProduct> {
               status: _priceStatus,
               onTap: () => setState(() {}),
               onEditingComplete: () {
-                setState(() {
-                  _priceValidate(_priceController.text)
-                      ? _priceStatus = FieldStatus.validate
-                      : _priceStatus = FieldStatus.error;
-
-                  _priceFocus.unfocus();
-                });
+                _priceValidate();
+                setState(() {});
               },
-              onChanged: (_) => setState(() => _priceStatus = FieldStatus.none),
+              onChanged: (_) {
+                _priceStatus = FieldStatus.none;
+                _changeButtonEnabled();
+                setState(() {});
+              },
             ),
             Field.separate(),
             Field.field(
@@ -99,15 +102,14 @@ class _AddProductState extends State<AddProduct> {
               status: _marketStatus,
               onTap: () => setState(() {}),
               onEditingComplete: () {
-                setState(() {
-                  Field.marketValidate(_marketController.text)
-                      ? _marketStatus = FieldStatus.validate
-                      : _marketStatus = FieldStatus.error;
-
-                  _marketFocus.unfocus();
-                });
+                _marketValidate();
+                setState(() {});
               },
-              onChanged: (_) => setState(() => _marketStatus = FieldStatus.none),
+              onChanged: (_) {
+                _marketStatus = FieldStatus.none;
+                _changeButtonEnabled();
+                setState(() {});
+              },
             ),
             Field.separate(),
             Field.field(
@@ -119,15 +121,14 @@ class _AddProductState extends State<AddProduct> {
               status: _sizeStatus,
               onTap: () => setState(() {}),
               onEditingComplete: () {
-                setState(() {
-                  _sizeValidate(_sizeController.text)
-                      ? _sizeStatus = FieldStatus.validate
-                      : _sizeStatus = FieldStatus.error;
-
-                  _sizeFocus.unfocus();
-                });
+                _sizeValidate();
+                setState(() {});
               },
-              onChanged: (_) => setState(() => _sizeStatus = FieldStatus.none),
+              onChanged: (_) {
+                _sizeStatus = FieldStatus.none;
+                _changeButtonEnabled();
+                setState(() {});
+              },
             ),
             Field.separate(),
             Field.field(
@@ -141,15 +142,20 @@ class _AddProductState extends State<AddProduct> {
               status: _detailStatus,
               onTap: () => setState(() {}),
               onEditingComplete: () {
-                setState(() {
-                  _detailValidate(_detailController.text)
-                      ? _detailStatus = FieldStatus.validate
-                      : _detailStatus = FieldStatus.error;
-
-                  _detailFocus.unfocus();
-                });
+                _detailValidate();
+                setState(() {});
               },
-              onChanged: (_) => setState(() => _detailStatus = FieldStatus.none),
+              onChanged: (_) {
+                _detailStatus = FieldStatus.none;
+                _changeButtonEnabled();
+                setState(() {});
+              },
+            ),
+            Button.separate(),
+            Button.elevated(
+              text: 'ADD PRODUCT',
+              color: Colors.teal,
+              onPressed: _submitButton,
             ),
           ],
         ),
@@ -157,41 +163,119 @@ class _AddProductState extends State<AddProduct> {
     );
   }
 
-  Widget _buildSizeChips({required String label}) {
-    return InputChip(
-      label: Text(
-        label,
-        style: Font.styleBody1(),
-      ),
-      deleteIcon: const Icon(Icons.remove),
-    );
+  void _changeButtonEnabled() {
+    setState(() {
+      _titleController.text.isNotEmpty &&
+              _priceController.text.isNotEmpty &&
+              _marketController.text.isNotEmpty &&
+              _sizeController.text.isNotEmpty &&
+              _detailController.text.isNotEmpty
+          ? _submitButton = () => _onAddProductButtonPressed()
+          : _submitButton = null;
+    });
   }
 
-  bool _titleValidate(String? value) {
-    if (value == null || RegExp(r'^[a-zA-Z0-9-() ]*$').hasMatch(value) || value.isEmpty) {
+  void _onAddProductButtonPressed() {
+    _validateAllFields();
+    setState(() {});
+
+    if (_isValidateAllFields()) {
+      _createNewProduct();
+      Navigator.of(context).pop();
+    }
+  }
+
+  void _createNewProduct() {
+    // Product product =
+  }
+
+  bool _isValidateAllFields() {
+    return _titleStatus == FieldStatus.validate &&
+        _priceStatus == FieldStatus.validate &&
+        _marketStatus == FieldStatus.validate &&
+        _sizeStatus == FieldStatus.validate &&
+        _detailStatus == FieldStatus.validate;
+  }
+
+  void _validateAllFields() {
+    _titleValidate();
+    _priceValidate();
+    _marketValidate();
+    _sizeValidate();
+    _detailValidate();
+  }
+
+  bool _titleValidator(String? value) {
+    if (value == null ||
+        RegExp(r'^[a-zA-Z0-9-() ]*$').hasMatch(value) ||
+        value.isEmpty) {
       return false;
     }
     return true;
   }
 
-  bool _priceValidate(String? value) {
-    if (value == null || !RegExp(r'^[0-9]*$').hasMatch(value) || value.isEmpty) {
+  bool _priceValidator(String? value) {
+    if (value == null ||
+        !RegExp(r'^[0-9]*$').hasMatch(value) ||
+        value.isEmpty) {
       return false;
     }
     return true;
   }
 
-  bool _sizeValidate(String? value) {
-    if (value == null || !RegExp(r'^[0-9]*$').hasMatch(value) || value.isEmpty) {
+  bool _sizeValidator(String? value) {
+    if (value == null ||
+        !RegExp(r'^[0-9]*$').hasMatch(value) ||
+        value.isEmpty) {
       return false;
     }
     return true;
   }
 
-  bool _detailValidate(String? value) {
+  bool _detailValidator(String? value) {
     if (value == null || value.isEmpty) {
       return false;
     }
     return true;
+  }
+
+  void _titleValidate() {
+    _titleValidator(_titleController.text)
+        ? _titleStatus = FieldStatus.validate
+        : _titleStatus = FieldStatus.error;
+
+    _titleFocus.unfocus();
+  }
+
+  void _priceValidate() {
+    _priceValidator(_priceController.text)
+        ? _priceStatus = FieldStatus.validate
+        : _priceStatus = FieldStatus.error;
+
+    _priceFocus.unfocus();
+  }
+
+  void _marketValidate() {
+    Field.marketValidate(_marketController.text)
+        ? _marketStatus = FieldStatus.validate
+        : _marketStatus = FieldStatus.error;
+
+    _marketFocus.unfocus();
+  }
+
+  void _sizeValidate() {
+    _sizeValidator(_sizeController.text)
+        ? _sizeStatus = FieldStatus.validate
+        : _sizeStatus = FieldStatus.error;
+
+    _sizeFocus.unfocus();
+  }
+
+  void _detailValidate() {
+    _detailValidator(_detailController.text)
+        ? _detailStatus = FieldStatus.validate
+        : _detailStatus = FieldStatus.error;
+
+    _detailFocus.unfocus();
   }
 }
