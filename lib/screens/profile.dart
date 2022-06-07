@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namakala/data/sample_data.dart';
 import 'package:namakala/screens/account_information.dart';
 import 'package:namakala/screens/my_market.dart';
 import 'package:namakala/screens/product_category.dart';
@@ -39,14 +40,14 @@ class Profile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Moein Arabi',
+                      '${SampleData.person.firstname} ${SampleData.person.lastname}',
                       style: Font.styleSubtitle1(),
                       overflow: TextOverflow.fade,
                       maxLines: 1,
                     ),
                     const SizedBox(height: 5.0),
                     Text(
-                      '+989120284896',
+                      SampleData.person.phone,
                       style: Font.styleBody2(color: Colors.grey),
                     ),
                   ],
@@ -60,7 +61,7 @@ class Profile extends StatelessWidget {
             child: IntrinsicHeight(
               child: Row(
                 children: [
-                  _userActivity(title: 'Purchase', number: '5'),
+                  _userActivity(title: 'Purchase', number: '${SampleData.person.purchases.length}'),
                   const Spacer(),
                   const VerticalDivider(
                     color: Colors.grey,
@@ -72,7 +73,7 @@ class Profile extends StatelessWidget {
                     color: Colors.grey,
                   ),
                   const Spacer(),
-                  _userActivity(title: 'Products', number: '10'),
+                  _userActivity(title: 'Products', number: '${SampleData.person.market?.products.length ?? 0}'),
                 ],
               ),
             ),
