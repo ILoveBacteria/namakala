@@ -312,7 +312,7 @@ class _AccountState extends State<Account> {
   }
 
   void _emailValidate() {
-    Field.emailValidate(_emailController.text)
+    Field.emailValidate(_emailController.text, false)
         ? _emailStatus = FieldStatus.validate
         : _emailStatus = FieldStatus.error;
 
