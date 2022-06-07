@@ -292,7 +292,7 @@ class Field {
 
   static bool phoneValidate(String? value) {
     if (value == null ||
-        !RegExp(r'^(09\d{9})|(\+989\d{9})$').hasMatch(value) ||
+        !RegExp(r'^(09[0-9]{9})$').hasMatch(value) ||
         value.isEmpty) {
       return false;
     }
