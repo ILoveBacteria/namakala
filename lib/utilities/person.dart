@@ -14,4 +14,15 @@ class Person {
   Cart cart = Cart();
 
   Person(this.firstname, this.lastname, this.phone, this.password);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Person &&
+          runtimeType == other.runtimeType &&
+          password == other.password &&
+          phone == other.phone;
+
+  @override
+  int get hashCode => password.hashCode ^ phone.hashCode;
 }
