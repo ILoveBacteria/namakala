@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:namakala/data/sample_data.dart';
+import 'package:namakala/screens/main_screen.dart';
 import 'package:namakala/screens/sign_in.dart';
+import 'package:namakala/utilities/person.dart';
 import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 import '../widgets/field.dart';
@@ -61,13 +64,8 @@ class _SignUpState extends State<SignUp> {
                   controller: _firstNameController,
                   onTap: () => setState(() {}),
                   onEditingComplete: () {
-                    setState(() {
-                      Field.nameValidate(_firstNameController.text)
-                          ? _firstNameStatus = FieldStatus.validate
-                          : _firstNameStatus = FieldStatus.error;
-
-                      _firstNameFocus.unfocus();
-                    });
+                    _firstNameValidate();
+                    setState(() {});
                   },
                   onChanged: (_) {
                     setState(() {
@@ -83,13 +81,8 @@ class _SignUpState extends State<SignUp> {
                   controller: _lastNameController,
                   onTap: () => setState(() {}),
                   onEditingComplete: () {
-                    setState(() {
-                      Field.nameValidate(_lastNameController.text)
-                          ? _lastNameStatus = FieldStatus.validate
-                          : _lastNameStatus = FieldStatus.error;
-
-                      _lastNameFocus.unfocus();
-                    });
+                    _lastNameValidate();
+                    setState(() {});
                   },
                   onChanged: (_) {
                     setState(() {
@@ -105,13 +98,8 @@ class _SignUpState extends State<SignUp> {
                   controller: _phoneController,
                   onTap: () => setState(() {}),
                   onEditingComplete: () {
-                    setState(() {
-                      Field.phoneValidate(_phoneController.text)
-                          ? _phoneStatus = FieldStatus.validate
-                          : _phoneStatus = FieldStatus.error;
-
-                      _phoneFocus.unfocus();
-                    });
+                    _phoneValidate();
+                    setState(() {});
                   },
                   onChanged: (_) {
                     setState(() {
@@ -127,13 +115,8 @@ class _SignUpState extends State<SignUp> {
                   controller: _emailController,
                   onTap: () => setState(() {}),
                   onEditingComplete: () {
-                    setState(() {
-                      Field.emailValidate(_emailController.text)
-                          ? _emailStatus = FieldStatus.validate
-                          : _emailStatus = FieldStatus.error;
-
-                      _emailFocus.unfocus();
-                    });
+                    _emailValidate();
+                    setState(() {});
                   },
                   onChanged: (_) =>
                       setState(() => _emailStatus = FieldStatus.none),
@@ -146,13 +129,8 @@ class _SignUpState extends State<SignUp> {
                   controller: _passwordController,
                   onTap: () => setState(() {}),
                   onEditingComplete: () {
-                    setState(() {
-                      Field.passwordValidate(_passwordController.text)
-                          ? _passwordStatus = FieldStatus.validate
-                          : _passwordStatus = FieldStatus.error;
-
-                      _passwordFocus.unfocus();
-                    });
+                    _passwordValidate();
+                    setState(() {});
                   },
                   onChanged: (_) {
                     setState(() {
@@ -178,14 +156,8 @@ class _SignUpState extends State<SignUp> {
                   controller: _passwordConfirmController,
                   onTap: () => setState(() {}),
                   onEditingComplete: () {
-                    setState(() {
-                      _passwordConfirmController.text ==
-                              _passwordController.text
-                          ? _passwordConfirmStatus = FieldStatus.validate
-                          : _passwordConfirmStatus = FieldStatus.error;
-
-                      _passwordConfirmFocus.unfocus();
-                    });
+                    _passwordConfirmValidate();
+                    setState(() {});
                   },
                   onChanged: (_) {
                     setState(() {
@@ -231,8 +203,95 @@ class _SignUpState extends State<SignUp> {
               _phoneController.text.isNotEmpty &&
               _passwordController.text.isNotEmpty &&
               _passwordConfirmController.text.isNotEmpty
-          ? _submitButton = () {}
+          ? _submitButton = () => _onSignUpButtonPressed()
           : _submitButton = null;
     });
+  }
+
+  void _onSignUpButtonPressed() {
+    _validateAllFields();
+    setState(() {});
+
+    if (_isValidateAllFields()) {
+      _createNewUser();
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const MainScreen()),
+            (Route<dynamic> route) => false,
+      );
+    }
+  }
+
+  void _createNewUser() {
+    Person person = Person(_firstNameController.text, _lastNameController.text, _phoneController.text, _passwordController.text,);
+    if (_emailController.text.isNotEmpty) {
+      person.email = _emailController.text;
+    }
+    SampleData.person = person;
+  }
+
+  bool _isValidateAllFields() {
+    return _firstNameStatus == FieldStatus.validate &&
+        _lastNameStatus == FieldStatus.validate &&
+        _phoneStatus == FieldStatus.validate &&
+        _emailStatus == FieldStatus.validate &&
+        _passwordStatus == FieldStatus.validate &&
+        _passwordConfirmStatus == FieldStatus.validate;
+  }
+
+  void _validateAllFields() {
+    _firstNameValidate();
+    _lastNameValidate();
+    _phoneValidate();
+    _emailValidate();
+    _passwordValidate();
+    _passwordConfirmValidate();
+  }
+
+  void _firstNameValidate() {
+    Field.nameValidate(_firstNameController.text)
+        ? _firstNameStatus = FieldStatus.validate
+        : _firstNameStatus = FieldStatus.error;
+
+    _firstNameFocus.unfocus();
+  }
+
+  void _lastNameValidate() {
+    Field.nameValidate(_lastNameController.text)
+        ? _lastNameStatus = FieldStatus.validate
+        : _lastNameStatus = FieldStatus.error;
+
+    _lastNameFocus.unfocus();
+  }
+
+  void _phoneValidate() {
+    Field.phoneValidate(_phoneController.text)
+        ? _phoneStatus = FieldStatus.validate
+        : _phoneStatus = FieldStatus.error;
+
+    _phoneFocus.unfocus();
+  }
+
+  void _emailValidate() {
+    Field.emailValidate(_emailController.text, true)
+        ? _emailStatus = FieldStatus.validate
+        : _emailStatus = FieldStatus.error;
+
+    _emailFocus.unfocus();
+  }
+
+  void _passwordValidate() {
+    Field.passwordValidate(_passwordController.text)
+        ? _passwordStatus = FieldStatus.validate
+        : _passwordStatus = FieldStatus.error;
+
+    _passwordFocus.unfocus();
+  }
+
+  void _passwordConfirmValidate() {
+    _passwordConfirmController.text == _passwordController.text
+        ? _passwordConfirmStatus = FieldStatus.validate
+        : _passwordConfirmStatus = FieldStatus.error;
+
+    _passwordConfirmFocus.unfocus();
   }
 }

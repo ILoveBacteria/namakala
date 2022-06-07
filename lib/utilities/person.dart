@@ -13,5 +13,5 @@ class Person {
   List<Product> favorites = [];
   Cart cart = Cart();
 
-  Person(this.firstname, this.lastname, this.password, this.phone);
+  Person(this.firstname, this.lastname, this.phone, this.password);
 }
