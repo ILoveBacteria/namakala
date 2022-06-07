@@ -243,7 +243,7 @@ class _AccountState extends State<Account> {
         Button.separate(),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             Button.elevated(
               text: 'SAVE',
               color: Colors.lightBlueAccent,
@@ -270,11 +270,92 @@ class _AccountState extends State<Account> {
               _phoneController.text.isNotEmpty &&
               _passwordController.text.isNotEmpty &&
               _passwordConfirmController.text.isNotEmpty
-          ? _submitButton = () {
-              _editScreen = !_editScreen;
-              setState(() {});
-            }
+          ? _submitButton = () => _onSaveButtonPressed()
           : _submitButton = null;
     });
+  }
+
+  void _onSaveButtonPressed() {
+    _validateAllFields();
+
+    if (_isValidateAllFields()) {
+      _changeUserInformation();
+      _editScreen = !_editScreen;
+    }
+    setState(() {});
+  }
+
+  void _changeUserInformation() {
+    SampleData.person.firstname = _firstNameController.text;
+    SampleData.person.lastname = _lastNameController.text;
+    SampleData.person.phone = _phoneController.text;
+    SampleData.person.email = _emailController.text;
+    SampleData.person.password = _passwordController.text;
+  }
+
+  bool _isValidateAllFields() {
+    return _firstNameStatus == FieldStatus.validate &&
+        _lastNameStatus == FieldStatus.validate &&
+        _phoneStatus == FieldStatus.validate &&
+        _emailStatus == FieldStatus.validate &&
+        _passwordStatus == FieldStatus.validate &&
+        _passwordConfirmStatus == FieldStatus.validate;
+  }
+
+  void _validateAllFields() {
+    _firstNameValidate();
+    _lastNameValidate();
+    _phoneValidate();
+    _emailValidate();
+    _passwordValidate();
+    _passwordConfirmValidate();
+  }
+
+  void _firstNameValidate() {
+    Field.nameValidate(_firstNameController.text)
+        ? _firstNameStatus = FieldStatus.validate
+        : _firstNameStatus = FieldStatus.error;
+
+    _firstNameFocus.unfocus();
+  }
+
+  void _lastNameValidate() {
+    Field.nameValidate(_lastNameController.text)
+        ? _lastNameStatus = FieldStatus.validate
+        : _lastNameStatus = FieldStatus.error;
+
+    _lastNameFocus.unfocus();
+  }
+
+  void _phoneValidate() {
+    Field.phoneValidate(_phoneController.text)
+        ? _phoneStatus = FieldStatus.validate
+        : _phoneStatus = FieldStatus.error;
+
+    _phoneFocus.unfocus();
+  }
+
+  void _emailValidate() {
+    Field.emailValidate(_emailController.text)
+        ? _emailStatus = FieldStatus.validate
+        : _emailStatus = FieldStatus.error;
+
+    _emailFocus.unfocus();
+  }
+
+  void _passwordValidate() {
+    Field.passwordValidate(_passwordController.text)
+        ? _passwordStatus = FieldStatus.validate
+        : _passwordStatus = FieldStatus.error;
+
+    _passwordFocus.unfocus();
+  }
+
+  void _passwordConfirmValidate() {
+    _passwordConfirmController.text == _passwordController.text
+        ? _passwordConfirmStatus = FieldStatus.validate
+        : _passwordConfirmStatus = FieldStatus.error;
+
+    _passwordConfirmFocus.unfocus();
   }
 }
