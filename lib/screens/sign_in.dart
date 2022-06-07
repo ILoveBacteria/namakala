@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:namakala/data/sample_data.dart';
 import 'package:namakala/screens/sign_up.dart';
 import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/field.dart';
 import 'package:namakala/widgets/screen_setting.dart';
+
+import '../utilities/person.dart';
+import 'main_screen.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -43,15 +47,6 @@ class _SignInState extends State<SignIn> {
                   status: _phoneStatus,
                   controller: _phoneController,
                   onTap: () => setState(() {}),
-                  onEditingComplete: () {
-                    setState(() {
-                      Field.phoneValidate(_phoneController.text)
-                          ? _phoneStatus = FieldStatus.validate
-                          : _phoneStatus = FieldStatus.error;
-
-                      _phoneFocus.unfocus();
-                    });
-                  },
                   onChanged: (_) {
                     setState(() {
                       _phoneStatus = FieldStatus.none;
@@ -66,15 +61,6 @@ class _SignInState extends State<SignIn> {
                   status: _passwordStatus,
                   controller: _passwordController,
                   onTap: () => setState(() {}),
-                  onEditingComplete: () {
-                    setState(() {
-                      Field.passwordValidate(_passwordController.text)
-                          ? _passwordStatus = FieldStatus.validate
-                          : _passwordStatus = FieldStatus.error;
-
-                      _passwordFocus.unfocus();
-                    });
-                  },
                   onChanged: (_) {
                     setState(() {
                       _passwordStatus = FieldStatus.none;
@@ -82,7 +68,9 @@ class _SignInState extends State<SignIn> {
                     });
                   },
                   suffixButton: IconButton(
-                    icon: _obscurePassword ? const Icon(Icons.visibility_off_outlined) : const Icon(Icons.visibility_outlined),
+                    icon: _obscurePassword
+                        ? const Icon(Icons.visibility_off_outlined)
+                        : const Icon(Icons.visibility_outlined),
                     color: Colors.grey,
                     onPressed: () {
                       setState(() {
@@ -115,8 +103,52 @@ class _SignInState extends State<SignIn> {
   void _changeButtonEnabled() {
     setState(() {
       _phoneController.text.isNotEmpty && _passwordController.text.isNotEmpty
-          ? _submitButton = () {}
+          ? _submitButton = () => _onSignInButtonPressed()
           : _submitButton = null;
     });
+  }
+
+  void _onSignInButtonPressed() {
+    _validateAllFields();
+    _phoneFocus.unfocus();
+    _passwordFocus.unfocus();
+    setState(() {});
+
+    if (_isValidateAllFields()) {
+      _signInUser();
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const MainScreen()),
+            (Route<dynamic> route) => false,
+      );
+    }
+  }
+
+  void _signInUser() {
+    for (Person p in SampleData.persons) {
+      if (p.phone == _phoneController.text && p.password == _passwordController.text) {
+        SampleData.person = p;
+        break;
+      }
+    }
+  }
+
+  bool _isValidateAllFields() {
+    return _phoneStatus == FieldStatus.validate &&
+        _passwordStatus == FieldStatus.validate;
+  }
+
+  void _validateAllFields() {
+    _phoneStatus = FieldStatus.error;
+    _passwordStatus = FieldStatus.error;
+
+    for (Person p in SampleData.persons) {
+      if (p.phone == _phoneController.text) {
+        _phoneStatus = FieldStatus.validate;
+        if (p.password == _passwordController.text) {
+          _passwordStatus = FieldStatus.validate;
+        }
+        break;
+      }
+    }
   }
 }
