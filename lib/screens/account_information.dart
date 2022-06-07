@@ -99,13 +99,8 @@ class _AccountState extends State<Account> {
           controller: _firstNameController,
           onTap: () => setState(() {}),
           onEditingComplete: () {
-            setState(() {
-              Field.nameValidate(_firstNameController.text)
-                  ? _firstNameStatus = FieldStatus.validate
-                  : _firstNameStatus = FieldStatus.error;
-
-              _firstNameFocus.unfocus();
-            });
+            _firstNameValidate();
+            setState(() {});
           },
           onChanged: (_) {
             setState(() {
@@ -121,13 +116,8 @@ class _AccountState extends State<Account> {
           controller: _lastNameController,
           onTap: () => setState(() {}),
           onEditingComplete: () {
-            setState(() {
-              Field.nameValidate(_lastNameController.text)
-                  ? _lastNameStatus = FieldStatus.validate
-                  : _lastNameStatus = FieldStatus.error;
-
-              _lastNameFocus.unfocus();
-            });
+            _lastNameValidate();
+            setState(() {});
           },
           onChanged: (_) {
             setState(() {
@@ -143,13 +133,8 @@ class _AccountState extends State<Account> {
           controller: _phoneController,
           onTap: () => setState(() {}),
           onEditingComplete: () {
-            setState(() {
-              Field.phoneValidate(_phoneController.text)
-                  ? _phoneStatus = FieldStatus.validate
-                  : _phoneStatus = FieldStatus.error;
-
-              _phoneFocus.unfocus();
-            });
+            _phoneValidate();
+            setState(() {});
           },
           onChanged: (_) {
             setState(() {
@@ -165,13 +150,8 @@ class _AccountState extends State<Account> {
           controller: _emailController,
           onTap: () => setState(() {}),
           onEditingComplete: () {
-            setState(() {
-              Field.emailValidate(_emailController.text)
-                  ? _emailStatus = FieldStatus.validate
-                  : _emailStatus = FieldStatus.error;
-
-              _emailFocus.unfocus();
-            });
+            _emailValidate();
+            setState(() {});
           },
           onChanged: (_) => setState(() => _emailStatus = FieldStatus.none),
         ),
@@ -183,13 +163,8 @@ class _AccountState extends State<Account> {
           controller: _passwordController,
           onTap: () => setState(() {}),
           onEditingComplete: () {
-            setState(() {
-              Field.passwordValidate(_passwordController.text)
-                  ? _passwordStatus = FieldStatus.validate
-                  : _passwordStatus = FieldStatus.error;
-
-              _passwordFocus.unfocus();
-            });
+            _passwordValidate();
+            setState(() {});
           },
           onChanged: (_) {
             setState(() {
@@ -215,14 +190,8 @@ class _AccountState extends State<Account> {
           controller: _passwordConfirmController,
           onTap: () => setState(() {}),
           onEditingComplete: () {
-            setState(() {
-              _passwordConfirmController.text ==
-                  _passwordController.text
-                  ? _passwordConfirmStatus = FieldStatus.validate
-                  : _passwordConfirmStatus = FieldStatus.error;
-
-              _passwordConfirmFocus.unfocus();
-            });
+            _passwordConfirmValidate();
+            setState(() {});
           },
           onChanged: (_) {
             setState(() {
