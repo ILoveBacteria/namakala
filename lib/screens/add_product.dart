@@ -4,8 +4,6 @@ import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/field.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
-import '../utilities/product.dart';
-
 class AddProduct extends StatefulWidget {
   const AddProduct({Key? key}) : super(key: key);
 
@@ -18,17 +16,17 @@ class _AddProductState extends State<AddProduct> {
   List _size = [];
   final _titleFocus = FocusNode();
   final _priceFocus = FocusNode();
-  final _marketFocus = FocusNode();
+  final _colorFocus = FocusNode();
   final _sizeFocus = FocusNode();
   final _detailFocus = FocusNode();
   FieldStatus _titleStatus = FieldStatus.none;
   FieldStatus _priceStatus = FieldStatus.none;
-  FieldStatus _marketStatus = FieldStatus.none;
+  FieldStatus _colorStatus = FieldStatus.none;
   FieldStatus _sizeStatus = FieldStatus.none;
   FieldStatus _detailStatus = FieldStatus.none;
   final _titleController = TextEditingController();
   final _priceController = TextEditingController();
-  final _marketController = TextEditingController();
+  final _colorController = TextEditingController();
   final _sizeController = TextEditingController();
   final _detailController = TextEditingController();
   VoidCallback? _submitButton;
@@ -38,7 +36,7 @@ class _AddProductState extends State<AddProduct> {
     super.dispose();
     _titleFocus.dispose();
     _priceFocus.dispose();
-    _marketFocus.dispose();
+    _colorFocus.dispose();
     _sizeFocus.dispose();
     _detailFocus.dispose();
   }
@@ -93,20 +91,19 @@ class _AddProductState extends State<AddProduct> {
             ),
             Field.separate(),
             Field.field(
-              label: 'Market',
-              // initialValue: 'person.market.name',
-              hintText: 'Digikala',
-              prefixIcon: Icons.store_outlined,
-              focusNode: _marketFocus,
-              controller: _marketController,
-              status: _marketStatus,
+              label: 'Color',
+              hintText: '0xAARRGGBB',
+              prefixIcon: Icons.palette_outlined,
+              focusNode: _colorFocus,
+              controller: _colorController,
+              status: _colorStatus,
               onTap: () => setState(() {}),
               onEditingComplete: () {
-                _marketValidate();
+                _colorValidate();
                 setState(() {});
               },
               onChanged: (_) {
-                _marketStatus = FieldStatus.none;
+                _colorStatus = FieldStatus.none;
                 _changeButtonEnabled();
                 setState(() {});
               },
@@ -167,7 +164,7 @@ class _AddProductState extends State<AddProduct> {
     setState(() {
       _titleController.text.isNotEmpty &&
               _priceController.text.isNotEmpty &&
-              _marketController.text.isNotEmpty &&
+              _colorController.text.isNotEmpty &&
               _sizeController.text.isNotEmpty &&
               _detailController.text.isNotEmpty
           ? _submitButton = () => _onAddProductButtonPressed()
@@ -192,7 +189,7 @@ class _AddProductState extends State<AddProduct> {
   bool _isValidateAllFields() {
     return _titleStatus == FieldStatus.validate &&
         _priceStatus == FieldStatus.validate &&
-        _marketStatus == FieldStatus.validate &&
+        _colorStatus == FieldStatus.validate &&
         _sizeStatus == FieldStatus.validate &&
         _detailStatus == FieldStatus.validate;
   }
@@ -200,7 +197,7 @@ class _AddProductState extends State<AddProduct> {
   void _validateAllFields() {
     _titleValidate();
     _priceValidate();
-    _marketValidate();
+    _colorValidate();
     _sizeValidate();
     _detailValidate();
   }
@@ -215,6 +212,15 @@ class _AddProductState extends State<AddProduct> {
   }
 
   bool _priceValidator(String? value) {
+    if (value == null ||
+        !RegExp(r'^[0-9]*$').hasMatch(value) ||
+        value.isEmpty) {
+      return false;
+    }
+    return true;
+  }
+
+  bool _colorValidator(String? value) {
     if (value == null ||
         !RegExp(r'^[0-9]*$').hasMatch(value) ||
         value.isEmpty) {
@@ -255,12 +261,12 @@ class _AddProductState extends State<AddProduct> {
     _priceFocus.unfocus();
   }
 
-  void _marketValidate() {
-    Field.marketValidate(_marketController.text)
-        ? _marketStatus = FieldStatus.validate
-        : _marketStatus = FieldStatus.error;
+  void _colorValidate() {
+    _colorValidator(_colorController.text)
+        ? _colorStatus = FieldStatus.validate
+        : _colorStatus = FieldStatus.error;
 
-    _marketFocus.unfocus();
+    _colorFocus.unfocus();
   }
 
   void _sizeValidate() {
