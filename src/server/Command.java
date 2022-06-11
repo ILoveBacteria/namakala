@@ -22,4 +22,25 @@ public class Command {
         
         return obj;
     }
+    
+    public String runCommand() {
+        if (command.equals("sign-in")) {
+            return signInCommand();
+        }
+        
+        return null;
+    }
+    
+    private String signInCommand() {
+        Person person = Database.findByPhone(action[0]);
+        if (person == null) {
+            return "false;false";
+        }
+        
+        if (person.getPassword().equals(action[1])) {
+            return "true;true";
+        }
+        
+        return "true;false";
+    }
 }
