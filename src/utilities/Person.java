@@ -30,6 +30,10 @@ public class Person implements Serializable {
         this.phone = phone;
     }
     
+    public String getPassword() {
+        return password;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
