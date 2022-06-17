@@ -34,6 +34,11 @@ public class Person implements Serializable {
         return password;
     }
     
+    public void checkout() {
+        purchases.add(cart);
+        cart = new Cart();
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
