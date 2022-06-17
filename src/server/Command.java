@@ -16,13 +16,18 @@ public class Command {
         Command obj = new Command();
         
         String[] splitCommand = value.split(" ", 3);
-        obj.sender = Database.findByPhone(splitCommand[0]);
+        obj.sender = Database.getInstance().findByPhone(splitCommand[0]);
         obj.command = splitCommand[1];
         obj.action = splitCommand[2].split(";");
         
         return obj;
     }
     
+    /**
+     * Executes the received command
+     *
+     * @return The response to the received command
+     */
     public String runCommand() {
         if (command.equals("sign-in")) {
             return signInCommand();
@@ -31,8 +36,13 @@ public class Command {
         return null;
     }
     
+    /**
+     * Executes the sign-in command
+     *
+     * @return The validity of the Phone and Password
+     */
     private String signInCommand() {
-        Person person = Database.findByPhone(action[0]);
+        Person person = Database.getInstance().findByPhone(action[0]);
         if (person == null) {
             return "false;false";
         }
@@ -42,5 +52,11 @@ public class Command {
         }
         
         return "true;false";
+    }
+    
+    private String checkoutCartCommand() {
+        sender.checkout();
+        // TODO: save new data to file
+        return null;
     }
 }
