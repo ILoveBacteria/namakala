@@ -5,33 +5,15 @@ import utilities.Person;
 import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
-    private static Database instance = new Database();
-    private long countPerson = 0;
-    private long countProduct = 0;
-    private final Path personPath = Paths.get("src/database/person.txt");
-    
-    public static Database getInstance() {
-        return instance;
-    }
-    
-    public long getCountPerson() {
-        return countPerson;
-    }
-    
-    public void setCountPerson(long countPerson) {
-        this.countPerson = countPerson;
-    }
-    
-    public long getCountProduct() {
-        return countProduct;
-    }
-    
-    public void setCountProduct(long countProduct) {
-        this.countProduct = countProduct;
-    }
+    public static long countPerson = 0;
+    public static long countProduct = 0;
+    private static final Path personPath = Paths.get("src/database/person.txt");
     
     /**
      * This method takes a phone number and searches for a {@link Person} in the database and returns it if present
@@ -39,7 +21,7 @@ public class Database {
      * @param phone A phone to find a person
      * @return A {@link Person} if found else returns null
      */
-    public Person findByPhone(String phone) {
+    public static Person findByPhone(String phone) {
         try (ObjectInputStream in = new ObjectInputStream(Files.newInputStream(personPath))) {
             while (in.available() != 0) {
                 Person person = (Person) in.readObject();
@@ -51,5 +33,34 @@ public class Database {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public static boolean saveEditedPerson(Person person) {
+        try (ObjectOutputStream out = new ObjectOutputStream(Files.newOutputStream(personPath))) {
+            List<Person> personList = readAllPersons();
+            personList.remove(person);
+            personList.add(person);
+            
+            for (Person p : personList) {
+                out.writeObject(p);
+            }
+            return true;
+            
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    
+        return false;
+    }
+    
+    private static List<Person> readAllPersons() throws IOException, ClassNotFoundException {
+        List<Person> personList = new ArrayList<>();
+        try (ObjectInputStream in = new ObjectInputStream(Files.newInputStream(personPath))) {
+            while (in.available() != 0) {
+                personList.add((Person) in.readObject());
+            }
+        }
+        
+        return personList;
     }
 }
