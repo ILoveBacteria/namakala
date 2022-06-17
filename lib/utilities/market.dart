@@ -7,4 +7,12 @@ class Market {
   List<Product> products = [];
 
   Market(this.owner, this.name);
+
+  Market.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        owner = Person.fromJson(json['owner']);
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+      };
 }

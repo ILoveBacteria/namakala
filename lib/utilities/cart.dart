@@ -1,8 +1,17 @@
 import 'package:namakala/utilities/selected_product.dart';
 
 class Cart {
-  Map<SelectedProduct, int> products = {};
-  
+  late Map<SelectedProduct, int> products;
+
+  Cart.fromJson(Map<String, dynamic> json) {
+    Map<Map<String, dynamic>, int> productEntities = json['products'];
+
+    for (var key in productEntities.keys) {
+      SelectedProduct sp = SelectedProduct.fromJson(key);
+      products[sp] = productEntities[key]!;
+    }
+  }
+
   void add(SelectedProduct product) {
     if (products.containsKey(product)) {
       products[product] = products[product]! + 1;

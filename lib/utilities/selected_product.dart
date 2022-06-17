@@ -8,6 +8,17 @@ class SelectedProduct {
 
   SelectedProduct(this.product, this.color, this.size);
 
+  SelectedProduct.fromJson(Map<String, dynamic> json)
+      : product = Product.fromJson(json['product']),
+        color = Color(json['color']),
+        size = json['size'];
+
+  Map<String, dynamic> toJson() => {
+        'product': product.toJson(),
+        'color': color.value,
+        'size': size,
+      };
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

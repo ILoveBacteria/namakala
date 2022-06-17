@@ -30,7 +30,8 @@ class _CartScreenState extends State<CartScreen> {
           : FloatingActionButton.extended(
               onPressed: () {
                 _person.purchases.add(_person.cart);
-                _person.cart = Cart();
+                // TODO: checkout the cart send to server
+                // _person.cart = Cart();
                 setState(() {});
               },
               backgroundColor: Colors.black,

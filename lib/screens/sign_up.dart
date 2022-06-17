@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:namakala/data/sample_data.dart';
 import 'package:namakala/screens/main_screen.dart';
 import 'package:namakala/screens/sign_in.dart';
+import 'package:namakala/utilities/market.dart';
 import 'package:namakala/utilities/person.dart';
 import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/screen_setting.dart';
@@ -226,6 +227,7 @@ class _SignUpState extends State<SignUp> {
     if (_emailController.text.isNotEmpty) {
       person.email = _emailController.text;
     }
+    person.market = Market(person, '${person.firstname} ${person.lastname}');
     SampleData.person = person;
   }
 
