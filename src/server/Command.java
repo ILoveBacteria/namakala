@@ -1,6 +1,9 @@
 package server;
 
 import database.Database;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import utilities.Person;
 
 import java.io.ObjectInputStream;
@@ -29,8 +32,13 @@ public class Command {
      * @return The response to the received command
      */
     public String runCommand() {
-        if (command.equals("sign-in")) {
-            return signInCommand();
+        switch (command) {
+            case "sign-in":
+                return signInCommand();
+            case "checkout-cart":
+                return checkoutCartCommand();
+            case "sign-up":
+                return signUpCommand();
         }
         
         return null;
@@ -54,9 +62,36 @@ public class Command {
         return "true;false";
     }
     
+    /**
+     * Executes the checkout-cart command
+     *
+     * @return The success of checkout
+     */
     private String checkoutCartCommand() {
         sender.checkout();
         boolean result =  Database.saveEditedPerson(sender);
         return String.valueOf(result);
+    }
+    
+    private String signUpCommand() {
+        try {
+            Object obj = new JSONParser().parse(action[0]);
+            JSONObject jsonObject = (JSONObject) obj;
+            
+            String firstname = (String) jsonObject.get("firstname");
+            String lastname = (String) jsonObject.get("lastname");
+            String email = (String) jsonObject.get("email");
+            String phone = (String) jsonObject.get("phone");
+            String password = (String) jsonObject.get("password");
+            
+            Person person = new Person(firstname, lastname, email, phone, password);
+            boolean result = Database.saveNewPerson(person);
+            return String.valueOf(result);
+            
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
+        return "false";
     }
 }
