@@ -36,15 +36,12 @@ public class Database {
     }
     
     public static boolean saveEditedPerson(Person person) {
-        try (ObjectOutputStream out = new ObjectOutputStream(Files.newOutputStream(personPath))) {
+        try {
             List<Person> personList = readAllPersons();
             personList.remove(person);
             personList.add(person);
             
-            for (Person p : personList) {
-                out.writeObject(p);
-            }
-            return true;
+           return writeAllPersons(personList);
             
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -62,5 +59,33 @@ public class Database {
         }
         
         return personList;
+    }
+    
+    public static boolean saveNewPerson(Person person) {
+        try {
+            List<Person>personList = readAllPersons();
+            personList.add(person);
+            
+            return writeAllPersons(personList);
+    
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        
+        return false;
+    }
+    
+    private static boolean writeAllPersons(List<Person> personList) {
+        try (ObjectOutputStream out = new ObjectOutputStream(Files.newOutputStream(personPath))) {
+            for (Person p : personList) {
+                out.writeObject(p);
+            }
+            return true;
+        
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    
+        return false;
     }
 }
