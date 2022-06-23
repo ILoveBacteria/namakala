@@ -6,11 +6,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import utilities.Person;
 
-import java.io.ObjectInputStream;
-
 public class Command {
     private String command;
-    private String[] action;
+    private String[] data;
     private Person sender;
     
     private Command() {}
@@ -21,8 +19,9 @@ public class Command {
         String[] splitCommand = value.split(" ", 3);
         obj.sender = Database.findByPhone(splitCommand[0]);
         obj.command = splitCommand[1];
-        obj.action = splitCommand[2].split(";");
-        
+        if (splitCommand.length >= 3)
+            obj.data = splitCommand[2].split(";");
+    
         return obj;
     }
     
@@ -32,12 +31,13 @@ public class Command {
      * @return The response to the received command
      */
     public String runCommand() {
+        System.out.println(command);
         switch (command) {
-            case "sign-in":
+            case "signIn":
                 return signInCommand();
-            case "checkout-cart":
+            case "checkoutCart":
                 return checkoutCartCommand();
-            case "sign-up":
+            case "signUp":
                 return signUpCommand();
         }
         
@@ -45,17 +45,17 @@ public class Command {
     }
     
     /**
-     * Executes the sign-in command
+     * Executes the signIn command
      *
      * @return The validity of the Phone and Password
      */
     private String signInCommand() {
-        Person person = Database.findByPhone(action[0]);
+        Person person = Database.findByPhone(data[0]);
         if (person == null) {
             return "false;false";
         }
         
-        if (person.getPassword().equals(action[1])) {
+        if (person.getPassword().equals(data[1])) {
             return "true;true";
         }
         
@@ -63,7 +63,7 @@ public class Command {
     }
     
     /**
-     * Executes the checkout-cart command
+     * Executes the checkoutCart command
      *
      * @return The success of checkout
      */
@@ -75,7 +75,7 @@ public class Command {
     
     private String signUpCommand() {
         try {
-            Object obj = new JSONParser().parse(action[0]);
+            Object obj = new JSONParser().parse(data[0]);
             JSONObject jsonObject = (JSONObject) obj;
             
             String firstname = (String) jsonObject.get("firstname");
