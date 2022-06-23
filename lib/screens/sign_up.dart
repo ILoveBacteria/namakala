@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:namakala/data/sample_data.dart';
 import 'package:namakala/screens/main_screen.dart';
 import 'package:namakala/screens/sign_in.dart';
+import 'package:namakala/socket/command.dart';
+import 'package:namakala/socket/socket.dart';
 import 'package:namakala/utilities/market.dart';
 import 'package:namakala/utilities/person.dart';
 import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 import '../widgets/field.dart';
+import '../widgets/snack_message.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -209,12 +214,11 @@ class _SignUpState extends State<SignUp> {
     });
   }
 
-  void _onSignUpButtonPressed() {
+  void _onSignUpButtonPressed() async {
     _validateAllFields();
     setState(() {});
 
-    if (_isValidateAllFields()) {
-      _createNewUser();
+    if (_isValidateAllFields() && await _createNewUser()) {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const MainScreen()),
             (Route<dynamic> route) => false,
@@ -222,13 +226,24 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
-  void _createNewUser() {
+  bool _checkServerResponse(String value) {
+    if (value == 'false') {
+      SnackMessage('Failed to get response from the server. Try again').build(context);
+      return false;
+    }
+    return true;
+  }
+
+  Future<bool> _createNewUser() async {
     Person person = Person(_firstNameController.text, _lastNameController.text, _phoneController.text, _passwordController.text,);
     if (_emailController.text.isNotEmpty) {
       person.email = _emailController.text;
     }
     person.market = Market(person, '${person.firstname} ${person.lastname}');
     SampleData.person = person;
+    MySocket socket = MySocket(person, Command.signUp, [jsonEncode(person)]);
+    String value = await socket.sendAndReceive();
+    return _checkServerResponse(value);
   }
 
   bool _isValidateAllFields() {
