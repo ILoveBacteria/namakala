@@ -19,8 +19,8 @@ public class AcceptClient implements Runnable {
             
             String input = in.nextLine();
             Command inputCommand = Command.parseCommand(input);
-            String response =  inputCommand.runCommand();
-            out.format(response + "\n");
+            String response = inputCommand.runCommand();
+            out.format(response);
             
         } catch (IOException e) {
             e.printStackTrace();

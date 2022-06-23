@@ -3,9 +3,7 @@ package database;
 import utilities.Person;
 
 import javax.xml.crypto.Data;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +38,8 @@ public class Database {
             List<Person> personList = readAllPersons();
             personList.remove(person);
             personList.add(person);
-            
-           return writeAllPersons(personList);
+            writeAllPersons(personList);
+            return true;
             
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -56,6 +54,8 @@ public class Database {
             while (in.available() != 0) {
                 personList.add((Person) in.readObject());
             }
+        } catch (EOFException e) {
+            e.printStackTrace();
         }
         
         return personList;
@@ -65,8 +65,8 @@ public class Database {
         try {
             List<Person>personList = readAllPersons();
             personList.add(person);
-            
-            return writeAllPersons(personList);
+            writeAllPersons(personList);
+            return true;
     
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -75,17 +75,11 @@ public class Database {
         return false;
     }
     
-    private static boolean writeAllPersons(List<Person> personList) {
+    private static void writeAllPersons(List<Person> personList) throws IOException {
         try (ObjectOutputStream out = new ObjectOutputStream(Files.newOutputStream(personPath))) {
             for (Person p : personList) {
                 out.writeObject(p);
             }
-            return true;
-        
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-    
-        return false;
     }
 }
