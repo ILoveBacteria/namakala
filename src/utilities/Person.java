@@ -3,6 +3,7 @@ package utilities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Person implements Serializable {
     private String firstname;
@@ -15,11 +16,13 @@ public class Person implements Serializable {
     private List<Product> favorites = new ArrayList<>();
     private Cart cart = new Cart();
     
-    public Person(String firstname, String lastname, String phone, String password) {
+    public Person(String firstname, String lastname, String email, String phone, String password) {
         this.firstname = firstname;
         this.lastname = lastname;
+        this.email = email;
         this.phone = phone;
         this.password = password;
+        this.market = new Market(this, String.format("%s %s", firstname, lastname));
     }
     
     public String getPhone() {
@@ -46,7 +49,7 @@ public class Person implements Serializable {
         
         Person person = (Person) o;
     
-        return phone != null ? phone.equals(person.phone) : person.phone == null;
+        return Objects.equals(phone, person.phone);
     }
     
     @Override
