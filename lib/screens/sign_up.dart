@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:namakala/data/sample_data.dart';
+import 'package:namakala/data/user_data.dart';
 import 'package:namakala/screens/main_screen.dart';
 import 'package:namakala/screens/sign_in.dart';
 import 'package:namakala/socket/command.dart';
@@ -219,6 +219,7 @@ class _SignUpState extends State<SignUp> {
     setState(() {});
 
     if (_isValidateAllFields() && await _createNewUser()) {
+      UserData.phone = _phoneController.text;
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const MainScreen()),
             (Route<dynamic> route) => false,
@@ -240,8 +241,8 @@ class _SignUpState extends State<SignUp> {
       person.email = _emailController.text;
     }
     person.market = Market(person, '${person.firstname} ${person.lastname}');
-    SampleData.person = person;
-    MySocket socket = MySocket(person, Command.signUp, [jsonEncode(person)]);
+
+    MySocket socket = MySocket(null, Command.signUp, [jsonEncode(person)]);
     String value = await socket.sendAndReceive();
     return _checkServerResponse(value);
   }
