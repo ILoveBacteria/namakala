@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:namakala/data/sample_data.dart';
+import 'package:namakala/data/user_data.dart';
 import 'package:namakala/screens/sign_up.dart';
+import 'package:namakala/socket/command.dart';
+import 'package:namakala/socket/socket.dart';
 import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/field.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
-import '../utilities/person.dart';
 import 'main_screen.dart';
 
 class SignIn extends StatefulWidget {
@@ -108,14 +109,13 @@ class _SignInState extends State<SignIn> {
     });
   }
 
-  void _onSignInButtonPressed() {
-    _validateAllFields();
+  void _onSignInButtonPressed() async {
     _phoneFocus.unfocus();
     _passwordFocus.unfocus();
     setState(() {});
 
-    if (_isValidateAllFields()) {
-      _signInUser();
+    if (await _signInUser()) {
+      UserData.phone = _phoneController.text;
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const MainScreen()),
             (Route<dynamic> route) => false,
@@ -123,32 +123,33 @@ class _SignInState extends State<SignIn> {
     }
   }
 
-  void _signInUser() {
-    for (Person p in SampleData.persons) {
-      if (p.phone == _phoneController.text && p.password == _passwordController.text) {
-        SampleData.person = p;
-        break;
-      }
+  Future<bool> _signInUser() async {
+    MySocket socket = MySocket(null, Command.signIn, [_phoneController.text, _passwordController.text]);
+    String response = await socket.sendAndReceive();
+    return _checkServerResponse(response);
+  }
+
+  bool _checkServerResponse(String value) {
+    List<String> list = value.split(';');
+    bool phoneValid = list.elementAt(0) == 'true' ? true : false;
+    bool passValid = list.elementAt(1) == 'false' ? true : false;
+
+    _validateAllFields(phoneValid, passValid);
+    setState(() {});
+    return phoneValid && passValid;
+  }
+
+  void _validateAllFields(bool phoneValid, bool passValid) {
+    if (phoneValid) {
+      _phoneStatus = FieldStatus.validate;
+    } else {
+      _phoneStatus = FieldStatus.error;
     }
-  }
 
-  bool _isValidateAllFields() {
-    return _phoneStatus == FieldStatus.validate &&
-        _passwordStatus == FieldStatus.validate;
-  }
-
-  void _validateAllFields() {
-    _phoneStatus = FieldStatus.error;
-    _passwordStatus = FieldStatus.error;
-
-    for (Person p in SampleData.persons) {
-      if (p.phone == _phoneController.text) {
-        _phoneStatus = FieldStatus.validate;
-        if (p.password == _passwordController.text) {
-          _passwordStatus = FieldStatus.validate;
-        }
-        break;
-      }
+    if (passValid) {
+      _phoneStatus = FieldStatus.validate;
+    } else {
+      _passwordStatus = FieldStatus.error;
     }
   }
 }
