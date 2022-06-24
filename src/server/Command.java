@@ -31,7 +31,6 @@ public class Command {
     
     /**
      * Executes the received command
-     *
      * @return The response to the received command
      */
     public String runCommand() {
@@ -43,6 +42,8 @@ public class Command {
                 return checkoutCartCommand();
             case "signUp":
                 return signUpCommand();
+            case "profile":
+                return profileCommand();
         }
         
         return null;
@@ -50,7 +51,6 @@ public class Command {
     
     /**
      * Executes the signIn command
-     *
      * @return The validity of the Phone and Password
      */
     private String signInCommand() {
@@ -68,7 +68,6 @@ public class Command {
     
     /**
      * Executes the checkoutCart command
-     *
      * @return The success of checkout
      */
     private String checkoutCartCommand() {
@@ -77,6 +76,10 @@ public class Command {
         return String.valueOf(result);
     }
     
+    /**
+     * Executes the signUp command
+     * @return The success of creating a new account
+     */
     private String signUpCommand() {
         try {
             Object obj = new JSONParser().parse(data[0]);
@@ -90,5 +93,19 @@ public class Command {
         }
         
         return "false";
+    }
+    
+    /**
+     * Executes the profile command
+     * @return a person object as json
+     */
+    private String profileCommand() {
+        try {
+            return sender.toJson().toJSONString();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        
+        return "null";
     }
 }
