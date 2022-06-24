@@ -1,3 +1,3 @@
 enum Command {
-  signIn, signUp, checkoutCart
+  signIn, signUp, checkoutCart, profile, editProfile, addProductMarket, removeAllCart, removeCart, addCart, removeFavorites, addFavorites
 }
