@@ -45,7 +45,7 @@ public class Command {
             case "profile":
                 return profileCommand();
             case "cart":
-            
+                return cartCommand();
         }
         
         return null;
