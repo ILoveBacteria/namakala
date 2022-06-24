@@ -68,8 +68,8 @@ public class Person implements Serializable {
         return phone;
     }
     
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public Cart getCart() {
+        return cart;
     }
     
     public String getPassword() {

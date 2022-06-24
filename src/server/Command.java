@@ -44,6 +44,8 @@ public class Command {
                 return signUpCommand();
             case "profile":
                 return profileCommand();
+            case "cart":
+            
         }
         
         return null;
@@ -102,6 +104,16 @@ public class Command {
     private String profileCommand() {
         try {
             return sender.toJson().toJSONString();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        
+        return "null";
+    }
+    
+    private String cartCommand() {
+        try {
+            return sender.getCart().toJson().toJSONString();
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
