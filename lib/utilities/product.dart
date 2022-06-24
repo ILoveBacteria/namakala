@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:namakala/utilities/market.dart';
 
 class Product {
-  late double id;
+  late int id;
   late String name;
   late String image;
   late String detail;
