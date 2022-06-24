@@ -1,11 +1,25 @@
 package utilities;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Cart implements Serializable {
     private Map<SelectedProduct, Integer> products = new HashMap<>();
+    
+    public JSONObject toJson() {
+        JSONObject jo = new JSONObject();
+        
+        Map<JSONObject, Integer> map = new HashMap<>();
+        for (SelectedProduct sp : products.keySet()) {
+            map.put(sp.toJson(), products.get(sp));
+        }
+        jo.put("products", map);
+        return jo;
+    }
     
     public Map<SelectedProduct, Integer> getProducts() {
         return products;

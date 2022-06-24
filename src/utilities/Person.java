@@ -1,5 +1,8 @@
 package utilities;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,42 @@ public class Person implements Serializable {
         this.phone = phone;
         this.password = password;
         this.market = new Market(this, String.format("%s %s", firstname, lastname));
+    }
+    
+    public static Person fromJson(JSONObject jsonObject) {
+        String firstname = (String) jsonObject.get("firstname");
+        String lastname = (String) jsonObject.get("lastname");
+        String email = (String) jsonObject.get("email");
+        String phone = (String) jsonObject.get("phone");
+        String password = (String) jsonObject.get("password");
+    
+        return new Person(firstname, lastname, email, phone, password);
+    }
+    
+    public JSONObject toJson() {
+        JSONObject jo = new JSONObject();
+        
+        jo.put("firstname", firstname);
+        jo.put("lastname", lastname);
+        jo.put("email", email);
+        jo.put("phone", phone);
+        jo.put("password", password);
+        jo.put("market", market.toJson());
+        
+        JSONArray jaCart = new JSONArray();
+        for (Cart c : purchases) {
+            jaCart.add(c.toJson());
+        }
+        jo.put("purchases", jaCart);
+        
+        JSONArray jaFavorites = new JSONArray();
+        for (Product p : favorites) {
+            jaFavorites.add(p.toJson());
+        }
+        jo.put("favorites", jaFavorites);
+        jo.put("cart", cart.toJson());
+        
+        return jo;
     }
     
     public String getPhone() {

@@ -1,5 +1,8 @@
 package utilities;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,8 +17,8 @@ public class Product implements Serializable {
     private int count;
     private double score = 0.0;
     private int countVoters = 0;
-    private List<Integer> colors;
-    private List<String> sizes;
+    private List<Integer> color;
+    private List<String> size;
     
     public Product(int id, String name, String image, String detail, int price, String category, Market market,
                    int count, List<Integer> colors, List<String> sizes) {
@@ -27,8 +30,23 @@ public class Product implements Serializable {
         this.category = category;
         this.market = market;
         this.count = count;
-        this.colors = colors;
-        this.sizes = sizes;
+        this.color = colors;
+        this.size = sizes;
+    }
+    
+    public JSONObject toJson() {
+        JSONObject jo = new JSONObject();
+        jo.put("id", id);
+        jo.put("name", name);
+        // TODO: handle image
+        jo.put("detail", detail);
+        jo.put("price", price);
+        jo.put("category", category);
+        jo.put("market", market.toJson());
+        jo.put("size", new JSONArray().addAll(size));
+        jo.put("color", new JSONArray().addAll(color));
+        
+        return jo;
     }
     
     public int getPrice() {

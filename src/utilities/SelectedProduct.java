@@ -1,5 +1,7 @@
 package utilities;
 
+import org.json.simple.JSONObject;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,6 +14,14 @@ public class SelectedProduct implements Serializable {
         this.product = product;
         this.color = color;
         this.size = size;
+    }
+    
+    public JSONObject toJson() {
+        JSONObject jo = new JSONObject();
+        jo.put("product", product);
+        jo.put("color", color);
+        jo.put("size", size);
+        return jo;
     }
     
     public Product getProduct() {
