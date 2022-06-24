@@ -132,7 +132,7 @@ class _SignInState extends State<SignIn> {
   bool _checkServerResponse(String value) {
     List<String> list = value.split(';');
     bool phoneValid = list.elementAt(0) == 'true' ? true : false;
-    bool passValid = list.elementAt(1) == 'false' ? true : false;
+    bool passValid = list.elementAt(1) == 'true' ? true : false;
 
     _validateAllFields(phoneValid, passValid);
     setState(() {});
