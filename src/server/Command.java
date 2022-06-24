@@ -17,7 +17,11 @@ public class Command {
         Command obj = new Command();
         
         String[] splitCommand = value.split(" ", 3);
-        obj.sender = Database.findByPhone(splitCommand[0]);
+        
+        if (!splitCommand[0].equals("null")) {
+            obj.sender = Database.findByPhone(splitCommand[0]);
+        }
+        
         obj.command = splitCommand[1];
         if (splitCommand.length >= 3)
             obj.data = splitCommand[2].split(";");
@@ -77,14 +81,7 @@ public class Command {
         try {
             Object obj = new JSONParser().parse(data[0]);
             JSONObject jsonObject = (JSONObject) obj;
-            
-            String firstname = (String) jsonObject.get("firstname");
-            String lastname = (String) jsonObject.get("lastname");
-            String email = (String) jsonObject.get("email");
-            String phone = (String) jsonObject.get("phone");
-            String password = (String) jsonObject.get("password");
-            
-            Person person = new Person(firstname, lastname, email, phone, password);
+            Person person = Person.fromJson(jsonObject);
             boolean result = Database.saveNewPerson(person);
             return String.valueOf(result);
             
