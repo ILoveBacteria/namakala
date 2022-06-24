@@ -25,7 +25,7 @@ public class Person implements Serializable {
         this.email = email;
         this.phone = phone;
         this.password = password;
-        this.market = new Market(this, String.format("%s %s", firstname, lastname));
+        this.market = new Market(String.format("%s %s", firstname, lastname));
     }
     
     public static Person fromJson(JSONObject jsonObject) {

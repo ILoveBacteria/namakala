@@ -18,7 +18,7 @@ class SampleData {
       'This product is in Test!',
       [Colors.blue, Colors.yellow],
       ['128GB', '256GB', '512GB'],
-      Market(SampleData.person, 'Digikala'),
+      Market('Digikala'),
     ): 3,
     Product(
       'iPhone 13',
@@ -28,7 +28,7 @@ class SampleData {
       'This product is in Test!',
       [Colors.blue, Colors.black],
       ['128GB', '256GB'],
-      Market(SampleData.person, 'Digikala'),
+      Market('Digikala'),
     ): 2,
     Product(
       'iPhone 13 pro',
@@ -38,7 +38,7 @@ class SampleData {
       'This product is in Test!',
       [Colors.pink, Colors.green],
       ['128GB', '256GB'],
-      Market(SampleData.person, 'Digikala'),
+      Market('Digikala'),
     ): 1,
     Product(
       'iPhone 13 mini',
@@ -48,7 +48,7 @@ class SampleData {
       'This product is in Test!',
       [Colors.blue],
       ['128GB', '256GB'],
-      Market(SampleData.person, 'Digikala'),
+      Market('Digikala'),
     ): 0,
     Product(
       'Macbook Air',
@@ -58,7 +58,7 @@ class SampleData {
       'This product is in Test!',
       [Colors.grey],
       ['default'],
-      Market(SampleData.person, 'Digikala'),
+      Market('Digikala'),
     ): 3,
     Product(
       'MacBook Pro M1',
@@ -68,7 +68,7 @@ class SampleData {
       'This product is in Test!',
       [Colors.grey],
       ['default'],
-      Market(SampleData.person, 'Digikala'),
+      Market('Digikala'),
     ): 2,
   };
 }

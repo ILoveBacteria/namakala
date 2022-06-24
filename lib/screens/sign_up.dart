@@ -240,7 +240,7 @@ class _SignUpState extends State<SignUp> {
     if (_emailController.text.isNotEmpty) {
       person.email = _emailController.text;
     }
-    person.market = Market(person, '${person.firstname} ${person.lastname}');
+    person.market = Market('${person.firstname} ${person.lastname}');
 
     MySocket socket = MySocket(null, Command.signUp, [jsonEncode(person)]);
     String value = await socket.sendAndReceive();
