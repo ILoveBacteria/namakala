@@ -1,13 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:namakala/data/user_data.dart';
+import 'package:namakala/socket/command.dart';
+import 'package:namakala/socket/socket.dart';
 import 'package:namakala/widgets/card/product_card.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
 import '../utilities/cart.dart';
 import '../utilities/font.dart';
-import '../utilities/person.dart';
 import '../utilities/selected_product.dart';
 import '../data/sample_data.dart';
 import '../widgets/card/detail.dart';
+import '../widgets/snack_message.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -17,39 +22,60 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  final Person _person = SampleData.person;
+  bool _dataReceived = false;
+  late Cart cart;
 
   @override
   Widget build(BuildContext context) {
+    if (!_dataReceived) {
+      _getDataFromServer().then((value) {
+        cart = value;
+        _dataReceived = true;
+        setState(() {});
+      });
+    }
+
     return ScreenSetting.initScreen(
       context: context,
       appBar: ScreenSetting.appBar(title: 'Cart', context: context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: _person.cart.products.isEmpty
+      floatingActionButton: !_dataReceived || cart.products.isEmpty
           ? null
-          : FloatingActionButton.extended(
-              onPressed: () {
-                _person.purchases.add(_person.cart);
-                // TODO: checkout the cart send to server
-                // _person.cart = Cart();
-                setState(() {});
-              },
-              backgroundColor: Colors.black,
-              icon: const Icon(Icons.shopping_cart_checkout_outlined),
-              extendedPadding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 3 / 10),
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
-              label: Text(
-                'CHECK OUT',
-                style: Font.styleButton1(),
-              ),
-            ),
-      child: _person.cart.products.isEmpty
-          ? _buildEmptyCartScreen(context)
-          : Column(
-              children: _buildScreen(),
-            ),
+          : _buildFloatingActionButton(),
+      child: _dataReceived ? _buildMainScreen() : _buildWaitingScreen(),
+    );
+  }
+
+  Widget _buildWaitingScreen() {
+    return Container();
+  }
+
+  Widget _buildMainScreen() {
+    return cart.products.isEmpty
+        ? _buildEmptyCartScreen(context)
+        : Column(
+      children: _buildScreen(),
+    );
+  }
+
+  FloatingActionButton? _buildFloatingActionButton() {
+    return FloatingActionButton.extended(
+      onPressed: () {
+        // _person.purchases.add(_person.cart);
+        // TODO: checkout the cart send to server
+        // _person.cart = Cart();
+        setState(() {});
+      },
+      backgroundColor: Colors.black,
+      icon: const Icon(Icons.shopping_cart_checkout_outlined),
+      extendedPadding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 3 / 10),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0))),
+      label: Text(
+        'CHECK OUT',
+        style: Font.styleButton1(),
+      ),
     );
   }
 
@@ -79,7 +105,7 @@ class _CartScreenState extends State<CartScreen> {
 
   List<Widget> _buildScreen() {
     List<Widget> list = [];
-    for (SelectedProduct p in _person.cart.products.keys) {
+    for (SelectedProduct p in cart.products.keys) {
       ProductCard card = ProductCard(
         p.product,
         p.product.image,
@@ -94,7 +120,7 @@ class _CartScreenState extends State<CartScreen> {
 
     list.add(
       Text(
-        'Total: ${_person.cart.sumOfPrice()}\$',
+        'Total: ${cart.sumOfPrice()}\$',
         style: Font.styleSubtitle1(color: Colors.black54),
       ),
     );
@@ -111,7 +137,7 @@ class _CartScreenState extends State<CartScreen> {
       Detail.text(
         Icons.shopping_bag_outlined,
         'Count',
-        '${_person.cart.products[p]}',
+        '${cart.products[p]}',
       ),
       Detail.text(Icons.straighten_outlined, 'Size', p.size),
     ];
@@ -119,13 +145,14 @@ class _CartScreenState extends State<CartScreen> {
     return list;
   }
 
+  // TODO: Change onPressed
   List<Widget> _buttonList(SelectedProduct p) {
     return <Widget>[
       IconButton(
         onPressed: () {
-          SampleData.products[p.product] =
-              SampleData.products[p.product]! + _person.cart.products[p]!;
-          _person.cart.removeAll(p);
+          // SampleData.products[p.product] =
+          //     SampleData.products[p.product]! + _person.cart.products[p]!;
+          cart.removeAll(p);
           setState(() {});
         },
         icon: const Icon(Icons.delete_outline),
@@ -134,11 +161,11 @@ class _CartScreenState extends State<CartScreen> {
         splashColor: Colors.transparent,
       ),
       IconButton(
-        onPressed: _person.cart.products[p]! > 1
+        onPressed: cart.products[p]! > 1
             ? () {
-                _person.cart.remove(p);
-                SampleData.products[p.product] =
-                    SampleData.products[p.product]! + 1;
+                cart.remove(p);
+                // SampleData.products[p.product] =
+                //     SampleData.products[p.product]! + 1;
                 setState(() {});
               }
             : null,
@@ -150,9 +177,9 @@ class _CartScreenState extends State<CartScreen> {
       IconButton(
         onPressed: SampleData.products[p.product]! > 0
             ? () {
-                _person.cart.add(p);
-                SampleData.products[p.product] =
-                    SampleData.products[p.product]! - 1;
+                cart.add(p);
+                // SampleData.products[p.product] =
+                //     SampleData.products[p.product]! - 1;
                 setState(() {});
               }
             : null,
@@ -162,5 +189,15 @@ class _CartScreenState extends State<CartScreen> {
         splashColor: Colors.transparent,
       ),
     ];
+  }
+
+  Future<Cart> _getDataFromServer() async {
+    MySocket socket = MySocket(UserData.phone, Command.cart, []);
+    String response = await socket.sendAndReceive();
+    if (response == 'null') {
+      SnackMessage('Failed to get data from server').build(context);
+      return Future.error('Failed to get data from server');
+    }
+    return Cart.fromJson(jsonDecode(response));
   }
 }
