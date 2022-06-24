@@ -9,7 +9,7 @@ import '../utilities/person.dart';
 class MySocket {
   final int port = 5000;
   final String host = "10.0.2.2";
-  final Person sender;
+  final Person? sender;
   final Command command;
   final List<String> data;
 
@@ -18,9 +18,9 @@ class MySocket {
   Future<String> sendAndReceive() async {
     var socket = await Socket.connect(host, port);
     if (data.isNotEmpty) {
-      socket.writeln("${sender.phone} ${command.name} ${data.join(";")}");
+      socket.writeln("${sender?.phone} ${command.name} ${data.join(";")}");
     } else {
-      socket.writeln("${sender.phone} ${command.name}");
+      socket.writeln("${sender?.phone} ${command.name}");
     }
     await socket.flush();
     String response = await utf8.decoder.bind(socket).join();
