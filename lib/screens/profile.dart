@@ -13,6 +13,7 @@ import 'package:namakala/utilities/font.dart';
 import 'package:namakala/utilities/person.dart';
 import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/screen_setting.dart';
+import 'package:namakala/widgets/snack_message.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -27,11 +28,13 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    _getDataFromServer().then((value) {
-      person = value;
-      _dataReceived = true;
-      setState(() {});
-    });
+    if (!_dataReceived) {
+      _getDataFromServer().then((value) {
+        person = value;
+        _dataReceived = true;
+        setState(() {});
+      });
+    }
 
     return ScreenSetting.initScreen(
       appBar: ScreenSetting.appBar(title: 'Profile'),
@@ -232,8 +235,13 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<Person> _getDataFromServer() async {
+    print('socket');
     MySocket socket = MySocket(UserData.phone, Command.profile, []);
     String response = await socket.sendAndReceive();
+    if (response == 'null') {
+      SnackMessage('Failed to get data from server').build(context);
+      return Future.error('Failed to get data from server');
+    }
     return Person.fromJson(jsonDecode(response));
   }
 }
