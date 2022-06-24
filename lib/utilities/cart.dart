@@ -1,14 +1,16 @@
+import 'dart:convert';
+
 import 'package:namakala/utilities/selected_product.dart';
 
 class Cart {
-  late Map<SelectedProduct, int> products;
+  Map<SelectedProduct, int> products = {};
 
   Cart.fromJson(Map<String, dynamic> json) {
-    Map<Map<String, dynamic>, int> productEntities = json['products'];
+    Map<String, dynamic> map = json['products'];
 
-    for (var key in productEntities.keys) {
-      SelectedProduct sp = SelectedProduct.fromJson(key);
-      products[sp] = productEntities[key]!;
+    for (var keyJson in map.keys) {
+      SelectedProduct sp = SelectedProduct.fromJson(jsonDecode(keyJson));
+      products[sp] = map[keyJson]!;
     }
   }
 
