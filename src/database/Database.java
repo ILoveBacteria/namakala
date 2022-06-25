@@ -1,17 +1,21 @@
 package database;
 
+import utilities.Category;
 import utilities.Person;
+import utilities.Product;
 
 import javax.xml.crypto.Data;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Database {
-    public static long countPerson = 0;
-    public static long countProduct = 0;
-    private static final Path personPath = Paths.get("src/database/person.txt");
+    public static int countProduct = 0;
+    private static final Path personPath = Paths.get("src/database/data/person.txt");
+    private static final Path mobilesPath = Paths.get("src/database/data/mobiles.txt");
+    private static final Path laptopsPath = Paths.get("src/database/data/laptops.txt");
     
     /**
      * This method takes a phone number and searches for a {@link Person} in the database and returns it if present
@@ -21,7 +25,7 @@ public class Database {
      */
     public static Person findByPhone(String phone) {
         try (ObjectInputStream in = new ObjectInputStream(Files.newInputStream(personPath))) {
-            while (in.available() != 0) {
+            while (in.available() >= 0) {
                 Person person = (Person) in.readObject();
                 if (person.getPhone().equals(phone)) {
                     return person;
@@ -83,15 +87,15 @@ public class Database {
         }
     }
     
-    private static void writeAllProducts(List<Product> productList) throws IOException {
+    /*private static void writeAllProducts(List<Product> productList) throws IOException {
         try (ObjectOutputStream out = new ObjectOutputStream(Files.newOutputStream(productPath))) {
             for (Product p : productList) {
                 out.writeObject(p);
             }
         }
     }
-    
-    private static List<Product> readAllProducts() throws IOException, ClassNotFoundException {
+
+    public static List<Product> readAllProducts() throws IOException, ClassNotFoundException {
         List<Product> productList = new ArrayList<>();
         try (ObjectInputStream in = new ObjectInputStream(Files.newInputStream(productPath))) {
             while (in.available() != 0) {
@@ -100,26 +104,26 @@ public class Database {
         } catch (EOFException e) {
             e.printStackTrace();
         }
-        
+
         return productList;
     }
-    
+
     public static boolean saveNewProduct(Product product) {
         product.setId(++countProduct);
-        
+
         try {
             List<Product> productList = readAllProducts();
             productList.add(product);
             writeAllProducts(productList);
             return true;
-            
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        
+
         return false;
     }
-    
+
     public static boolean saveEditedProduct(Product product) {
         try {
             List<Product> productList = readAllProducts();
@@ -127,23 +131,41 @@ public class Database {
             productList.add(product);
             writeAllProducts(productList);
             return true;
-            
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        
+
         return false;
-    }
+    }*/
     
-    public static byte[] readImage() {
-        try (FileInputStream in = new FileInputStream("assets/images/iphone.png")) {
-            byte[] file = new byte[in.available()];
+    public static byte[] readImage(String path) {
+        try (FileInputStream in = new FileInputStream(path)) {
+            byte[] file = new byte[in.available() * 2];
             in.read(file);
             return file;
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+        }
+        
+        return "null".getBytes(StandardCharsets.UTF_8);
+    }
+    
+    public static Category readCategory(String name) throws IOException, ClassNotFoundException {
+        Path path = getCategoryPath(name);
+        try (ObjectInputStream in = new ObjectInputStream(Files.newInputStream(path))) {
+            return (Category) in.readObject();
+        }
+    }
+    
+    private static Path getCategoryPath(String name) {
+        switch (name) {
+            case "Mobiles":
+                return mobilesPath;
+            case "Laptops":
+                return laptopsPath;
+            default:
+                return null;
         }
     }
 }

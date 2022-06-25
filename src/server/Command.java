@@ -2,12 +2,17 @@ package server;
 
 import database.Database;
 import javafx.scene.chart.XYChart;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import utilities.Person;
+import utilities.Product;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Command {
     private String command;
@@ -49,6 +54,8 @@ public class Command {
                 return profileCommand();
             case "cart":
                 return cartCommand();
+            case "category":
+                return categoryCommand();
         }
         
         return null;
@@ -124,8 +131,12 @@ public class Command {
         return "null".getBytes(StandardCharsets.UTF_8);
     }
     
-//    private String categoryCommand() {
-//        byte[] b = Database.readImage();
-//
-//    }
+    private byte[] categoryCommand() {
+        try {
+            return Database.readCategory(data[0]).toJson().toJSONString().getBytes(StandardCharsets.UTF_8);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "null".getBytes(StandardCharsets.UTF_8);
+    }
 }
