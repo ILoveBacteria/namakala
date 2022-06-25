@@ -1,10 +1,13 @@
 package server;
 
 import database.Database;
+import javafx.scene.chart.XYChart;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import utilities.Person;
+
+import java.nio.charset.StandardCharsets;
 
 public class Command {
     private String command;
@@ -33,7 +36,7 @@ public class Command {
      * Executes the received command
      * @return The response to the received command
      */
-    public String runCommand() {
+    public byte[] runCommand() {
         System.out.println(command);
         switch (command) {
             case "signIn":
@@ -55,69 +58,74 @@ public class Command {
      * Executes the signIn command
      * @return The validity of the Phone and Password
      */
-    private String signInCommand() {
+    private byte[] signInCommand() {
         Person person = Database.findByPhone(data[0]);
         if (person == null) {
-            return "false;false";
+            return "false;false".getBytes(StandardCharsets.UTF_8);
         }
         
         if (person.getPassword().equals(data[1])) {
-            return "true;true";
+            return "true;true".getBytes(StandardCharsets.UTF_8);
         }
         
-        return "true;false";
+        return "true;false".getBytes(StandardCharsets.UTF_8);
     }
     
     /**
      * Executes the checkoutCart command
      * @return The success of checkout
      */
-    private String checkoutCartCommand() {
+    private byte[] checkoutCartCommand() {
         sender.checkout();
         boolean result =  Database.saveEditedPerson(sender);
-        return String.valueOf(result);
+        return String.valueOf(result).getBytes(StandardCharsets.UTF_8);
     }
     
     /**
      * Executes the signUp command
      * @return The success of creating a new account
      */
-    private String signUpCommand() {
+    private byte[] signUpCommand() {
         try {
             Object obj = new JSONParser().parse(data[0]);
             JSONObject jsonObject = (JSONObject) obj;
             Person person = Person.fromJson(jsonObject);
             boolean result = Database.saveNewPerson(person);
-            return String.valueOf(result);
+            return String.valueOf(result).getBytes(StandardCharsets.UTF_8);
             
         } catch (ParseException e) {
             e.printStackTrace();
         }
         
-        return "false";
+        return "false".getBytes(StandardCharsets.UTF_8);
     }
     
     /**
      * Executes the profile command
      * @return a person object as json
      */
-    private String profileCommand() {
+    private byte[] profileCommand() {
         try {
-            return sender.toJson().toJSONString();
+            return sender.toJson().toJSONString().getBytes(StandardCharsets.UTF_8);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
         
-        return "null";
+        return "null".getBytes(StandardCharsets.UTF_8);
     }
     
-    private String cartCommand() {
+    private byte[] cartCommand() {
         try {
-            return sender.getCart().toJson().toJSONString();
+            return sender.getCart().toJson().toJSONString().getBytes(StandardCharsets.UTF_8);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
         
-        return "null";
+        return "null".getBytes(StandardCharsets.UTF_8);
     }
+    
+//    private String categoryCommand() {
+//        byte[] b = Database.readImage();
+//
+//    }
 }
