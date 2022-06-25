@@ -1,9 +1,11 @@
 package utilities;
 
+import database.Database;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 public class Product implements Serializable {
@@ -37,7 +39,7 @@ public class Product implements Serializable {
         JSONObject jo = new JSONObject();
         jo.put("id", id);
         jo.put("name", name);
-        // TODO: handle image
+        jo.put("image", new JSONArray().addAll(Arrays.asList(Database.readImage(image))));
         jo.put("detail", detail);
         jo.put("price", price);
         jo.put("category", category);
@@ -54,6 +56,10 @@ public class Product implements Serializable {
     
     public int getPrice() {
         return price;
+    }
+    
+    public String getCategory() {
+        return category;
     }
     
     @Override
