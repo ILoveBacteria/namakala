@@ -20,9 +20,8 @@ public class Product implements Serializable {
     private List<Integer> color;
     private List<String> size;
     
-    public Product(int id, String name, String image, String detail, int price, String category, Market market,
+    public Product(String name, String image, String detail, int price, String category, Market market,
                    int count, List<Integer> colors, List<String> sizes) {
-        this.id = id;
         this.name = name;
         this.image = image;
         this.detail = detail;
@@ -47,6 +46,10 @@ public class Product implements Serializable {
         jo.put("color", new JSONArray().addAll(color));
         
         return jo;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
     }
     
     public int getPrice() {
