@@ -82,4 +82,68 @@ public class Database {
             }
         }
     }
+    
+    private static void writeAllProducts(List<Product> productList) throws IOException {
+        try (ObjectOutputStream out = new ObjectOutputStream(Files.newOutputStream(productPath))) {
+            for (Product p : productList) {
+                out.writeObject(p);
+            }
+        }
+    }
+    
+    private static List<Product> readAllProducts() throws IOException, ClassNotFoundException {
+        List<Product> productList = new ArrayList<>();
+        try (ObjectInputStream in = new ObjectInputStream(Files.newInputStream(productPath))) {
+            while (in.available() != 0) {
+                productList.add((Product) in.readObject());
+            }
+        } catch (EOFException e) {
+            e.printStackTrace();
+        }
+        
+        return productList;
+    }
+    
+    public static boolean saveNewProduct(Product product) {
+        product.setId(++countProduct);
+        
+        try {
+            List<Product> productList = readAllProducts();
+            productList.add(product);
+            writeAllProducts(productList);
+            return true;
+            
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        
+        return false;
+    }
+    
+    public static boolean saveEditedProduct(Product product) {
+        try {
+            List<Product> productList = readAllProducts();
+            productList.remove(product);
+            productList.add(product);
+            writeAllProducts(productList);
+            return true;
+            
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        
+        return false;
+    }
+    
+    public static byte[] readImage() {
+        try (FileInputStream in = new FileInputStream("assets/images/iphone.png")) {
+            byte[] file = new byte[in.available()];
+            in.read(file);
+            return file;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
