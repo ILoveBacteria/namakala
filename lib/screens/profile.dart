@@ -41,7 +41,6 @@ class _ProfileState extends State<Profile> {
       context: context,
       child: _dataReceived ? _buildMainScreen(context) : _buildWaitingScreen(),
     );
-
   }
 
   Widget _buildMainScreen(BuildContext context) {
