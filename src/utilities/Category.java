@@ -20,6 +20,14 @@ public class Category implements Serializable {
         this.name = name;
     }
     
+    public String getName() {
+        return name;
+    }
+    
+    public List<Product> getProducts() {
+        return products;
+    }
+    
     public JSONObject toJson() {
         JSONObject jo = new JSONObject();
         JSONArray ja = new JSONArray();
