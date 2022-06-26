@@ -4,7 +4,6 @@ import utilities.Category;
 import utilities.Person;
 import utilities.Product;
 
-import javax.xml.crypto.Data;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
@@ -87,61 +86,9 @@ public class Database {
         }
     }
     
-    /*private static void writeAllProducts(List<Product> productList) throws IOException {
-        try (ObjectOutputStream out = new ObjectOutputStream(Files.newOutputStream(productPath))) {
-            for (Product p : productList) {
-                out.writeObject(p);
-            }
-        }
-    }
-
-    public static List<Product> readAllProducts() throws IOException, ClassNotFoundException {
-        List<Product> productList = new ArrayList<>();
-        try (ObjectInputStream in = new ObjectInputStream(Files.newInputStream(productPath))) {
-            while (in.available() != 0) {
-                productList.add((Product) in.readObject());
-            }
-        } catch (EOFException e) {
-            e.printStackTrace();
-        }
-
-        return productList;
-    }
-
-    public static boolean saveNewProduct(Product product) {
-        product.setId(++countProduct);
-
-        try {
-            List<Product> productList = readAllProducts();
-            productList.add(product);
-            writeAllProducts(productList);
-            return true;
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
-    public static boolean saveEditedProduct(Product product) {
-        try {
-            List<Product> productList = readAllProducts();
-            productList.remove(product);
-            productList.add(product);
-            writeAllProducts(productList);
-            return true;
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }*/
-    
     public static byte[] readImage(String path) {
         try (FileInputStream in = new FileInputStream(path)) {
-            byte[] file = new byte[in.available() * 2];
+            byte[] file = new byte[in.available()];
             in.read(file);
             return file;
         } catch (IOException e) {
@@ -156,6 +103,24 @@ public class Database {
         try (ObjectInputStream in = new ObjectInputStream(Files.newInputStream(path))) {
             return (Category) in.readObject();
         }
+    }
+    
+    public static void writeCategory(Category category) throws IOException {
+        Path path = getCategoryPath(category.getName());
+        try (ObjectOutputStream out = new ObjectOutputStream(Files.newOutputStream(path))) {
+            out.writeObject(category);
+        }
+    }
+    
+    public static Product readProduct(long id, String categoryName) throws IOException, ClassNotFoundException {
+        Category category = readCategory(categoryName);
+        for (Product p : category.getProducts()) {
+            if (p.getId() == id) {
+                return p;
+            }
+        }
+        
+        return null;
     }
     
     private static Path getCategoryPath(String name) {
