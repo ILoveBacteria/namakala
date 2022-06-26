@@ -56,6 +56,8 @@ public class Command {
                 return cartCommand();
             case "category":
                 return categoryCommand();
+            case "image":
+                return imageCommand();
         }
         
         return null;
@@ -137,6 +139,19 @@ public class Command {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+        return "null".getBytes(StandardCharsets.UTF_8);
+    }
+    
+    private byte[] imageCommand() {
+        try {
+            Object obj = new JSONParser().parse(data[0]);
+            JSONObject jsonObject = (JSONObject) obj;
+            Product product = Database.readProduct((Long) jsonObject.get("id"), (String) jsonObject.get("category"));
+            return Database.readImage(product.getImage());
+        } catch (ParseException | IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    
         return "null".getBytes(StandardCharsets.UTF_8);
     }
 }
