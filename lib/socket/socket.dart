@@ -21,14 +21,16 @@ class MySocket {
     return response;
   }
 
-  Future<Uint8List?> sendAndReceiveRaw() async {
-    Uint8List? byte;
+  Future<Uint8List> sendAndReceiveRaw() async {
+    Uint8List byte = Uint8List(0);
+
     Socket socket = await _send();
-    socket.listen((event) async {
+    var subscription = socket.listen((event) async {
       byte = event;
       await socket.close();
     });
 
+    await subscription.asFuture<void>();
     return byte;
   }
 
