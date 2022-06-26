@@ -1,5 +1,11 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:namakala/data/sample_data.dart';
+import 'package:namakala/data/user_data.dart';
+import 'package:namakala/socket/command.dart';
+import 'package:namakala/socket/socket.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
 import '../utilities/font.dart';
@@ -15,28 +21,59 @@ class ProductCategory extends StatefulWidget {
 }
 
 class _ProductCategoryState extends State<ProductCategory> {
+  List<Product> products = [];
+  bool dataReceived = false;
+
   @override
   Widget build(BuildContext context) {
     String category = ModalRoute.of(context)!.settings.arguments as String;
-    Map<Product, int> products = _getProductMap(category);
+
+    if (!dataReceived) {
+      _getDataFromServer(category).then((value) {
+        dataReceived = true;
+        setState(() {});
+      });
+    }
 
     return ScreenSetting.initScreen(
       context: context,
       appBar: ScreenSetting.appBar(title: category, context: context),
-      child: products.isEmpty? _buildEmptyProductScreen(context) : Column(
-        children: _buildScreen(context, products),
-      ),
+      child: dataReceived ? _buildMainScreen() : _buildWaitingScreen()
     );
   }
 
-  List<Widget> _buildScreen(BuildContext context, Map<Product, int> products) {
+  Future<void> _getDataFromServer(String categoryName) async {
+    MySocket socket = MySocket(UserData.phone, Command.category, [categoryName]);
+    String response = await socket.sendAndReceive();
+
+    for (Map<String, dynamic> i in jsonDecode(response)['products']) {
+      Product productFromJson = Product.fromJson(i);
+
+      MySocket imageSocket = MySocket(UserData.phone, Command.image, [jsonEncode(productFromJson)]);
+      Uint8List imageResponse = await imageSocket.sendAndReceiveRaw();
+      productFromJson.image = imageResponse;
+
+      products.add(productFromJson);
+    }
+  }
+
+  Widget _buildWaitingScreen() {
+    return Container();
+  }
+
+  Widget _buildMainScreen() {
+    return products.isEmpty ? _buildEmptyProductScreen(context) : Column(
+        children: _buildScreenWidgets(context));
+  }
+
+  List<Widget> _buildScreenWidgets(BuildContext context) {
     List<Widget> list = [];
-    for (Product p in products.keys) {
+    for (Product p in products) {
       ProductCard card = ProductCard(
         p,
         p.image,
         p.name,
-        _details(products, p, context),
+        _details(p, context),
         _buttonList(p),
       );
 
@@ -46,34 +83,13 @@ class _ProductCategoryState extends State<ProductCategory> {
     return list;
   }
 
-  Map<Product, int> _getProductMap(String category) {
-    Map<Product, int> map = {};
-
-    if (category == 'Favorites') {
-      for (Product p in SampleData.products.keys) {
-        if (SampleData.person.favorites.contains(p)) {
-          map[p] = SampleData.products[p]!;
-        }
-      }
-    } else {
-      for (Product p in SampleData.products.keys) {
-        if (p.category == category) {
-          map[p] = SampleData.products[p]!;
-        }
-      }
-    }
-
-    return map;
-  }
-
   List<Detail> _details(
-    Map<Product, int> products,
     Product p,
     BuildContext context,
   ) {
     List<Detail> list = <Detail>[
       Detail.text(Icons.attach_money, 'Price', '${p.price}\$'),
-      Detail.text(Icons.shopping_bag_outlined, 'Remain', '${products[p]}'),
+      Detail.text(Icons.shopping_bag_outlined, 'Remain', '${p.count}'),
     ];
 
     return list;
