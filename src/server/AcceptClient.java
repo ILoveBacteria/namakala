@@ -21,6 +21,7 @@ public class AcceptClient implements Runnable {
             Command inputCommand = Command.parseCommand(input);
             byte[] response = inputCommand.runCommand();
             outputStream.write(response);
+            outputStream.flush();
             
         } catch (IOException e) {
             e.printStackTrace();
