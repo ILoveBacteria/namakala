@@ -30,76 +30,51 @@ class _ProductDetailState extends State<ProductDetail> {
       appBar: ScreenSetting.appBar(
         title: product.category,
         context: context,
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              setState(() {
-                // Add product to person.favorites if not already added or remove if already added
-                if (SampleData.person.favorites.contains(product)) {
-                  SampleData.person.favorites.remove(product);
-                } else {
-                  SampleData.person.favorites.add(product);
-                }
-              });
-            },
-            icon: Icon(
-              SampleData.person.favorites.contains(product)
-                  ? Icons.favorite
-                  : Icons.favorite_outline,
-              color: SampleData.person.favorites.contains(product)
-                  ? Colors.red
-                  : Colors.blue,
-            ),
-          ),
-          IconButton(
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const CartScreen(),
-              ),
-            ).then((_) => setState(() {})),
-            icon: const Icon(
-              Icons.shopping_cart_outlined,
-              color: Colors.blue,
-            ),
-          ),
-        ],
+        actions: _actionButtons(product),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _onPressFloatingButton(product),
-        backgroundColor: Colors.green,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0))),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Icon(Icons.add_shopping_cart_outlined),
-            Text(
-              '${product.price}\$',
-              style: Font.styleButton1(),
-            ),
-          ],
-        ),
-      ),
+      floatingActionButton: _buildFloatingActionButton(product),
+      child: _buildMainScreen(product),
+    );
+  }
+
+  FloatingActionButton _buildFloatingActionButton(Product product) {
+    return FloatingActionButton(
+      onPressed: () => _onPressFloatingButton(product),
+      backgroundColor: Colors.green,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0))),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          _buildImage(context, product),
-          const SizedBox(height: 20.0),
-          _buildTitle(product),
-          const SizedBox(height: 20.0),
-          _container(
-            child: Column(
-              children: _buildDetails(product, context),
-            ),
+          const Icon(Icons.add_shopping_cart_outlined),
+          Text(
+            '${product.price}\$',
+            style: Font.styleButton1(),
           ),
-          const SizedBox(height: 20.0),
-          _buildColorChips(product),
-          const SizedBox(height: 20.0),
-          _buildSizeChips(product),
-          const SizedBox(height: 20.0),
-          _buildMoreDetail(product),
         ],
       ),
+    );
+  }
+
+  Widget _buildMainScreen(Product product) {
+    return Column(
+      children: <Widget>[
+        _buildImage(context, product),
+        const SizedBox(height: 20.0),
+        _buildTitle(product),
+        const SizedBox(height: 20.0),
+        _container(
+          child: Column(
+            children: _buildDetails(product, context),
+          ),
+        ),
+        const SizedBox(height: 20.0),
+        _buildColorChips(product),
+        const SizedBox(height: 20.0),
+        _buildSizeChips(product),
+        const SizedBox(height: 20.0),
+        _buildMoreDetail(product),
+      ],
     );
   }
 
@@ -114,14 +89,14 @@ class _ProductDetailState extends State<ProductDetail> {
   Widget _buildImage(BuildContext context, Product product) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 40 / 100,
-      child: Image.asset(product.image),
+      child: Image.memory(product.image),
     );
   }
 
   Widget _buildTitle(Product product) {
     return _container(
       child: Column(
-        children: [
+        children: <Widget>[
           Text(
             product.name,
             style: Font.styleSubtitle1(),
@@ -136,14 +111,47 @@ class _ProductDetailState extends State<ProductDetail> {
       Detail.text(Icons.store_outlined, 'Market', p.market.name),
       Detail.text(Icons.grade_outlined, 'Score', (p.score).toStringAsFixed(1)),
       Detail.text(Icons.attach_money, 'Price', '${p.price}\$'),
-      Detail.text(
-        Icons.shopping_bag_outlined,
-        'Remain',
-        '${SampleData.products[p]}',
-      ),
+      Detail.text(Icons.shopping_bag_outlined, 'Remain', '${p.count}'),
     ];
 
     return list;
+  }
+
+  List<Widget> _actionButtons(Product product) {
+    return <Widget>[
+      IconButton(
+        onPressed: () {
+          setState(() {
+            // Add product to person.favorites if not already added or remove if already added
+            if (SampleData.person.favorites.contains(product)) {
+              SampleData.person.favorites.remove(product);
+            } else {
+              SampleData.person.favorites.add(product);
+            }
+          });
+        },
+        icon: Icon(
+          SampleData.person.favorites.contains(product)
+              ? Icons.favorite
+              : Icons.favorite_outline,
+          color: SampleData.person.favorites.contains(product)
+              ? Colors.red
+              : Colors.blue,
+        ),
+      ),
+      IconButton(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const CartScreen(),
+          ),
+        ).then((_) => setState(() {})),
+        icon: const Icon(
+          Icons.shopping_cart_outlined,
+          color: Colors.blue,
+        ),
+      ),
+    ];
   }
 
   List<Widget> _buildDetails(Product p, BuildContext context) {
@@ -159,7 +167,7 @@ class _ProductDetailState extends State<ProductDetail> {
     return _container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Text(
             'More Detail:',
             style: Font.styleBody1(color: Colors.grey),
@@ -271,18 +279,18 @@ class _ProductDetailState extends State<ProductDetail> {
       int j = _selectedSizeChip.indexOf(true);
       SampleData.person.cart
           .add(SelectedProduct(product, product.color[i], product.size[j]));
-      SampleData.products[product] = SampleData.products[product]! - 1;
+      product.count = product.count - 1;
       setState(() {});
     } catch (e) {
       SnackMessage('Please select color or size!').build(context);
     }
   }
 
+  // TODO: here
   void _onPressFloatingButton(Product product) {
     if ((SampleData.person.market != null &&
-            SampleData.person.market!.products.contains(product)) ||
-        SampleData.products[product] == 0) {
-
+            SampleData.person.market.products.contains(product)) ||
+        product.count == 0) {
       SnackMessage('You cannot add this product to your cart').build(context);
     } else {
       _addToCart(product);
