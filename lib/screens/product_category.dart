@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:namakala/data/sample_data.dart';
 import 'package:namakala/data/user_data.dart';
 import 'package:namakala/socket/command.dart';
 import 'package:namakala/socket/socket.dart';
+import 'package:namakala/utilities/person.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
 import '../utilities/font.dart';
@@ -21,6 +21,7 @@ class ProductCategory extends StatefulWidget {
 
 class _ProductCategoryState extends State<ProductCategory> {
   List<Product> products = [];
+  late Person person;
   bool dataReceived = false;
 
   @override
@@ -28,7 +29,7 @@ class _ProductCategoryState extends State<ProductCategory> {
     String category = ModalRoute.of(context)!.settings.arguments as String;
 
     if (!dataReceived) {
-      _getDataFromServer(category).then((value) {
+      _getAllDataFromServer(category).then((value) {
         dataReceived = true;
         setState(() {});
       });
@@ -41,7 +42,7 @@ class _ProductCategoryState extends State<ProductCategory> {
     );
   }
 
-  Future<void> _getDataFromServer(String categoryName) async {
+  Future<void> _getProductDataFromServer(String categoryName) async {
     MySocket socket = MySocket(UserData.phone, Command.category, [categoryName]);
     String response = await socket.sendAndReceive();
 
@@ -49,6 +50,18 @@ class _ProductCategoryState extends State<ProductCategory> {
       products.add(Product.fromJson(i));
     }
   }
+
+  Future<void> _getPersonDataFromServer() async {
+    MySocket socket = MySocket(UserData.phone, Command.profile, []);
+    String response = await socket.sendAndReceive();
+    person = Person.fromJson(jsonDecode(response));
+  }
+
+  Future<void> _getAllDataFromServer(String categoryName) async {
+    _getProductDataFromServer(categoryName);
+    _getPersonDataFromServer();
+  }
+
 
   Widget _buildWaitingScreen() {
     return Container();
@@ -94,18 +107,18 @@ class _ProductCategoryState extends State<ProductCategory> {
         onPressed: () {
           setState(() {
             // Add product to person.favorites if not already added or remove if already added
-            if (SampleData.person.favorites.contains(product)) {
-              SampleData.person.favorites.remove(product);
+            if (person.favorites.contains(product)) {
+              person.favorites.remove(product);
             } else {
-              SampleData.person.favorites.add(product);
+              person.favorites.add(product);
             }
           });
         },
         icon: Icon(
-          SampleData.person.favorites.contains(product)
+          person.favorites.contains(product)
               ? Icons.favorite
               : Icons.favorite_outline,
-          color: SampleData.person.favorites.contains(product)
+          color: person.favorites.contains(product)
               ? Colors.red
               : Colors.blue,
         ),
