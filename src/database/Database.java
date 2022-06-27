@@ -112,10 +112,10 @@ public class Database {
         }
     }
     
-    public static Product readProduct(long id, String categoryName) throws IOException, ClassNotFoundException {
-        Category category = readCategory(categoryName);
+    public static Product readProduct(Product product) throws IOException, ClassNotFoundException {
+        Category category = readCategory(product.getCategory());
         for (Product p : category.getProducts()) {
-            if (p.getId() == id) {
+            if (p.equals(product)) {
                 return p;
             }
         }
