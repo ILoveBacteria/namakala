@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:namakala/socket/command.dart';
 
@@ -24,7 +23,7 @@ class MySocket {
     }
 
     String response = await utf8.decoder.bind(socket).join();
-    await socket.close();
+    socket.close();
     return response;
   }
 }
