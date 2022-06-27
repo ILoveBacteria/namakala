@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:namakala/data/sample_data.dart';
@@ -47,13 +46,7 @@ class _ProductCategoryState extends State<ProductCategory> {
     String response = await socket.sendAndReceive();
 
     for (Map<String, dynamic> i in jsonDecode(response)['products']) {
-      Product productFromJson = Product.fromJson(i);
-
-      MySocket imageSocket = MySocket(UserData.phone, Command.image, [jsonEncode(productFromJson)]);
-      Uint8List imageResponse = await imageSocket.sendAndReceiveRaw();
-      productFromJson.image = imageResponse;
-
-      products.add(productFromJson);
+      products.add(Product.fromJson(i));
     }
   }
 
