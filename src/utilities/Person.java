@@ -76,6 +76,10 @@ public class Person implements Serializable {
         return password;
     }
     
+    public List<Product> getFavorites() {
+        return favorites;
+    }
+    
     public void checkout() {
         purchases.add(cart);
         cart = new Cart();
