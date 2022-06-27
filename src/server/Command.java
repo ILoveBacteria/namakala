@@ -1,8 +1,6 @@
 package server;
 
 import database.Database;
-import javafx.scene.chart.XYChart;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -11,8 +9,6 @@ import utilities.Product;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Command {
     private String command;
@@ -64,7 +60,7 @@ public class Command {
     }
     
     /**
-     * Executes the signIn command
+     * Executes the signIn command. Searches for a person with this provided data
      * @return The validity of the Phone and Password
      */
     private byte[] signInCommand() {
@@ -81,7 +77,7 @@ public class Command {
     }
     
     /**
-     * Executes the checkoutCart command
+     * Executes the checkoutCart command. Checkouts all the products in the sender cart
      * @return The success of checkout
      */
     private byte[] checkoutCartCommand() {
@@ -91,7 +87,7 @@ public class Command {
     }
     
     /**
-     * Executes the signUp command
+     * Executes the signUp command. Creates a new person then writes in the database
      * @return The success of creating a new account
      */
     private byte[] signUpCommand() {
@@ -110,8 +106,8 @@ public class Command {
     }
     
     /**
-     * Executes the profile command
-     * @return a person object as json
+     * Executes the profile command. Converts sender to json
+     * @return a person json string object in bytes
      */
     private byte[] profileCommand() {
         try {
@@ -123,6 +119,10 @@ public class Command {
         return "null".getBytes(StandardCharsets.UTF_8);
     }
     
+    /**
+     * Executes the cart command. Gets the cart object of sender
+     * @return a cart json string object in bytes
+     */
     private byte[] cartCommand() {
         try {
             return sender.getCart().toJson().toJSONString().getBytes(StandardCharsets.UTF_8);
@@ -133,6 +133,10 @@ public class Command {
         return "null".getBytes(StandardCharsets.UTF_8);
     }
     
+    /**
+     * Executes the category command. Reads the category object from database
+     * @return a category json string object in bytes
+     */
     private byte[] categoryCommand() {
         try {
             return Database.readCategory(data[0]).toJson().toJSONString().getBytes(StandardCharsets.UTF_8);
@@ -142,6 +146,10 @@ public class Command {
         return "null".getBytes(StandardCharsets.UTF_8);
     }
     
+    /**
+     * Executes the image command. Finds the product in category then reads its image
+     * @return an image in bytes
+     */
     private byte[] imageCommand() {
         try {
             Object obj = new JSONParser().parse(data[0]);
