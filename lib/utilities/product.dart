@@ -27,13 +27,18 @@ class Product {
     price = json['price'];
     category = json['category'];
     market = Market.fromJson(json['market']);
+    count = json['count'];
 
     List<dynamic> dynamicSizes = json['size'];
     for (var i in dynamicSizes) {
       size.add(i);
     }
 
-    count = json['count'];
+    List<int> imageBytes = [];
+    for (int i in json['image']) {
+      imageBytes.add(i);
+    }
+    image = Uint8List.fromList(imageBytes);
 
     for (int value in json['color']) {
       color.add(Color(value));

@@ -5,8 +5,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class Product implements Serializable {
@@ -46,6 +44,12 @@ public class Product implements Serializable {
         jo.put("category", category);
         jo.put("count", count);
         jo.put("market", market.toJson());
+        
+        JSONArray jsonImage = new JSONArray();
+        for (byte b : Database.readImage(image)) {
+            jsonImage.add(b);
+        }
+        jo.put("image", jsonImage);
         
         JSONArray jsonSize = new JSONArray();
         for (String s : size) {
