@@ -22,7 +22,7 @@ public class AcceptClient implements Runnable {
             byte[] response = inputCommand.runCommand();
             outputStream.write(response);
             outputStream.flush();
-            Thread.sleep(5000);
+            Thread.sleep(1000);
             
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
