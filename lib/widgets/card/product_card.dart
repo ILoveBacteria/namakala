@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:namakala/widgets/card/detail.dart';
 
@@ -8,7 +10,7 @@ import '../button.dart';
 
 class ProductCard {
   Product product;
-  String image;
+  Uint8List image;
   String title;
   List<Detail> details;
   List<Widget> buttons;
@@ -75,7 +77,7 @@ class ProductCard {
             SizedBox(
               width: 107.4,
               height: 107.4,
-              child: Image.asset(image),
+              child: Image.memory(image),
             ),
             const SizedBox(width: 15.0),
             _buildTitleAndDetails(context),
