@@ -22,9 +22,12 @@ public class AcceptClient implements Runnable {
             byte[] response = inputCommand.runCommand();
             outputStream.write(response);
             outputStream.flush();
+            Thread.sleep(1000);
             
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }

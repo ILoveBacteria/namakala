@@ -15,32 +15,16 @@ class MySocket {
   MySocket(this.phoneSender, this.command, this.data);
 
   Future<String> sendAndReceive() async {
-    Socket socket = await _send();
-    String response = await utf8.decoder.bind(socket).join();
-    await socket.close();
-    return response;
-  }
-
-  Future<Uint8List> sendAndReceiveRaw() async {
-    Uint8List byte = Uint8List(0);
-
-    Socket socket = await _send();
-    var subscription = socket.listen((event) async {
-      byte = event;
-      await socket.close();
-    });
-
-    await subscription.asFuture<void>();
-    return byte;
-  }
-
-  Future<Socket> _send() async {
     var socket = await Socket.connect(host, port);
+
     if (data.isNotEmpty) {
       socket.writeln("$phoneSender ${command.name} ${data.join(";")}");
     } else {
       socket.writeln("$phoneSender ${command.name}");
     }
-    return socket;
+
+    String response = await utf8.decoder.bind(socket).join();
+    await socket.close();
+    return response;
   }
 }
