@@ -53,23 +53,8 @@ class Product {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Product &&
-          runtimeType == other.runtimeType &&
-          name == other.name &&
-          image == other.image &&
-          price == other.price &&
-          category == other.category &&
-          market == other.market &&
-          color == other.color &&
-          size == other.size;
+      other is Product && runtimeType == other.runtimeType && id == other.id;
 
   @override
-  int get hashCode =>
-      name.hashCode ^
-      image.hashCode ^
-      price.hashCode ^
-      category.hashCode ^
-      market.hashCode ^
-      color.hashCode ^
-      size.hashCode;
+  int get hashCode => id.hashCode;
 }
