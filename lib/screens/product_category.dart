@@ -6,6 +6,7 @@ import 'package:namakala/socket/command.dart';
 import 'package:namakala/socket/socket.dart';
 import 'package:namakala/utilities/person.dart';
 import 'package:namakala/widgets/screen_setting.dart';
+import 'package:namakala/widgets/snack_message.dart';
 
 import '../utilities/font.dart';
 import '../utilities/product.dart';
@@ -58,8 +59,20 @@ class _ProductCategoryState extends State<ProductCategory> {
   }
 
   Future<void> _getAllDataFromServer(String categoryName) async {
-    _getProductDataFromServer(categoryName);
-    _getPersonDataFromServer();
+    await _getProductDataFromServer(categoryName);
+    await _getPersonDataFromServer();
+  }
+
+  Future<String> _sendAddFavoriteDataToServer(Product product) async {
+    MySocket socket = MySocket(UserData.phone, Command.addFavorites, [jsonEncode(product)]);
+    String response = await socket.sendAndReceive();
+    return response;
+  }
+
+  Future<String> _sendRemoveFavoriteDataToServer(Product product) async {
+    MySocket socket = MySocket(UserData.phone, Command.removeFavorites, [jsonEncode(product)]);
+    String response = await socket.sendAndReceive();
+    return response;
   }
 
 
@@ -104,15 +117,25 @@ class _ProductCategoryState extends State<ProductCategory> {
   List<Widget> _buttonList(Product product) {
     return <Widget>[
       IconButton(
-        onPressed: () {
-          setState(() {
-            // Add product to person.favorites if not already added or remove if already added
-            if (person.favorites.contains(product)) {
+        onPressed: () async {
+          // Add product to person.favorites if not already added or remove if already added
+          if (person.favorites.contains(product)) {
+            String response = await _sendRemoveFavoriteDataToServer(product);
+            if (response == 'true') {
               person.favorites.remove(product);
+              setState(() {});
             } else {
-              person.favorites.add(product);
+              SnackMessage('Failed to remove this from favorites').build(context);
             }
-          });
+          } else {
+            String response = await _sendAddFavoriteDataToServer(product);
+            if (response == 'true') {
+              person.favorites.add(product);
+              setState(() {});
+            } else {
+              SnackMessage('Failed to add this to favorites').build(context);
+            }
+          }
         },
         icon: Icon(
           person.favorites.contains(product)
