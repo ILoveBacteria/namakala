@@ -7,6 +7,7 @@ import org.json.simple.parser.ParseException;
 import utilities.Person;
 import utilities.Product;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
@@ -52,8 +53,10 @@ public class Command {
                 return cartCommand();
             case "category":
                 return categoryCommand();
-            case "image":
-                return imageCommand();
+            case "addFavorite":
+                return addFavorite();
+            case "removeFavorite":
+                return removeFavorite();
         }
         
         return null;
@@ -92,9 +95,7 @@ public class Command {
      */
     private byte[] signUpCommand() {
         try {
-            Object obj = new JSONParser().parse(data[0]);
-            JSONObject jsonObject = (JSONObject) obj;
-            Person person = Person.fromJson(jsonObject);
+            Person person = parseJsonToPerson();
             boolean result = Database.saveNewPerson(person);
             return String.valueOf(result).getBytes(StandardCharsets.UTF_8);
             
@@ -115,7 +116,6 @@ public class Command {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        
         return "null".getBytes(StandardCharsets.UTF_8);
     }
     
@@ -129,7 +129,6 @@ public class Command {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        
         return "null".getBytes(StandardCharsets.UTF_8);
     }
     
@@ -147,19 +146,50 @@ public class Command {
     }
     
     /**
-     * Executes the image command. Finds the product in category then reads its image
-     * @return an image in bytes
+     * Executes the addFavorite command. Finds the product in database and adds it to favorite list
+     * @return The success of adding product in bytes
      */
-    private byte[] imageCommand() {
+    private byte[] addFavorite() {
         try {
-            Object obj = new JSONParser().parse(data[0]);
-            JSONObject jsonObject = (JSONObject) obj;
-            Product product = Database.readProduct((Long) jsonObject.get("id"), (String) jsonObject.get("category"));
-            return Database.readImage(product.getImage());
+            Product product = Database.readProduct(parseJsonToIncompleteProduct());
+            sender.getFavorites().add(product);
+            Database.saveEditedPerson(sender);
+            return "true".getBytes(StandardCharsets.UTF_8);
+    
+        } catch (ParseException | IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        
+        return "false".getBytes(StandardCharsets.UTF_8);
+    }
+    
+    /**
+     * Executes the removeFavorite command. Finds the product in database and removes it from favorite list
+     * @return The success of removing product in bytes
+     */
+    private byte[] removeFavorite() {
+        try {
+            Product product = Database.readProduct(parseJsonToIncompleteProduct());
+            sender.getFavorites().remove(product);
+            Database.saveEditedPerson(sender);
+            return "true".getBytes(StandardCharsets.UTF_8);
+    
         } catch (ParseException | IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     
-        return "null".getBytes(StandardCharsets.UTF_8);
+        return "false".getBytes(StandardCharsets.UTF_8);
+    }
+    
+    private Person parseJsonToPerson() throws ParseException {
+        Object obj = new JSONParser().parse(data[0]);
+        JSONObject jsonObject = (JSONObject) obj;
+        return Person.fromJson(jsonObject);
+    }
+    
+    private Product parseJsonToIncompleteProduct() throws ParseException {
+        Object obj = new JSONParser().parse(data[0]);
+        JSONObject jsonObject = (JSONObject) obj;
+        return Product.fromJson(jsonObject);
     }
 }
