@@ -21,6 +21,11 @@ public class Product implements Serializable {
     private List<Integer> color;
     private List<String> size;
     
+    public Product(int id, String category) {
+        this.id = id;
+        this.category = category;
+    }
+    
     public Product(int id, String name, String image, String detail, int price, String category, Market market,
                    int count, List<Integer> colors, List<String> sizes) {
         this.id = id;
@@ -64,6 +69,13 @@ public class Product implements Serializable {
         jo.put("color", jsonColor);
         
         return jo;
+    }
+    
+    public static Product fromJson(JSONObject jsonObject) {
+        String category = (String) jsonObject.get("category");
+        int id = (Integer) jsonObject.get("id");
+        
+        return new Product(id, category);
     }
     
     public void setId(int id) {
