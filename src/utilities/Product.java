@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Product implements Serializable {
-    private int id;
+    private long id;
     private String name;
     private String image;
     private String detail;
@@ -21,12 +21,12 @@ public class Product implements Serializable {
     private List<Integer> color;
     private List<String> size;
     
-    public Product(int id, String category) {
+    public Product(long id, String category) {
         this.id = id;
         this.category = category;
     }
     
-    public Product(int id, String name, String image, String detail, int price, String category, Market market,
+    public Product(long id, String name, String image, String detail, int price, String category, Market market,
                    int count, List<Integer> colors, List<String> sizes) {
         this.id = id;
         this.name = name;
@@ -73,12 +73,12 @@ public class Product implements Serializable {
     
     public static Product fromJson(JSONObject jsonObject) {
         String category = (String) jsonObject.get("category");
-        int id = (Integer) jsonObject.get("id");
+        long id = (Long) jsonObject.get("id");
         
         return new Product(id, category);
     }
     
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
     
@@ -90,7 +90,7 @@ public class Product implements Serializable {
         return category;
     }
     
-    public int getId() {
+    public long getId() {
         return id;
     }
     
@@ -110,6 +110,6 @@ public class Product implements Serializable {
     
     @Override
     public int hashCode() {
-        return id;
+        return (int) (id ^ (id >>> 32));
     }
 }
