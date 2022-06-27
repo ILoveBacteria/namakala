@@ -7,7 +7,6 @@ import org.json.simple.parser.ParseException;
 import utilities.Person;
 import utilities.Product;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
@@ -53,10 +52,10 @@ public class Command {
                 return cartCommand();
             case "category":
                 return categoryCommand();
-            case "addFavorite":
-                return addFavorite();
-            case "removeFavorite":
-                return removeFavorite();
+            case "addFavorites":
+                return addFavorites();
+            case "removeFavorites":
+                return removeFavorites();
         }
         
         return null;
@@ -149,7 +148,7 @@ public class Command {
      * Executes the addFavorite command. Finds the product in database and adds it to favorite list
      * @return The success of adding product in bytes
      */
-    private byte[] addFavorite() {
+    private byte[] addFavorites() {
         try {
             Product product = Database.readProduct(parseJsonToIncompleteProduct());
             sender.getFavorites().add(product);
@@ -167,7 +166,7 @@ public class Command {
      * Executes the removeFavorite command. Finds the product in database and removes it from favorite list
      * @return The success of removing product in bytes
      */
-    private byte[] removeFavorite() {
+    private byte[] removeFavorites() {
         try {
             Product product = Database.readProduct(parseJsonToIncompleteProduct());
             sender.getFavorites().remove(product);
