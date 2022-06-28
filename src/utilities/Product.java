@@ -86,8 +86,8 @@ public class Product implements Serializable {
         return false;
     }
     
-    public void setId(long id) {
-        this.id = id;
+    public void setCount(int count) {
+        this.count = count;
     }
     
     public int getPrice() {
@@ -96,10 +96,6 @@ public class Product implements Serializable {
     
     public String getCategory() {
         return category;
-    }
-    
-    public long getId() {
-        return id;
     }
     
     public String getImage() {
