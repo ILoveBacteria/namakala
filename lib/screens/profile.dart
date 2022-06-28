@@ -234,7 +234,6 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<Person> _getDataFromServer() async {
-    print('socket');
     MySocket socket = MySocket(UserData.phone, Command.profile, []);
     String response = await socket.sendAndReceive();
     if (response == 'null') {

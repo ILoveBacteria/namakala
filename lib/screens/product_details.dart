@@ -287,21 +287,24 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   void _addToCart() async {
+    int i, j;
     try {
-      int i = _selectedColorChip.indexOf(true);
-      int j = _selectedSizeChip.indexOf(true);
-      String response = await _sendAddProductDataToServer(SelectedProduct(product, product.color[i], product.size[j]));
-
-      if (response == 'true') {
-        SnackMessage('Successfully added to your cart').build(context);
-      } else {
-        SnackMessage('Failed to add to your cart').build(context);
-      }
-
-      setState(() {});
+      i = _selectedColorChip.indexOf(true);
+      j = _selectedSizeChip.indexOf(true);
     } catch (e) {
       SnackMessage('Please select color or size!').build(context);
+      return;
     }
+
+    String response = await _sendAddProductDataToServer(SelectedProduct(product, product.color[i], product.size[j]));
+
+    if (response == 'true') {
+      SnackMessage('Successfully added to your cart').build(context);
+    } else {
+      SnackMessage('Failed to add to your cart').build(context);
+    }
+
+    setState(() {});
   }
 
   void _onPressFloatingButton() {
