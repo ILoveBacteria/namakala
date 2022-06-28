@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:namakala/utilities/selected_product.dart';
 
 class Cart {
@@ -26,9 +24,9 @@ class Cart {
 
   int sumOfPrice() {
     int sum = 0;
-    // for (SelectedProduct p in products.keys) {
-    //   sum += p.product.price;
-    // }
+    for (SelectedProduct p in products) {
+      sum += p.product.price * p.count;
+    }
     return sum;
   }
 }
