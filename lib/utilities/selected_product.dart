@@ -5,13 +5,15 @@ class SelectedProduct {
   Product product;
   Color color;
   String size;
+  late int count;
 
   SelectedProduct(this.product, this.color, this.size);
 
   SelectedProduct.fromJson(Map<String, dynamic> json)
       : product = Product.fromJson(json['product']),
         color = Color(json['color']),
-        size = json['size'];
+        size = json['size'],
+        count = json['count'];
 
   Map<String, dynamic> toJson() => {
         'product': product.toJson(),

@@ -10,6 +10,7 @@ public class SelectedProduct implements Serializable {
     private Product product;
     private long color;
     private String size;
+    private int count = 1;
     
     public SelectedProduct(Product product, long color, String size) {
         this.product = product;
@@ -26,9 +27,10 @@ public class SelectedProduct implements Serializable {
     
     public JSONObject toJson() {
         JSONObject jo = new JSONObject();
-        jo.put("product", product);
+        jo.put("product", product.toJson());
         jo.put("color", color);
         jo.put("size", size);
+        jo.put("count", count);
         return jo;
     }
     
@@ -42,6 +44,14 @@ public class SelectedProduct implements Serializable {
     
     public String getSize() {
         return size;
+    }
+    
+    public int getCount() {
+        return count;
+    }
+    
+    public void setCount(int count) {
+        this.count = count;
     }
     
     public void setProduct(Product product) {
