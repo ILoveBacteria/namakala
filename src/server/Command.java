@@ -90,9 +90,15 @@ public class Command {
      * @return The success of checkout
      */
     private byte[] checkoutCartCommand() {
-        sender.checkout();
-        boolean result =  Database.saveEditedPerson(sender);
-        return String.valueOf(result).getBytes(StandardCharsets.UTF_8);
+        try {
+            sender.checkout();
+            Database.saveEditedPerson(sender);
+            return "true".getBytes(StandardCharsets.UTF_8);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        
+        return "false".getBytes(StandardCharsets.UTF_8);
     }
     
     /**
