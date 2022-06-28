@@ -59,6 +59,10 @@ public class Command {
                 return removeFavorites();
             case "addCart":
                 return addCart();
+            case "removeCart":
+                return removeCart();
+            case "removeAllCart":
+                return removeAllCart();
         }
         
         return null;
@@ -185,8 +189,7 @@ public class Command {
     
     private byte[] addCart() {
         try {
-            SelectedProduct selectedProduct = jsonToIncompleteSelectedProduct();
-            selectedProduct.setProduct(Database.readProduct(selectedProduct.getProduct()));
+            SelectedProduct selectedProduct = jsonToSelectedProduct();
             
             if (selectedProduct.getProduct().purchase()) {
                 sender.getCart().add(selectedProduct);
@@ -203,6 +206,40 @@ public class Command {
         return "false".getBytes(StandardCharsets.UTF_8);
     }
     
+    private byte[] removeCart() {
+        try {
+            SelectedProduct selectedProduct = jsonToSelectedProduct();
+    
+            selectedProduct.getProduct().setCount(selectedProduct.getProduct().getCount() + 1);
+            sender.getCart().remove(selectedProduct);
+            Database.saveEditedPerson(sender);
+            Database.writeEditedProduct(selectedProduct.getProduct());
+            return ("true;" + selectedProduct.getProduct().getCount()).getBytes(StandardCharsets.UTF_8);
+        
+        } catch (ParseException | ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
+    
+        return "false".getBytes(StandardCharsets.UTF_8);
+    }
+    
+    private byte[] removeAllCart() {
+        try {
+            SelectedProduct selectedProduct = jsonToSelectedProduct();
+        
+            selectedProduct.getProduct().setCount(selectedProduct.getProduct().getCount() + selectedProduct.getCount());
+            sender.getCart().removeAll(selectedProduct);
+            Database.saveEditedPerson(sender);
+            Database.writeEditedProduct(selectedProduct.getProduct());
+            return ("true;" + selectedProduct.getProduct().getCount()).getBytes(StandardCharsets.UTF_8);
+        
+        } catch (ParseException | ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
+    
+        return "false".getBytes(StandardCharsets.UTF_8);
+    }
+    
     private Person jsonToPerson() throws ParseException {
         Object obj = new JSONParser().parse(data[0]);
         JSONObject jsonObject = (JSONObject) obj;
@@ -215,9 +252,11 @@ public class Command {
         return Product.fromJson(jsonObject);
     }
     
-    private SelectedProduct jsonToIncompleteSelectedProduct() throws ParseException {
+    private SelectedProduct jsonToSelectedProduct() throws ParseException, IOException, ClassNotFoundException {
         Object obj = new JSONParser().parse(data[0]);
         JSONObject jsonObject = (JSONObject) obj;
-        return SelectedProduct.fromJson(jsonObject);
+        SelectedProduct selectedProduct = SelectedProduct.fromJson(jsonObject);
+        selectedProduct.setProduct(Database.readProduct(selectedProduct.getProduct()));
+        return selectedProduct;
     }
 }
