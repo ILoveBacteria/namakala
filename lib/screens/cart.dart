@@ -142,29 +142,18 @@ class _CartScreenState extends State<CartScreen> {
     return list;
   }
 
-  // TODO: Change onPressed
-  List<Widget> _buttonList(SelectedProduct p) {
+  List<Widget> _buttonList(SelectedProduct selectedProduct) {
     return <Widget>[
       IconButton(
-        onPressed: () {
-          // SampleData.products[p.product] =
-          //     SampleData.products[p.product]! + _person.cart.products[p]!;
-          cart.removeAll(p);
-          setState(() {});
-        },
+        onPressed: () => _removeAllFromCart(selectedProduct),
         icon: const Icon(Icons.delete_outline),
         color: Colors.red,
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
       ),
       IconButton(
-        onPressed: p.count > 1
-            ? () {
-                cart.remove(p);
-                // SampleData.products[p.product] =
-                //     SampleData.products[p.product]! + 1;
-                setState(() {});
-              }
+        onPressed: selectedProduct.count > 1
+            ? () => _removeFromCart(selectedProduct)
             : null,
         icon: const Icon(Icons.remove),
         color: Colors.yellow,
@@ -172,21 +161,45 @@ class _CartScreenState extends State<CartScreen> {
         splashColor: Colors.transparent,
       ),
       IconButton(
-        onPressed: /*SampleData.products[p.product]! > 0
-            ? () {
-                cart.add(p);
-                // SampleData.products[p.product] =
-                //     SampleData.products[p.product]! - 1;
-                setState(() {});
-              }
-            :*/
-            null,
+        onPressed: selectedProduct.product.count > 0
+            ? () => _addToCart(selectedProduct)
+            : null,
         icon: const Icon(Icons.add),
         color: Colors.green,
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
       ),
     ];
+  }
+
+  void _addToCart(SelectedProduct selectedProduct) async {
+    String response = await _sendAddProductDataToServer(selectedProduct);
+    if (response == 'true') {
+      cart.add(selectedProduct);
+    } else {
+      SnackMessage('Failed to add to your cart').build(context);
+    }
+    setState(() {});
+  }
+
+  void _removeFromCart(SelectedProduct selectedProduct) async {
+    String response = await _sendRemoveProductDataToServer(selectedProduct);
+    if (response == 'true') {
+      cart.remove(selectedProduct);
+    } else {
+      SnackMessage('Failed to remove from your cart').build(context);
+    }
+    setState(() {});
+  }
+
+  void _removeAllFromCart(SelectedProduct selectedProduct) async {
+    String response = await _sendRemoveAllProductDataToServer(selectedProduct);
+    if (response == 'true') {
+      cart.removeAll(selectedProduct);
+    } else {
+      SnackMessage('Failed to remove all from your cart').build(context);
+    }
+    setState(() {});
   }
 
   Future<void> _getDataFromServer() async {
@@ -198,5 +211,36 @@ class _CartScreenState extends State<CartScreen> {
     }
     person = Person.fromJson(jsonDecode(response));
     cart = person.cart;
+  }
+
+  Future<String> _sendAddProductDataToServer(
+      SelectedProduct selectedProduct) async {
+    MySocket socket = MySocket(
+        UserData.phone, Command.addCart, [jsonEncode(selectedProduct)]);
+    String response = await socket.sendAndReceive();
+    return _checkServerResponse(response, selectedProduct);
+  }
+
+  Future<String> _sendRemoveProductDataToServer(SelectedProduct selectedProduct) async {
+    MySocket socket = MySocket(UserData.phone, Command.removeCart, [jsonEncode(selectedProduct)]);
+    String response = await socket.sendAndReceive();
+    return _checkServerResponse(response, selectedProduct);
+  }
+
+  Future<String> _sendRemoveAllProductDataToServer(SelectedProduct selectedProduct) async {
+    MySocket socket = MySocket(UserData.phone, Command.removeAllCart, [jsonEncode(selectedProduct)]);
+    String response = await socket.sendAndReceive();
+    return _checkServerResponse(response, selectedProduct);
+  }
+
+  String _checkServerResponse(
+      String response, SelectedProduct selectedProduct) {
+    if (response == 'false') {
+      return response;
+    }
+
+    List<String> data = response.split(';');
+    selectedProduct.product.count = data[1] as int;
+    return data[0];
   }
 }
