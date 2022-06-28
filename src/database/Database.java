@@ -36,19 +36,11 @@ public class Database {
         return null;
     }
     
-    public static boolean saveEditedPerson(Person person) {
-        try {
-            List<Person> personList = readAllPersons();
-            personList.remove(person);
-            personList.add(person);
-            writeAllPersons(personList);
-            return true;
-            
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    
-        return false;
+    public static void saveEditedPerson(Person person) throws IOException, ClassNotFoundException {
+        List<Person> personList = readAllPersons();
+        personList.remove(person);
+        personList.add(person);
+        writeAllPersons(personList);
     }
     
     private static List<Person> readAllPersons() throws IOException, ClassNotFoundException {
