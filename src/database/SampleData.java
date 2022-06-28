@@ -17,8 +17,8 @@ public class SampleData {
         Product p5 = new Product(++Database.countProduct, "Macbook Air", "assets/images/macbook.png", "This product is in Test!", 999, "Laptops", new Market("Digikala"), 3, new ArrayList<>(Arrays.asList(0xFF9E9E9E)), new ArrayList<>(Arrays.asList("default")));
         Product p6 = new Product(++Database.countProduct, "Macbook Pro M1", "assets/images/macbook.png", "This product is in Test!", 1199, "Laptops", new Market("Digikala"), 2, new ArrayList<>(Arrays.asList(0xFF9E9E9E)), new ArrayList<>(Arrays.asList("default")));
     
-        Category category1 = new Category(Arrays.asList(p1, p2, p3, p4), "Mobiles");
-        Category category2 = new Category(Arrays.asList(p5, p6), "Laptops");
+        Category category1 = new Category(new ArrayList<>(Arrays.asList(p1, p2, p3, p4)), "Mobiles");
+        Category category2 = new Category(new ArrayList<>(Arrays.asList(p5, p6)), "Laptops");
     
         try {
             Database.writeCategory(category1);
