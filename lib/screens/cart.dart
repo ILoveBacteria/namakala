@@ -250,7 +250,7 @@ class _CartScreenState extends State<CartScreen> {
     }
 
     List<String> data = response.split(';');
-    selectedProduct.product.count = data[1] as int;
+    selectedProduct.product.count = int.parse(data[1]);
     return data[0];
   }
 }

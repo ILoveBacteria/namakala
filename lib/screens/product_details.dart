@@ -122,7 +122,8 @@ class _ProductDetailState extends State<ProductDetail> {
   List<Detail> _details() {
     List<Detail> list = <Detail>[
       Detail.text(Icons.store_outlined, 'Market', product.market.name),
-      Detail.text(Icons.grade_outlined, 'Score', (product.score).toStringAsFixed(1)),
+      Detail.text(
+          Icons.grade_outlined, 'Score', (product.score).toStringAsFixed(1)),
       Detail.text(Icons.attach_money, 'Price', '${product.price}\$'),
       Detail.text(Icons.shopping_bag_outlined, 'Remain', '${product.count}'),
     ];
@@ -287,16 +288,16 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   void _addToCart() async {
-    int i, j;
-    try {
-      i = _selectedColorChip.indexOf(true);
-      j = _selectedSizeChip.indexOf(true);
-    } catch (e) {
+    int i = _selectedColorChip.indexOf(true);
+    int j = _selectedSizeChip.indexOf(true);
+
+    if (i == -1 || j == -1) {
       SnackMessage('Please select color or size!').build(context);
       return;
     }
 
-    String response = await _sendAddProductDataToServer(SelectedProduct(product, product.color[i], product.size[j]));
+    String response = await _sendAddProductDataToServer(
+        SelectedProduct(product, product.color[i], product.size[j], 1));
 
     if (response == 'true') {
       SnackMessage('Successfully added to your cart').build(context);
@@ -315,8 +316,10 @@ class _ProductDetailState extends State<ProductDetail> {
     }
   }
 
-  Future<String> _sendAddProductDataToServer(SelectedProduct selectedProduct) async {
-    MySocket socket = MySocket(UserData.phone, Command.addCart, [jsonEncode(selectedProduct)]);
+  Future<String> _sendAddProductDataToServer(
+      SelectedProduct selectedProduct) async {
+    MySocket socket = MySocket(
+        UserData.phone, Command.addCart, [jsonEncode(selectedProduct)]);
     String response = await socket.sendAndReceive();
     return _checkServerResponse(response);
   }
@@ -327,7 +330,7 @@ class _ProductDetailState extends State<ProductDetail> {
     }
 
     List<String> data = response.split(';');
-    product.count = data[1] as int;
+    product.count = int.parse(data[1]);
     return data[0];
   }
 }
