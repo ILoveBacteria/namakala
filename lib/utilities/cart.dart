@@ -3,6 +3,8 @@ import 'package:namakala/utilities/selected_product.dart';
 class Cart {
   List<SelectedProduct> products = [];
 
+  Cart();
+
   Cart.fromJson(Map<String, dynamic> json) {
     for (var i in json['products']) {
       SelectedProduct sp = SelectedProduct.fromJson(i);

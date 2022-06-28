@@ -60,12 +60,7 @@ class _CartScreenState extends State<CartScreen> {
 
   FloatingActionButton? _buildFloatingActionButton() {
     return FloatingActionButton.extended(
-      onPressed: () {
-        // _person.purchases.add(_person.cart);
-        // TODO: checkout the cart send to server
-        // _person.cart = Cart();
-        setState(() {});
-      },
+      onPressed: () => _checkout(),
       backgroundColor: Colors.black,
       icon: const Icon(Icons.shopping_cart_checkout_outlined),
       extendedPadding: EdgeInsets.symmetric(
@@ -202,6 +197,15 @@ class _CartScreenState extends State<CartScreen> {
     setState(() {});
   }
 
+  void _checkout() async {
+    if (await _sendCheckoutDataToServer() == 'true') {
+      person.cart = Cart();
+    } else {
+      SnackMessage('Failed to checkout your cart').build(context);
+    }
+    setState(() {});
+  }
+
   Future<void> _getDataFromServer() async {
     MySocket socket = MySocket(UserData.phone, Command.profile, []);
     String response = await socket.sendAndReceive();
@@ -231,6 +235,12 @@ class _CartScreenState extends State<CartScreen> {
     MySocket socket = MySocket(UserData.phone, Command.removeAllCart, [jsonEncode(selectedProduct)]);
     String response = await socket.sendAndReceive();
     return _checkServerResponse(response, selectedProduct);
+  }
+
+  Future<String> _sendCheckoutDataToServer() async {
+    MySocket socket = MySocket(UserData.phone, Command.checkoutCart, []);
+    String response = await socket.sendAndReceive();
+    return response;
   }
 
   String _checkServerResponse(
