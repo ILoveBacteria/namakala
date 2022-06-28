@@ -9,8 +9,8 @@ import 'package:namakala/widgets/screen_setting.dart';
 
 import '../utilities/cart.dart';
 import '../utilities/font.dart';
+import '../utilities/person.dart';
 import '../utilities/selected_product.dart';
-import '../data/sample_data.dart';
 import '../widgets/card/detail.dart';
 import '../widgets/snack_message.dart';
 
@@ -24,12 +24,12 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   bool _dataReceived = false;
   late Cart cart;
+  late Person person;
 
   @override
   Widget build(BuildContext context) {
     if (!_dataReceived) {
       _getDataFromServer().then((value) {
-        cart = value;
         _dataReceived = true;
         setState(() {});
       });
@@ -54,8 +54,8 @@ class _CartScreenState extends State<CartScreen> {
     return cart.products.isEmpty
         ? _buildEmptyCartScreen(context)
         : Column(
-      children: _buildScreen(),
-    );
+            children: _buildScreen(),
+          );
   }
 
   FloatingActionButton? _buildFloatingActionButton() {
@@ -105,8 +105,9 @@ class _CartScreenState extends State<CartScreen> {
 
   List<Widget> _buildScreen() {
     List<Widget> list = [];
-    for (SelectedProduct p in cart.products.keys) {
+    for (SelectedProduct p in cart.products) {
       ProductCard card = ProductCard(
+        person,
         p.product,
         p.product.image,
         p.product.name,
@@ -134,11 +135,7 @@ class _CartScreenState extends State<CartScreen> {
       Detail.text(Icons.store_outlined, 'Market', p.product.market.name),
       Detail.text(Icons.attach_money, 'Price', '${p.product.price}\$'),
       Detail.color(Icons.palette_outlined, 'Color', p.color),
-      Detail.text(
-        Icons.shopping_bag_outlined,
-        'Count',
-        '${cart.products[p]}',
-      ),
+      Detail.text(Icons.shopping_bag_outlined, 'Count', '${p.count}'),
       Detail.text(Icons.straighten_outlined, 'Size', p.size),
     ];
 
@@ -161,7 +158,7 @@ class _CartScreenState extends State<CartScreen> {
         splashColor: Colors.transparent,
       ),
       IconButton(
-        onPressed: cart.products[p]! > 1
+        onPressed: p.count > 1
             ? () {
                 cart.remove(p);
                 // SampleData.products[p.product] =
@@ -175,14 +172,15 @@ class _CartScreenState extends State<CartScreen> {
         splashColor: Colors.transparent,
       ),
       IconButton(
-        onPressed: SampleData.products[p.product]! > 0
+        onPressed: /*SampleData.products[p.product]! > 0
             ? () {
                 cart.add(p);
                 // SampleData.products[p.product] =
                 //     SampleData.products[p.product]! - 1;
                 setState(() {});
               }
-            : null,
+            :*/
+            null,
         icon: const Icon(Icons.add),
         color: Colors.green,
         highlightColor: Colors.transparent,
@@ -191,13 +189,14 @@ class _CartScreenState extends State<CartScreen> {
     ];
   }
 
-  Future<Cart> _getDataFromServer() async {
-    MySocket socket = MySocket(UserData.phone, Command.cart, []);
+  Future<void> _getDataFromServer() async {
+    MySocket socket = MySocket(UserData.phone, Command.profile, []);
     String response = await socket.sendAndReceive();
     if (response == 'null') {
       SnackMessage('Failed to get data from server').build(context);
       return Future.error('Failed to get data from server');
     }
-    return Cart.fromJson(jsonDecode(response));
+    person = Person.fromJson(jsonDecode(response));
+    cart = person.cart;
   }
 }
