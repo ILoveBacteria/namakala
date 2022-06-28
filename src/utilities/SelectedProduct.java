@@ -12,17 +12,19 @@ public class SelectedProduct implements Serializable {
     private String size;
     private int count = 1;
     
-    public SelectedProduct(Product product, long color, String size) {
+    public SelectedProduct(Product product, long color, String size, int count) {
         this.product = product;
         this.color = color;
         this.size = size;
+        this.count = count;
     }
     
     public static SelectedProduct fromJson(JSONObject jsonObject) {
         Product product = Product.fromJson(new JSONObject((Map) jsonObject.get("product")));
         long color = (Long) jsonObject.get("color");
+        long count = (Long) jsonObject.get("count");
         String size = (String) jsonObject.get("size");
-        return new SelectedProduct(product, color, size);
+        return new SelectedProduct(product, color, size, (int) count);
     }
     
     public JSONObject toJson() {

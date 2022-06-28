@@ -5,9 +5,9 @@ class SelectedProduct {
   Product product;
   Color color;
   String size;
-  late int count;
+  int count;
 
-  SelectedProduct(this.product, this.color, this.size);
+  SelectedProduct(this.product, this.color, this.size, this.count);
 
   SelectedProduct.fromJson(Map<String, dynamic> json)
       : product = Product.fromJson(json['product']),
@@ -19,6 +19,7 @@ class SelectedProduct {
         'product': product.toJson(),
         'color': color.value,
         'size': size,
+        'count': count,
       };
 
   @override
