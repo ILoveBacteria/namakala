@@ -6,7 +6,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import utilities.Person;
 import utilities.Product;
+import utilities.SelectedProduct;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
@@ -56,6 +58,8 @@ public class Command {
                 return addFavorites();
             case "removeFavorites":
                 return removeFavorites();
+            case "addCart":
+                return addCart();
         }
         
         return null;
@@ -94,7 +98,7 @@ public class Command {
      */
     private byte[] signUpCommand() {
         try {
-            Person person = parseJsonToPerson();
+            Person person = jsonToPerson();
             boolean result = Database.saveNewPerson(person);
             return String.valueOf(result).getBytes(StandardCharsets.UTF_8);
             
@@ -150,7 +154,7 @@ public class Command {
      */
     private byte[] addFavorites() {
         try {
-            Product product = Database.readProduct(parseJsonToIncompleteProduct());
+            Product product = Database.readProduct(jsonToIncompleteProduct());
             sender.getFavorites().add(product);
             Database.saveEditedPerson(sender);
             return "true".getBytes(StandardCharsets.UTF_8);
@@ -168,7 +172,7 @@ public class Command {
      */
     private byte[] removeFavorites() {
         try {
-            Product product = Database.readProduct(parseJsonToIncompleteProduct());
+            Product product = Database.readProduct(jsonToIncompleteProduct());
             sender.getFavorites().remove(product);
             Database.saveEditedPerson(sender);
             return "true".getBytes(StandardCharsets.UTF_8);
@@ -180,15 +184,41 @@ public class Command {
         return "false".getBytes(StandardCharsets.UTF_8);
     }
     
-    private Person parseJsonToPerson() throws ParseException {
+    private byte[] addCart() {
+        try {
+            SelectedProduct selectedProduct = jsonToIncompleteSelectedProduct();
+            selectedProduct.setProduct(Database.readProduct(selectedProduct.getProduct()));
+            
+            if (selectedProduct.getProduct().purchase()) {
+                sender.getCart().add(selectedProduct);
+                Database.saveEditedPerson(sender);
+                Database.writeEditedProduct(selectedProduct.getProduct());
+                return ("true;" + selectedProduct.getProduct().getCount()).getBytes(StandardCharsets.UTF_8);
+            }
+            return ("false;" + selectedProduct.getProduct().getCount()).getBytes(StandardCharsets.UTF_8);
+    
+        } catch (ParseException | ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
+        
+        return "false".getBytes(StandardCharsets.UTF_8);
+    }
+    
+    private Person jsonToPerson() throws ParseException {
         Object obj = new JSONParser().parse(data[0]);
         JSONObject jsonObject = (JSONObject) obj;
         return Person.fromJson(jsonObject);
     }
     
-    private Product parseJsonToIncompleteProduct() throws ParseException {
+    private Product jsonToIncompleteProduct() throws ParseException {
         Object obj = new JSONParser().parse(data[0]);
         JSONObject jsonObject = (JSONObject) obj;
         return Product.fromJson(jsonObject);
+    }
+    
+    private SelectedProduct jsonToIncompleteSelectedProduct() throws ParseException {
+        Object obj = new JSONParser().parse(data[0]);
+        JSONObject jsonObject = (JSONObject) obj;
+        return SelectedProduct.fromJson(jsonObject);
     }
 }

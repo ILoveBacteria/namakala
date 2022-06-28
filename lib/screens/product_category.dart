@@ -89,6 +89,7 @@ class _ProductCategoryState extends State<ProductCategory> {
     List<Widget> list = [];
     for (Product p in products) {
       ProductCard card = ProductCard(
+        person,
         p,
         p.image,
         p.name,

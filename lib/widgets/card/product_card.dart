@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:namakala/utilities/arguments.dart';
+import 'package:namakala/utilities/person.dart';
 import 'package:namakala/widgets/card/detail.dart';
 
 import '../../screens/product_details.dart';
@@ -9,13 +11,14 @@ import '../../utilities/product.dart';
 import '../button.dart';
 
 class ProductCard {
+  Person person;
   Product product;
   Uint8List image;
   String title;
   List<Detail> details;
   List<Widget> buttons;
 
-  ProductCard(this.product, this.image, this.title, this.details, this.buttons);
+  ProductCard(this.person, this.product, this.image, this.title, this.details, this.buttons);
 
   Widget _buildDetails(BuildContext context) {
     List<Widget> list = [];
@@ -55,7 +58,7 @@ class ProductCard {
           MaterialPageRoute(
             builder: (context) => const ProductDetail(),
             settings: RouteSettings(
-              arguments: product,
+              arguments: Arguments(person, product),
             ),
           ),
         ).then((_) => refresh(() {}));

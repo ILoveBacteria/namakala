@@ -78,6 +78,14 @@ public class Product implements Serializable {
         return new Product(id, category);
     }
     
+    public boolean purchase() {
+        if (count >= 1) {
+            --count;
+            return true;
+        }
+        return false;
+    }
+    
     public void setId(long id) {
         this.id = id;
     }
@@ -96,6 +104,10 @@ public class Product implements Serializable {
     
     public String getImage() {
         return image;
+    }
+    
+    public int getCount() {
+        return count;
     }
     
     @Override

@@ -123,6 +123,13 @@ public class Database {
         return null;
     }
     
+    public static void writeEditedProduct(Product newProduct) throws IOException, ClassNotFoundException {
+        Category category = readCategory(newProduct.getCategory());
+        category.getProducts().remove(newProduct);
+        category.getProducts().add(newProduct);
+        writeCategory(category);
+    }
+    
     private static Path getCategoryPath(String name) {
         switch (name) {
             case "Mobiles":

@@ -1,7 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:namakala/data/sample_data.dart';
+import 'package:namakala/data/user_data.dart';
+import 'package:namakala/socket/command.dart';
+import 'package:namakala/socket/socket.dart';
+import 'package:namakala/utilities/arguments.dart';
 import 'package:namakala/utilities/decoration.dart';
 import 'package:namakala/utilities/font.dart';
+import 'package:namakala/utilities/person.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 import 'package:namakala/widgets/snack_message.dart';
 
@@ -20,26 +27,31 @@ class ProductDetail extends StatefulWidget {
 class _ProductDetailState extends State<ProductDetail> {
   final List<bool> _selectedColorChip = [];
   final List<bool> _selectedSizeChip = [];
+  late Product product;
+  late Person person;
 
   @override
   Widget build(BuildContext context) {
-    Product product = ModalRoute.of(context)!.settings.arguments as Product;
+    Arguments arguments =
+        ModalRoute.of(context)!.settings.arguments as Arguments;
+    product = arguments.product;
+    person = arguments.person;
 
     return ScreenSetting.initScreen(
       context: context,
       appBar: ScreenSetting.appBar(
         title: product.category,
         context: context,
-        actions: _actionButtons(product),
+        actions: _actionButtons(),
       ),
-      floatingActionButton: _buildFloatingActionButton(product),
-      child: _buildMainScreen(product),
+      floatingActionButton: _buildFloatingActionButton(),
+      child: _buildMainScreen(),
     );
   }
 
-  FloatingActionButton _buildFloatingActionButton(Product product) {
+  FloatingActionButton _buildFloatingActionButton() {
     return FloatingActionButton(
-      onPressed: () => _onPressFloatingButton(product),
+      onPressed: () => _onPressFloatingButton(),
       backgroundColor: Colors.green,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(10.0))),
@@ -56,44 +68,45 @@ class _ProductDetailState extends State<ProductDetail> {
     );
   }
 
-  Widget _buildMainScreen(Product product) {
+  Widget _buildMainScreen() {
     return Column(
       children: <Widget>[
-        _buildImage(context, product),
+        _buildImage(),
         const SizedBox(height: 20.0),
-        _buildTitle(product),
+        _buildTitle(),
         const SizedBox(height: 20.0),
         _container(
           child: Column(
-            children: _buildDetails(product, context),
+            children: _buildDetails(context),
           ),
         ),
         const SizedBox(height: 20.0),
-        _buildColorChips(product),
+        _buildColorChips(),
         const SizedBox(height: 20.0),
-        _buildSizeChips(product),
+        _buildSizeChips(),
         const SizedBox(height: 20.0),
-        _buildMoreDetail(product),
+        _buildMoreDetail(),
       ],
     );
   }
 
   Widget _container({required Widget child}) {
     return Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(10.0),
-        decoration: containerDecoration2(),
-        child: child);
+      width: double.infinity,
+      padding: const EdgeInsets.all(10.0),
+      decoration: containerDecoration2(),
+      child: child,
+    );
   }
 
-  Widget _buildImage(BuildContext context, Product product) {
+  Widget _buildImage() {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 40 / 100,
       child: Image.memory(product.image),
     );
   }
 
-  Widget _buildTitle(Product product) {
+  Widget _buildTitle() {
     return _container(
       child: Column(
         children: <Widget>[
@@ -106,18 +119,18 @@ class _ProductDetailState extends State<ProductDetail> {
     );
   }
 
-  List<Detail> _details(Product p) {
+  List<Detail> _details() {
     List<Detail> list = <Detail>[
-      Detail.text(Icons.store_outlined, 'Market', p.market.name),
-      Detail.text(Icons.grade_outlined, 'Score', (p.score).toStringAsFixed(1)),
-      Detail.text(Icons.attach_money, 'Price', '${p.price}\$'),
-      Detail.text(Icons.shopping_bag_outlined, 'Remain', '${p.count}'),
+      Detail.text(Icons.store_outlined, 'Market', product.market.name),
+      Detail.text(Icons.grade_outlined, 'Score', (product.score).toStringAsFixed(1)),
+      Detail.text(Icons.attach_money, 'Price', '${product.price}\$'),
+      Detail.text(Icons.shopping_bag_outlined, 'Remain', '${product.count}'),
     ];
 
     return list;
   }
 
-  List<Widget> _actionButtons(Product product) {
+  List<Widget> _actionButtons() {
     return <Widget>[
       IconButton(
         onPressed: () {
@@ -154,16 +167,16 @@ class _ProductDetailState extends State<ProductDetail> {
     ];
   }
 
-  List<Widget> _buildDetails(Product p, BuildContext context) {
+  List<Widget> _buildDetails(BuildContext context) {
     List<Widget> list = [];
-    for (Detail d in _details(p)) {
+    for (Detail d in _details()) {
       list.add(d.build(context));
     }
 
     return list;
   }
 
-  Widget _buildMoreDetail(Product product) {
+  Widget _buildMoreDetail() {
     return _container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,7 +194,7 @@ class _ProductDetailState extends State<ProductDetail> {
     );
   }
 
-  List<Widget> _colorChipList(Product product) {
+  List<Widget> _colorChipList() {
     List<Widget> chipList = [];
 
     for (int i = 0; i < product.color.length; i++) {
@@ -213,7 +226,7 @@ class _ProductDetailState extends State<ProductDetail> {
     return chipList;
   }
 
-  List<Widget> _sizeChipList(Product product) {
+  List<Widget> _sizeChipList() {
     List<Widget> chipList = [];
 
     for (int i = 0; i < product.size.length; i++) {
@@ -245,55 +258,73 @@ class _ProductDetailState extends State<ProductDetail> {
     return chipList;
   }
 
-  Widget _buildSizeChips(Product product) {
+  Widget _buildSizeChips() {
     return _container(
       child: Column(
         children: <Widget>[
           Detail.text(Icons.straighten_outlined, 'Size', 'Choose your size')
               .build(context),
           Row(
-            children: _sizeChipList(product),
+            children: _sizeChipList(),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildColorChips(Product product) {
+  Widget _buildColorChips() {
     return _container(
       child: Column(
         children: <Widget>[
           Detail.text(Icons.palette_outlined, 'Color', 'Choose your color')
               .build(context),
           Row(
-            children: _colorChipList(product),
+            children: _colorChipList(),
           ),
         ],
       ),
     );
   }
 
-  void _addToCart(Product product) {
+  void _addToCart() async {
     try {
       int i = _selectedColorChip.indexOf(true);
       int j = _selectedSizeChip.indexOf(true);
-      SampleData.person.cart
-          .add(SelectedProduct(product, product.color[i], product.size[j]));
-      product.count = product.count - 1;
+      String response = await _sendAddProductDataToServer(SelectedProduct(product, product.color[i], product.size[j]));
+
+      if (response == 'true') {
+        SnackMessage('Successfully added to your cart').build(context);
+      } else {
+        SnackMessage('Failed to add to your cart').build(context);
+      }
+
       setState(() {});
     } catch (e) {
       SnackMessage('Please select color or size!').build(context);
     }
   }
 
-  // TODO: here
-  void _onPressFloatingButton(Product product) {
-    if ((SampleData.person.market != null &&
-            SampleData.person.market.products.contains(product)) ||
-        product.count == 0) {
+  void _onPressFloatingButton() {
+    if ((person.market.products.contains(product)) || product.count == 0) {
       SnackMessage('You cannot add this product to your cart').build(context);
     } else {
-      _addToCart(product);
+      _addToCart();
     }
+  }
+
+  Future<String> _sendAddProductDataToServer(SelectedProduct selectedProduct) async {
+    MySocket socket = MySocket(UserData.phone, Command.addCart, [jsonEncode(selectedProduct)]);
+    String response = await socket.sendAndReceive();
+    return _checkServerResponse(response);
+  }
+
+  String _checkServerResponse(String response) {
+    if (response == 'false') {
+      return response;
+    }
+
+    List<String> data = response.split(';');
+    product.count = data[1] as int;
+    return data[0];
   }
 }
