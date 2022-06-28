@@ -3,28 +3,21 @@ import 'dart:convert';
 import 'package:namakala/utilities/selected_product.dart';
 
 class Cart {
-  Map<SelectedProduct, int> products = {};
+  List<SelectedProduct> products = [];
 
   Cart.fromJson(Map<String, dynamic> json) {
-    Map<String, dynamic> map = json['products'];
-
-    for (var keyJson in map.keys) {
-      SelectedProduct sp = SelectedProduct.fromJson(jsonDecode(keyJson));
-      products[sp] = map[keyJson]!;
+    for (var i in json['products']) {
+      SelectedProduct sp = SelectedProduct.fromJson(i);
+      products.add(sp);
     }
   }
 
   void add(SelectedProduct product) {
-    if (products.containsKey(product)) {
-      products[product] = products[product]! + 1;
-      return;
-    }
-
-    products[product] = 1;
+      // products.elementAt(products.indexOf(product))
   }
 
   void remove(SelectedProduct product) {
-    products[product] = products[product]! - 1;
+    // products[product] = products[product]! - 1;
   }
 
   void removeAll(SelectedProduct product) {
@@ -33,9 +26,9 @@ class Cart {
 
   int sumOfPrice() {
     int sum = 0;
-    for (SelectedProduct p in products.keys) {
-      sum += p.product.price;
-    }
+    // for (SelectedProduct p in products.keys) {
+    //   sum += p.product.price;
+    // }
     return sum;
   }
 }

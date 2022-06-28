@@ -4,37 +4,34 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Cart implements Serializable {
-    private Map<SelectedProduct, Integer> products = new HashMap<>();
+    private final List<SelectedProduct> products = new ArrayList<>();
     
     public JSONObject toJson() {
         JSONObject jo = new JSONObject();
+        JSONArray ja = new JSONArray();
         
-        Map<JSONObject, Integer> map = new HashMap<>();
-        for (SelectedProduct sp : products.keySet()) {
-            map.put(sp.toJson(), products.get(sp));
-        }
-        jo.put("products", map);
+        products.stream().map(SelectedProduct::toJson).forEach(ja::add);
+        jo.put("products", ja);
         return jo;
     }
     
-    public Map<SelectedProduct, Integer> getProducts() {
+    public List<SelectedProduct> getProducts() {
         return products;
     }
     
     public void add(SelectedProduct p) {
-        if (products.containsKey(p)) {
-            products.replace(p, products.get(p) + 1);
+        if (products.contains(p)) {
+            products.stream().filter(x -> x.equals(p)).forEach(x -> x.setCount(x.getCount() + 1));
         } else {
-            products.put(p, 1);
+            products.add(p);
         }
     }
     
     public void remove(SelectedProduct p) {
-        products.replace(p, products.get(p) - 1);
+        products.stream().filter(x -> x.equals(p)).forEach(x -> x.setCount(x.getCount() - 1));
     }
     
     public void removeAll(SelectedProduct p) {
@@ -42,11 +39,7 @@ public class Cart implements Serializable {
     }
     
     public int sumOfPrice() {
-        int sum = 0;
-        for (SelectedProduct p : products.keySet()) {
-            sum += products.get(p) * p.getProduct().getPrice();
-        }
-        
-        return sum;
+        Optional<Integer> sum = products.stream().map(x -> x.getProduct().getPrice() * x.getCount()).reduce(Integer::sum);
+        return sum.orElse(0);
     }
 }
