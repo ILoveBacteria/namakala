@@ -10,12 +10,20 @@ class Cart {
     }
   }
 
-  void add(SelectedProduct product) {
-      // products.elementAt(products.indexOf(product))
+  void add(SelectedProduct selectedProduct) {
+      for (SelectedProduct sp in products) {
+        if (selectedProduct == sp) {
+          sp.count++;
+        }
+      }
   }
 
-  void remove(SelectedProduct product) {
-    // products[product] = products[product]! - 1;
+  void remove(SelectedProduct selectedProduct) {
+    for (SelectedProduct sp in products) {
+      if (selectedProduct == sp) {
+        sp.count--;
+      }
+    }
   }
 
   void removeAll(SelectedProduct product) {
