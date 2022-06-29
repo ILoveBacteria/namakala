@@ -122,6 +122,12 @@ public class Database {
         writeCategory(category);
     }
     
+    public static void removeProduct(Product product) throws IOException, ClassNotFoundException {
+        Category category = readCategory(product.getCategory());
+        category.getProducts().remove(product);
+        writeCategory(category);
+    }
+    
     private static Path getCategoryPath(String name) {
         switch (name) {
             case "Mobiles":

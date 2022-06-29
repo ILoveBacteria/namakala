@@ -65,6 +65,8 @@ public class Command {
                 return removeAllCart();
             case "editProfile":
                 return editProfile();
+            case "removeProductMarket":
+                return removeProductMarket();
         }
         
         return null;
@@ -260,6 +262,19 @@ public class Command {
             Database.saveEditedPerson(sender);
             return "true".getBytes(StandardCharsets.UTF_8);
         } catch (ParseException | ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
+        return "false".getBytes(StandardCharsets.UTF_8);
+    }
+    
+    private byte[] removeProductMarket() {
+        try {
+            Product product = jsonToIncompleteProduct();
+            sender.getMarket().getProducts().remove(product);
+            Database.removeProduct(product);
+            Database.saveEditedPerson(sender);
+            return "true".getBytes(StandardCharsets.UTF_8);
+        } catch (ParseException | IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return "false".getBytes(StandardCharsets.UTF_8);
