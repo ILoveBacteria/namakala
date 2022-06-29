@@ -1,9 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:namakala/data/user_data.dart';
 import 'package:namakala/utilities/font.dart';
 import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/field.dart';
 import 'package:namakala/widgets/screen_setting.dart';
+import 'package:namakala/widgets/snack_message.dart';
 
+import '../socket/command.dart';
+import '../socket/socket.dart';
+import '../utilities/market.dart';
 import '../utilities/person.dart';
 
 class Account extends StatefulWidget {
@@ -19,18 +26,21 @@ class _AccountState extends State<Account> {
   final _lastNameFocus = FocusNode();
   final _phoneFocus = FocusNode();
   final _emailFocus = FocusNode();
+  final _marketFocus = FocusNode();
   final _passwordFocus = FocusNode();
   final _passwordConfirmFocus = FocusNode();
   FieldStatus _firstNameStatus = FieldStatus.none;
   FieldStatus _lastNameStatus = FieldStatus.none;
   FieldStatus _phoneStatus = FieldStatus.none;
   FieldStatus _emailStatus = FieldStatus.none;
+  FieldStatus _marketStatus = FieldStatus.none;
   FieldStatus _passwordStatus = FieldStatus.none;
   FieldStatus _passwordConfirmStatus = FieldStatus.none;
   late final TextEditingController _firstNameController;
   late final TextEditingController _lastNameController;
   late final TextEditingController _phoneController;
   late final TextEditingController _emailController;
+  late final TextEditingController _marketController;
   late final TextEditingController _passwordController;
   late final TextEditingController _passwordConfirmController;
   VoidCallback? _submitButton;
@@ -46,6 +56,7 @@ class _AccountState extends State<Account> {
     TextEditingController(text: person.lastname);
     TextEditingController(text: person.phone);
     TextEditingController(text: person.email);
+    TextEditingController(text: person.market.name);
     TextEditingController(text: person.password);
     TextEditingController(text: person.password);
 
@@ -68,10 +79,13 @@ class _AccountState extends State<Account> {
   Widget _userInformation({required String label, required String text}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Field.label(label: label),
         const SizedBox(height: 5.0),
-        Text(text, style: Font.styleBody1()),
+        Text(
+          text,
+          style: Font.styleBody1(),
+        ),
       ],
     );
   }
@@ -79,11 +93,13 @@ class _AccountState extends State<Account> {
   Widget _userInformationWidgets() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         _userInformation(
             label: 'Name', text: '${person.firstname} ${person.lastname}'),
         const Divider(color: Colors.grey),
         _userInformation(label: 'Phone', text: person.phone),
+        const Divider(color: Colors.grey),
+        _userInformation(label: 'Market', text: person.market.name),
         const Divider(color: Colors.grey),
         _userInformation(label: 'Email', text: person.email ?? 'Not set'),
         const Divider(color: Colors.grey),
@@ -167,6 +183,18 @@ class _AccountState extends State<Account> {
             setState(() {});
           },
           onChanged: (_) => setState(() => _emailStatus = FieldStatus.none),
+        ),
+        Field.separate(),
+        Field.market(
+          focusNode: _marketFocus,
+          status: _marketStatus,
+          controller: _marketController,
+          onTap: () => setState(() {}),
+          onEditingComplete: () {
+            _marketValidate();
+            setState(() {});
+          },
+          onChanged: (_) => setState(() => _marketStatus = FieldStatus.none),
         ),
         Field.separate(),
         Field.password(
@@ -254,6 +282,8 @@ class _AccountState extends State<Account> {
       _firstNameController.text.isNotEmpty &&
               _lastNameController.text.isNotEmpty &&
               _phoneController.text.isNotEmpty &&
+              _emailController.text.isNotEmpty &&
+              _marketController.text.isNotEmpty &&
               _passwordController.text.isNotEmpty &&
               _passwordConfirmController.text.isNotEmpty
           ? _submitButton = () => _onSaveButtonPressed()
@@ -261,20 +291,25 @@ class _AccountState extends State<Account> {
     });
   }
 
-  void _onSaveButtonPressed() {
+  void _onSaveButtonPressed() async {
     _validateAllFields();
     setState(() {});
 
     if (_isValidateAllFields()) {
-      _changeUserInformation();
-      _editScreen = !_editScreen;
-      setState(() {});
-      _firstNameStatus = FieldStatus.none;
-      _lastNameStatus = FieldStatus.none;
-      _phoneStatus = FieldStatus.none;
-      _emailStatus = FieldStatus.none;
-      _passwordStatus = FieldStatus.none;
-      _passwordConfirmStatus = FieldStatus.none;
+      if (await _sendEditedDataToServer() == 'true') {
+        _changeUserInformation();
+        _editScreen = !_editScreen;
+        setState(() {});
+        _firstNameStatus = FieldStatus.none;
+        _lastNameStatus = FieldStatus.none;
+        _phoneStatus = FieldStatus.none;
+        _emailStatus = FieldStatus.none;
+        _marketStatus = FieldStatus.none;
+        _passwordStatus = FieldStatus.none;
+        _passwordConfirmStatus = FieldStatus.none;
+      } else {
+        SnackMessage('Failed to edit data').build(context);
+      }
     }
   }
 
@@ -283,6 +318,7 @@ class _AccountState extends State<Account> {
     person.lastname = _lastNameController.text;
     person.phone = _phoneController.text;
     person.email = _emailController.text;
+    person.market.name = _marketController.text;
     person.password = _passwordController.text;
   }
 
@@ -291,6 +327,7 @@ class _AccountState extends State<Account> {
         _lastNameStatus == FieldStatus.validate &&
         _phoneStatus == FieldStatus.validate &&
         _emailStatus == FieldStatus.validate &&
+        _marketStatus == FieldStatus.validate &&
         _passwordStatus == FieldStatus.validate &&
         _passwordConfirmStatus == FieldStatus.validate;
   }
@@ -300,6 +337,7 @@ class _AccountState extends State<Account> {
     _lastNameValidate();
     _phoneValidate();
     _emailValidate();
+    _marketValidate();
     _passwordValidate();
     _passwordConfirmValidate();
   }
@@ -336,6 +374,14 @@ class _AccountState extends State<Account> {
     _emailFocus.unfocus();
   }
 
+  void _marketValidate() {
+    Field.marketValidate(_marketController.text, false)
+        ? _marketStatus = FieldStatus.validate
+        : _marketStatus = FieldStatus.error;
+
+    _marketFocus.unfocus();
+  }
+
   void _passwordValidate() {
     Field.passwordValidate(_passwordController.text)
         ? _passwordStatus = FieldStatus.validate
@@ -350,5 +396,20 @@ class _AccountState extends State<Account> {
         : _passwordConfirmStatus = FieldStatus.error;
 
     _passwordConfirmFocus.unfocus();
+  }
+
+  Future<String> _sendEditedDataToServer() async {
+    Person person = Person(
+      _firstNameController.text,
+      _lastNameController.text,
+      _phoneController.text,
+      _passwordController.text,
+    );
+    person.email = _emailController.text;
+    person.market = Market(_marketController.text);
+
+    MySocket socket = MySocket(UserData.phone, Command.editProfile, [jsonEncode(person)]);
+    String response = await socket.sendAndReceive();
+    return response;
   }
 }
