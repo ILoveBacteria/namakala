@@ -9,6 +9,7 @@ import 'package:namakala/screens/purchase_history/cart_list.dart';
 import 'package:namakala/screens/sign_in.dart';
 import 'package:namakala/socket/command.dart';
 import 'package:namakala/socket/socket.dart';
+import 'package:namakala/utilities/arguments.dart';
 import 'package:namakala/utilities/font.dart';
 import 'package:namakala/utilities/person.dart';
 import 'package:namakala/widgets/button.dart';
@@ -88,7 +89,8 @@ class _ProfileState extends State<Profile> {
           child: IntrinsicHeight(
             child: Row(
               children: [
-                _userActivity(title: 'Purchase', number: '${person.purchases.length}'),
+                _userActivity(
+                    title: 'Purchase', number: '${person.purchases.length}'),
                 const Spacer(),
                 const VerticalDivider(
                   color: Colors.grey,
@@ -100,7 +102,9 @@ class _ProfileState extends State<Profile> {
                   color: Colors.grey,
                 ),
                 const Spacer(),
-                _userActivity(title: 'Products', number: '${person.market.products.length}'),
+                _userActivity(
+                    title: 'Products',
+                    number: '${person.market.products.length}'),
               ],
             ),
           ),
@@ -109,15 +113,17 @@ class _ProfileState extends State<Profile> {
         Container(
           padding: const EdgeInsets.all(20.0),
           child: Column(
-            children: [
+            children: <Widget>[
               _button(
                 text: 'Account Information',
                 icon: Icons.account_circle_outlined,
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const Account(),
-                    ),
+                        builder: (context) => const Account(),
+                        settings: RouteSettings(
+                          arguments: person,
+                        )),
                   );
                 },
               ),
@@ -128,7 +134,7 @@ class _ProfileState extends State<Profile> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => PurchasedCartList(),
+                      builder: (context) => PurchasedCartList(person),
                     ),
                   );
                 },
@@ -151,7 +157,10 @@ class _ProfileState extends State<Profile> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => const ProductCategory(),
-                      settings: const RouteSettings(arguments: 'Favorites'),
+                      settings: RouteSettings(
+                        arguments:
+                            Arguments.favoriteCategory(person, 'Favorites'),
+                      ),
                     ),
                   );
                 },
@@ -161,7 +170,7 @@ class _ProfileState extends State<Profile> {
                 onPressed: () {
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => const SignIn()),
-                        (Route<dynamic> route) => false,
+                    (Route<dynamic> route) => false,
                   );
                 },
               ),
