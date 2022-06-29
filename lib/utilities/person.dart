@@ -39,7 +39,7 @@ class Person {
         'email': email,
         'password': password,
         'phone': phone,
-        'market': market.toJson(),
+        'market': market.name,
       };
 
   @override

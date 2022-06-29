@@ -32,6 +32,10 @@ public class Market implements Serializable {
         return name;
     }
     
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     public List<Product> getProducts() {
         return products;
     }
