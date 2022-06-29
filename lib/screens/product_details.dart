@@ -34,8 +34,8 @@ class _ProductDetailState extends State<ProductDetail> {
   Widget build(BuildContext context) {
     Arguments arguments =
         ModalRoute.of(context)!.settings.arguments as Arguments;
-    product = arguments.product;
-    person = arguments.person;
+    product = arguments.product!;
+    person = arguments.person!;
 
     return ScreenSetting.initScreen(
       context: context,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:namakala/screens/product_category.dart';
+import 'package:namakala/utilities/arguments.dart';
 import 'package:namakala/utilities/font.dart';
 import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/screen_setting.dart';
@@ -10,36 +11,38 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenSetting.initScreen(
-        context: context,
-        appBar: ScreenSetting.appBar(title: 'Home'),
-        child: Column(
-          children: [
-            _category(
-              title: 'Electronics',
-              items: <Widget>[
-                _items(
-                    image: 'assets/images/iphone.png',
-                    title: 'Mobiles',
-                    context: context),
-                const VerticalDivider(color: Colors.grey),
-                _items(
-                    image: 'assets/images/macbook.png',
-                    title: 'Laptops',
-                    context: context),
-                const VerticalDivider(color: Colors.grey),
-                _items(
-                    image: 'assets/images/camera.png',
-                    title: 'Camera',
-                    context: context),
-                const VerticalDivider(color: Colors.grey),
-                _items(
-                    image: 'assets/images/ipad.png',
-                    title: 'Tablets',
-                    context: context),
-              ],
-            ),
-            categorySeparator(),
-            _category(title: 'Clothing', items: <Widget>[
+      context: context,
+      appBar: ScreenSetting.appBar(title: 'Home'),
+      child: Column(
+        children: <Widget>[
+          _category(
+            title: 'Electronics',
+            items: <Widget>[
+              _items(
+                  image: 'assets/images/iphone.png',
+                  title: 'Mobiles',
+                  context: context),
+              const VerticalDivider(color: Colors.grey),
+              _items(
+                  image: 'assets/images/macbook.png',
+                  title: 'Laptops',
+                  context: context),
+              const VerticalDivider(color: Colors.grey),
+              _items(
+                  image: 'assets/images/camera.png',
+                  title: 'Camera',
+                  context: context),
+              const VerticalDivider(color: Colors.grey),
+              _items(
+                  image: 'assets/images/ipad.png',
+                  title: 'Tablets',
+                  context: context),
+            ],
+          ),
+          categorySeparator(),
+          _category(
+            title: 'Clothing',
+            items: <Widget>[
               _items(
                   image: 'assets/images/men.png',
                   title: 'Men',
@@ -54,9 +57,12 @@ class Home extends StatelessWidget {
                   image: 'assets/images/child.png',
                   title: 'Kids & Baby',
                   context: context),
-            ]),
-            categorySeparator(),
-            _category(title: 'Sport & Travel', items: <Widget>[
+            ],
+          ),
+          categorySeparator(),
+          _category(
+            title: 'Sport & Travel',
+            items: <Widget>[
               _items(
                   image: 'assets/images/athletic_clothing.png',
                   title: 'Athletic Clothings',
@@ -71,17 +77,19 @@ class Home extends StatelessWidget {
                   image: 'assets/images/camping_equipment.png',
                   title: 'Camping',
                   context: context),
-            ]),
-          ],
-        ));
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _category({required String title, required List<Widget> items}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Row(
-          children: [
+          children: <Widget>[
             Text(
               title,
               style: Font.styleHeadline6(),
@@ -90,7 +98,7 @@ class Home extends StatelessWidget {
             TextButton(
               onPressed: () {},
               child: Row(
-                children: [
+                children: <Widget>[
                   Text(
                     'All Items',
                     style: Font.styleButton2(),
@@ -117,7 +125,7 @@ class Home extends StatelessWidget {
 
   Widget categorySeparator() {
     return Column(
-      children: const [
+      children: const <Widget>[
         SizedBox(height: 10.0),
         Divider(color: Colors.grey),
       ],
@@ -134,7 +142,7 @@ class Home extends StatelessWidget {
         MaterialPageRoute(
           builder: (context) => const ProductCategory(),
           settings: RouteSettings(
-            arguments: title,
+            arguments: Arguments.category(title),
           ),
         ),
       ),
@@ -147,7 +155,7 @@ class Home extends StatelessWidget {
           border: Border.all(color: Colors.black12, width: 1.3),
         ),
         child: Column(
-          children: [
+          children: <Widget>[
             Image.asset(
               image,
               height: 105.0,

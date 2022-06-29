@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:namakala/data/user_data.dart';
 import 'package:namakala/socket/command.dart';
 import 'package:namakala/socket/socket.dart';
+import 'package:namakala/utilities/arguments.dart';
 import 'package:namakala/utilities/person.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 import 'package:namakala/widgets/snack_message.dart';
@@ -27,7 +28,14 @@ class _ProductCategoryState extends State<ProductCategory> {
 
   @override
   Widget build(BuildContext context) {
-    String category = ModalRoute.of(context)!.settings.arguments as String;
+    Arguments arguments = ModalRoute.of(context)!.settings.arguments as Arguments;
+    String category = arguments.category!;
+
+    if (category == 'Favorites') {
+      person = arguments.person!;
+      products = person.favorites;
+      dataReceived = true;
+    }
 
     if (!dataReceived) {
       _getAllDataFromServer(category).then((value) {
