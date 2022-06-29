@@ -36,29 +36,33 @@ class _AccountState extends State<Account> {
   FieldStatus _marketStatus = FieldStatus.none;
   FieldStatus _passwordStatus = FieldStatus.none;
   FieldStatus _passwordConfirmStatus = FieldStatus.none;
-  late final TextEditingController _firstNameController;
-  late final TextEditingController _lastNameController;
-  late final TextEditingController _phoneController;
-  late final TextEditingController _emailController;
-  late final TextEditingController _marketController;
-  late final TextEditingController _passwordController;
-  late final TextEditingController _passwordConfirmController;
+  late TextEditingController _firstNameController;
+  late TextEditingController _lastNameController;
+  late TextEditingController _phoneController;
+  late TextEditingController _emailController;
+  late TextEditingController _marketController;
+  late TextEditingController _passwordController;
+  late TextEditingController _passwordConfirmController;
   VoidCallback? _submitButton;
   bool _obscurePassword = true;
   bool _obscurePasswordConfirm = true;
+  bool controllerInitialized = false;
   late Person person;
 
   @override
   Widget build(BuildContext context) {
     person = ModalRoute.of(context)!.settings.arguments as Person;
 
-    TextEditingController(text: person.firstname);
-    TextEditingController(text: person.lastname);
-    TextEditingController(text: person.phone);
-    TextEditingController(text: person.email);
-    TextEditingController(text: person.market.name);
-    TextEditingController(text: person.password);
-    TextEditingController(text: person.password);
+    if (!controllerInitialized) {
+      _firstNameController = TextEditingController(text: person.firstname);
+      _lastNameController = TextEditingController(text: person.lastname);
+      _phoneController = TextEditingController(text: person.phone);
+      _emailController = TextEditingController(text: person.email);
+      _marketController = TextEditingController(text: person.market.name);
+      _passwordController = TextEditingController(text: person.password);
+      _passwordConfirmController = TextEditingController(text: person.password);
+      controllerInitialized = true;
+    }
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
