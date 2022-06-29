@@ -146,6 +146,9 @@ class _ProfileState extends State<Profile> {
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const MyMarket(),
+                    settings: RouteSettings(
+                      arguments: person,
+                    ),
                   ),
                 ),
               ),
