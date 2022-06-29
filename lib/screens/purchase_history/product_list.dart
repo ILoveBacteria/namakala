@@ -34,8 +34,9 @@ class _PurchasedProductListState extends State<PurchasedProductList> {
 
   List<Widget> _buildScreen(Cart cart) {
     List<Widget> list = [];
-    for (SelectedProduct p in cart.products.keys) {
+    for (SelectedProduct p in cart.products) {
       ProductCard card = ProductCard(
+        person,
         p.product,
         p.product.image,
         p.product.name,
@@ -54,11 +55,7 @@ class _PurchasedProductListState extends State<PurchasedProductList> {
       Detail.text(Icons.store_outlined, 'Market', p.product.market.name),
       Detail.text(Icons.attach_money, 'Price', '${p.product.price}\$'),
       Detail.color(Icons.palette_outlined, 'Color', p.color),
-      Detail.text(
-        Icons.shopping_bag_outlined,
-        'Count',
-        '${cart.products[p]}',
-      ),
+      Detail.text(Icons.shopping_bag_outlined, 'Count', '${p.count}'),
       Detail.text(Icons.straighten_outlined, 'Size', p.size),
     ];
 

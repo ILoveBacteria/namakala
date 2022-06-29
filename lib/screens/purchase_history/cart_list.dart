@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:namakala/data/sample_data.dart';
 import 'package:namakala/screens/purchase_history/product_list.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
@@ -10,9 +9,9 @@ import '../../widgets/button.dart';
 import '../../widgets/card/detail.dart';
 
 class PurchasedCartList extends StatelessWidget {
-  final Person person = SampleData.person;
+  final Person person;
 
-  PurchasedCartList({Key? key}) : super(key: key);
+  const PurchasedCartList(this.person, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

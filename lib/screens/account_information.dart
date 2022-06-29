@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:namakala/data/sample_data.dart';
 import 'package:namakala/utilities/font.dart';
 import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/field.dart';
 import 'package:namakala/widgets/screen_setting.dart';
+
+import '../utilities/person.dart';
 
 class Account extends StatefulWidget {
   const Account({Key? key}) : super(key: key);
@@ -26,25 +27,36 @@ class _AccountState extends State<Account> {
   FieldStatus _emailStatus = FieldStatus.none;
   FieldStatus _passwordStatus = FieldStatus.none;
   FieldStatus _passwordConfirmStatus = FieldStatus.none;
-  final _firstNameController = TextEditingController(text: SampleData.person.firstname);
-  final _lastNameController = TextEditingController(text: SampleData.person.lastname);
-  final _phoneController = TextEditingController(text: SampleData.person.phone);
-  final _emailController = TextEditingController(text: SampleData.person.email);
-  final _passwordController = TextEditingController(text: SampleData.person.password);
-  final _passwordConfirmController = TextEditingController(text: SampleData.person.password);
+  late final TextEditingController _firstNameController;
+  late final TextEditingController _lastNameController;
+  late final TextEditingController _phoneController;
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+  late final TextEditingController _passwordConfirmController;
   VoidCallback? _submitButton;
   bool _obscurePassword = true;
   bool _obscurePasswordConfirm = true;
+  late Person person;
 
   @override
   Widget build(BuildContext context) {
+    person = ModalRoute.of(context)!.settings.arguments as Person;
+
+    TextEditingController(text: person.firstname);
+    TextEditingController(text: person.lastname);
+    TextEditingController(text: person.phone);
+    TextEditingController(text: person.email);
+    TextEditingController(text: person.password);
+    TextEditingController(text: person.password);
+
     return GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: ScreenSetting.initScreenWithSliverBar(
-          appBar: ScreenSetting.sliverAppBar(context: context),
-          context: context,
-          child: _mainStateWidget(),
-        ));
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: ScreenSetting.initScreenWithSliverBar(
+        appBar: ScreenSetting.sliverAppBar(context: context),
+        context: context,
+        child: _mainStateWidget(),
+      ),
+    );
   }
 
   Widget _mainStateWidget() {
@@ -68,13 +80,14 @@ class _AccountState extends State<Account> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _userInformation(label: 'Name', text: '${SampleData.person.firstname} ${SampleData.person.lastname}'),
+        _userInformation(
+            label: 'Name', text: '${person.firstname} ${person.lastname}'),
         const Divider(color: Colors.grey),
-        _userInformation(label: 'Phone', text: SampleData.person.phone),
+        _userInformation(label: 'Phone', text: person.phone),
         const Divider(color: Colors.grey),
-        _userInformation(label: 'Email', text: SampleData.person.email ?? 'Not set'),
+        _userInformation(label: 'Email', text: person.email ?? 'Not set'),
         const Divider(color: Colors.grey),
-        _userInformation(label: 'Password', text: SampleData.person.password),
+        _userInformation(label: 'Password', text: person.password),
         Button.separate(),
         Center(
           child: Button.elevatedIcon(
@@ -173,7 +186,9 @@ class _AccountState extends State<Account> {
             });
           },
           suffixButton: IconButton(
-            icon: _obscurePassword ? const Icon(Icons.visibility_off_outlined) : const Icon(Icons.visibility_outlined),
+            icon: _obscurePassword
+                ? const Icon(Icons.visibility_off_outlined)
+                : const Icon(Icons.visibility_outlined),
             color: Colors.grey,
             onPressed: () {
               setState(() {
@@ -200,7 +215,9 @@ class _AccountState extends State<Account> {
             });
           },
           suffixButton: IconButton(
-            icon: _obscurePasswordConfirm ? const Icon(Icons.visibility_off_outlined) : const Icon(Icons.visibility_outlined),
+            icon: _obscurePasswordConfirm
+                ? const Icon(Icons.visibility_off_outlined)
+                : const Icon(Icons.visibility_outlined),
             color: Colors.grey,
             onPressed: () {
               setState(() {
@@ -262,11 +279,11 @@ class _AccountState extends State<Account> {
   }
 
   void _changeUserInformation() {
-    SampleData.person.firstname = _firstNameController.text;
-    SampleData.person.lastname = _lastNameController.text;
-    SampleData.person.phone = _phoneController.text;
-    SampleData.person.email = _emailController.text;
-    SampleData.person.password = _passwordController.text;
+    person.firstname = _firstNameController.text;
+    person.lastname = _lastNameController.text;
+    person.phone = _phoneController.text;
+    person.email = _emailController.text;
+    person.password = _passwordController.text;
   }
 
   bool _isValidateAllFields() {
