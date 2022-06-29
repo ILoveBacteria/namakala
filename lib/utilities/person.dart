@@ -12,7 +12,7 @@ class Person {
   late List<Cart> purchases = [];
   late List<Product> favorites = [];
   late Cart cart;
-  late List<int> scores;
+  late List<int> scores = [];
 
   Person(this.firstname, this.lastname, this.phone, this.password);
 

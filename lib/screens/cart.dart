@@ -199,7 +199,7 @@ class _CartScreenState extends State<CartScreen> {
 
   void _checkout() async {
     if (await _sendCheckoutDataToServer() == 'true') {
-      person.cart = Cart();
+      cart = Cart();
     } else {
       SnackMessage('Failed to checkout your cart').build(context);
     }

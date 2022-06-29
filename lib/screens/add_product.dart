@@ -204,7 +204,7 @@ class _AddProductState extends State<AddProduct> {
 
   bool _titleValidator(String? value) {
     if (value == null ||
-        RegExp(r'^[a-zA-Z0-9-() ]*$').hasMatch(value) ||
+        !RegExp(r'^[a-zA-Z0-9-() ]*$').hasMatch(value) ||
         value.isEmpty) {
       return false;
     }
