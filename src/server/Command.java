@@ -63,6 +63,8 @@ public class Command {
                 return removeCart();
             case "removeAllCart":
                 return removeAllCart();
+            case "editProfile":
+                return editProfile();
         }
         
         return null;
@@ -243,6 +245,23 @@ public class Command {
             e.printStackTrace();
         }
     
+        return "false".getBytes(StandardCharsets.UTF_8);
+    }
+    
+    private byte[] editProfile() {
+        try {
+            Person person = jsonToPerson();
+            sender.setFirstname(person.getFirstname());
+            sender.setLastname(person.getLastname());
+            sender.setEmail(person.getEmail());
+            sender.getMarket().setName(person.getMarket().getName());
+            sender.setPassword(person.getPassword());
+            sender.setPhone(person.getPhone());
+            Database.saveEditedPerson(sender);
+            return "true".getBytes(StandardCharsets.UTF_8);
+        } catch (ParseException | ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
         return "false".getBytes(StandardCharsets.UTF_8);
     }
     
