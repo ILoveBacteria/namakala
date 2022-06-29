@@ -25,18 +25,21 @@ class _SignUpState extends State<SignUp> {
   final _lastNameFocus = FocusNode();
   final _phoneFocus = FocusNode();
   final _emailFocus = FocusNode();
+  final _marketFocus = FocusNode();
   final _passwordFocus = FocusNode();
   final _passwordConfirmFocus = FocusNode();
   FieldStatus _firstNameStatus = FieldStatus.none;
   FieldStatus _lastNameStatus = FieldStatus.none;
   FieldStatus _phoneStatus = FieldStatus.none;
   FieldStatus _emailStatus = FieldStatus.none;
+  FieldStatus _marketStatus = FieldStatus.none;
   FieldStatus _passwordStatus = FieldStatus.none;
   FieldStatus _passwordConfirmStatus = FieldStatus.none;
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
+  final _marketController = TextEditingController();
   final _passwordController = TextEditingController();
   final _passwordConfirmController = TextEditingController();
   VoidCallback? _submitButton;
@@ -50,6 +53,7 @@ class _SignUpState extends State<SignUp> {
     _lastNameFocus.dispose();
     _phoneFocus.dispose();
     _emailFocus.dispose();
+    _marketFocus.dispose();
     _passwordFocus.dispose();
     _passwordConfirmFocus.dispose();
   }
@@ -63,7 +67,7 @@ class _SignUpState extends State<SignUp> {
         children: <Widget>[
           Field.parentContainer(
             child: Column(
-              children: [
+              children: <Widget>[
                 Field.firstName(
                   focusNode: _firstNameFocus,
                   status: _firstNameStatus,
@@ -126,6 +130,18 @@ class _SignUpState extends State<SignUp> {
                   },
                   onChanged: (_) =>
                       setState(() => _emailStatus = FieldStatus.none),
+                ),
+                Field.separate(),
+                Field.market(
+                  focusNode: _marketFocus,
+                  status: _marketStatus,
+                  controller: _marketController,
+                  onTap: () => setState(() {}),
+                  onEditingComplete: () {
+                    _marketValidate();
+                    setState(() {});
+                  },
+                  onChanged: (_) => setState(() => _marketStatus = FieldStatus.none),
                 ),
                 Field.separate(),
                 Field.password(
@@ -240,7 +256,11 @@ class _SignUpState extends State<SignUp> {
     if (_emailController.text.isNotEmpty) {
       person.email = _emailController.text;
     }
-    person.market = Market('${person.firstname} ${person.lastname}');
+    if (_marketController.text.isNotEmpty) {
+      person.market = Market(_marketController.text);
+    } else {
+      person.market = Market('${person.firstname} ${person.lastname}');
+    }
 
     MySocket socket = MySocket(null, Command.signUp, [jsonEncode(person)]);
     String value = await socket.sendAndReceive();
@@ -252,6 +272,7 @@ class _SignUpState extends State<SignUp> {
         _lastNameStatus == FieldStatus.validate &&
         _phoneStatus == FieldStatus.validate &&
         _emailStatus == FieldStatus.validate &&
+        _marketStatus == FieldStatus.validate &&
         _passwordStatus == FieldStatus.validate &&
         _passwordConfirmStatus == FieldStatus.validate;
   }
@@ -261,6 +282,7 @@ class _SignUpState extends State<SignUp> {
     _lastNameValidate();
     _phoneValidate();
     _emailValidate();
+    _marketValidate();
     _passwordValidate();
     _passwordConfirmValidate();
   }
@@ -295,6 +317,14 @@ class _SignUpState extends State<SignUp> {
         : _emailStatus = FieldStatus.error;
 
     _emailFocus.unfocus();
+  }
+
+  void _marketValidate() {
+    Field.emailValidate(_marketController.text, true)
+        ? _marketStatus = FieldStatus.validate
+        : _marketStatus = FieldStatus.error;
+
+    _marketFocus.unfocus();
   }
 
   void _passwordValidate() {
