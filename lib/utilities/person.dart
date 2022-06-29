@@ -12,6 +12,7 @@ class Person {
   late List<Cart> purchases = [];
   late List<Product> favorites = [];
   late Cart cart;
+  late List<int> scores;
 
   Person(this.firstname, this.lastname, this.phone, this.password);
 
@@ -30,6 +31,11 @@ class Person {
 
     for (Map<String, dynamic> value in json['favorites']) {
       favorites.add(Product.fromJson(value));
+    }
+
+    List<dynamic> dynamicScores = json['scores'];
+    for (var i in dynamicScores) {
+      scores.add(i);
     }
   }
 

@@ -18,6 +18,7 @@ public class Person implements Serializable {
     private List<Cart> purchases = new ArrayList<>();
     private List<Product> favorites = new ArrayList<>();
     private Cart cart = new Cart();
+    private List<Integer> scores = new ArrayList<>();
     
     public Person(String firstname, String lastname, String email, String phone, String password, Market market) {
         this.firstname = firstname;
@@ -60,6 +61,13 @@ public class Person implements Serializable {
             jaFavorites.add(p.toJson());
         }
         jo.put("favorites", jaFavorites);
+    
+        JSONArray jaScores = new JSONArray();
+        for (Integer i : scores) {
+            jaScores.add(i);
+        }
+        jo.put("scores", jaScores);
+        
         jo.put("cart", cart.toJson());
         
         return jo;
@@ -124,6 +132,14 @@ public class Person implements Serializable {
     
     public void setMarket(Market market) {
         this.market = market;
+    }
+    
+    public List<Integer> getScores() {
+        return scores;
+    }
+    
+    public void setScores(List<Integer> scores) {
+        this.scores = scores;
     }
     
     @Override
