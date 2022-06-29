@@ -262,14 +262,34 @@ class Field {
     );
   }
 
+  static Widget market({
+    String? initialValue,
+    FocusNode? focusNode,
+    VoidCallback? onTap,
+    VoidCallback? onEditingComplete,
+    TextEditingController? controller,
+    ValueChanged<String>? onChanged,
+    FieldStatus status = FieldStatus.none,
+  }) {
+    return Field.field(
+      label: 'Market',
+      initialValue: initialValue,
+      hintText: 'Digikala',
+      prefixIcon: Icons.store_outlined,
+      controller: controller,
+      focusNode: focusNode,
+      onEditingComplete: onEditingComplete,
+      onChanged: onChanged,
+      onTap: onTap,
+      status: status,
+    );
+  }
+
   static bool emailValidate(String? value, bool canValueEmpty) {
     if (value == null ||
         !RegExp(r"""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])""")
             .hasMatch(value) && !canValueEmpty) {
 
-      if (value == null) {
-        print('null');
-      }
       return false;
     }
     return true;
@@ -284,10 +304,9 @@ class Field {
     return true;
   }
 
-  static bool marketValidate(String? value) {
+  static bool marketValidate(String? value, bool canValueEmpty) {
     if (value == null ||
-        !RegExp(r'^[a-zA-Z0-9-() ]*$').hasMatch(value) ||
-        value.isEmpty) {
+        !RegExp(r'^[a-zA-Z0-9-() ]*$').hasMatch(value) && !canValueEmpty) {
       return false;
     }
     return true;
