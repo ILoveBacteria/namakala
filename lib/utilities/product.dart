@@ -12,8 +12,7 @@ class Product {
   late String category;
   late Market market;
   late int count;
-  double score = 0;
-  int _countVoters = 0;
+  double score = 0.0;
   late List<Color> color = [];
   late List<String> size = [];
 
@@ -28,6 +27,7 @@ class Product {
     category = json['category'];
     market = Market.fromJson(json['market']);
     count = json['count'];
+    score = json['score'];
 
     List<dynamic> dynamicSizes = json['size'];
     for (var i in dynamicSizes) {

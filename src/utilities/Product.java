@@ -49,6 +49,7 @@ public class Product implements Serializable {
         jo.put("category", category);
         jo.put("count", count);
         jo.put("market", market.toJson());
+        jo.put("score", score);
         
         JSONArray jsonImage = new JSONArray();
         for (byte b : Database.readImage(image)) {
@@ -84,6 +85,12 @@ public class Product implements Serializable {
             return true;
         }
         return false;
+    }
+    
+    public double addNewRate(double newScore) {
+        ++countVoters;
+        this.score = ((countVoters - 1) * this.score + newScore) / countVoters;
+        return this.score;
     }
     
     public void setCount(int count) {
