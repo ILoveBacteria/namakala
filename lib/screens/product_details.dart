@@ -27,13 +27,17 @@ class ProductDetail extends StatefulWidget {
 class _ProductDetailState extends State<ProductDetail> {
   final List<bool> _selectedColorChip = [];
   final List<bool> _selectedSizeChip = [];
+  final List<bool> _selectedScoreChip = [];
   late Product product;
   late Person person;
 
   @override
   Widget build(BuildContext context) {
     Arguments arguments =
-        ModalRoute.of(context)!.settings.arguments as Arguments;
+    ModalRoute
+        .of(context)!
+        .settings
+        .arguments as Arguments;
     product = arguments.product!;
     person = arguments.person!;
 
@@ -85,6 +89,8 @@ class _ProductDetailState extends State<ProductDetail> {
         const SizedBox(height: 20.0),
         _buildSizeChips(),
         const SizedBox(height: 20.0),
+        _buildScoreChips(),
+        const SizedBox(height: 20.0),
         _buildMoreDetail(),
       ],
     );
@@ -101,7 +107,10 @@ class _ProductDetailState extends State<ProductDetail> {
 
   Widget _buildImage() {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 40 / 100,
+      height: MediaQuery
+          .of(context)
+          .size
+          .height * 40 / 100,
       child: Image.memory(product.image),
     );
   }
@@ -154,12 +163,13 @@ class _ProductDetailState extends State<ProductDetail> {
         ),
       ),
       IconButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const CartScreen(),
-          ),
-        ).then((_) => setState(() {})),
+        onPressed: () =>
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const CartScreen(),
+              ),
+            ).then((_) => setState(() {})),
         icon: const Icon(
           Icons.shopping_cart_outlined,
           color: Colors.blue,
@@ -212,14 +222,15 @@ class _ProductDetailState extends State<ProductDetail> {
           backgroundColor: product.color[i],
           selectedColor: product.color[i],
           selected: _selectedColorChip[i],
-          onSelected: (value) => setState(() {
-            if (value) {
-              for (int i = 0; i < _selectedColorChip.length; i++) {
-                _selectedColorChip[i] = false;
-              }
-            }
-            _selectedColorChip[i] = value;
-          }),
+          onSelected: (value) =>
+              setState(() {
+                if (value) {
+                  for (int i = 0; i < _selectedColorChip.length; i++) {
+                    _selectedColorChip[i] = false;
+                  }
+                }
+                _selectedColorChip[i] = value;
+              }),
         ),
       );
     }
@@ -244,14 +255,15 @@ class _ProductDetailState extends State<ProductDetail> {
           elevation: _selectedSizeChip[i] ? 5.0 : 0.0,
           backgroundColor: Colors.grey[200],
           selected: _selectedSizeChip[i],
-          onSelected: (value) => setState(() {
-            if (value) {
-              for (int i = 0; i < _selectedSizeChip.length; i++) {
-                _selectedSizeChip[i] = false;
-              }
-            }
-            _selectedSizeChip[i] = value;
-          }),
+          onSelected: (value) =>
+              setState(() {
+                if (value) {
+                  for (int i = 0; i < _selectedSizeChip.length; i++) {
+                    _selectedSizeChip[i] = false;
+                  }
+                }
+                _selectedSizeChip[i] = value;
+              }),
         ),
       );
     }
@@ -285,6 +297,80 @@ class _ProductDetailState extends State<ProductDetail> {
         ],
       ),
     );
+  }
+
+  Widget _buildScoreChips() {
+    return _container(
+      child: Column(
+        children: <Widget>[
+          Detail.text(Icons.grade_outlined, 'Score', 'Rate this product')
+              .build(context),
+          Row(
+            children: _scoreChipList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _scoreChipList() {
+    List<Widget> chipList = [];
+
+    for (int i = 0; i < 5; i++) {
+      _selectedScoreChip.add(false);
+      chipList.add(
+        ChoiceChip(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+          ),
+          label: Text(
+            '${i + 1}',
+            style: Font.styleButton1(),
+          ),
+          elevation: _selectedScoreChip[i] ? 5.0 : 0.0,
+          backgroundColor: Colors.grey[200],
+          selected: person.scores.contains(product.id)
+              ? false
+              : _selectedScoreChip[i],
+          onSelected: (value) =>
+              setState(() {
+                if (value) {
+                  for (int i = 0; i < _selectedScoreChip.length; i++) {
+                    _selectedScoreChip[i] = false;
+                  }
+                }
+                _selectedScoreChip[i] = value;
+              }),
+        ),
+      );
+    }
+
+    Widget okButton = IconButton(
+      onPressed: _selectedScoreChip.contains(true) ? () => _sendNewScoreToServer() : null,
+      icon: const Icon(
+        Icons.done,
+        color: Colors.green,
+      ),
+    );
+
+    Widget text = Text('voted!', style: Font.styleBody1(color: Colors.green),);
+
+    chipList.add(person.scores.contains(product.id) ? text : okButton);
+
+    return chipList;
+  }
+
+  Future<void> _sendNewScoreToServer() async {
+    MySocket socket = MySocket(UserData.phone, Command.score, [jsonEncode(product) ,'${_selectedScoreChip.indexOf(true) + 1}']);
+    String response = await socket.sendAndReceive();
+
+    if (response == 'false') {
+      SnackMessage('Failed to rate this product').build(context);
+    } else {
+      person.scores.add(product.id);
+      product.score = double.parse(response);
+      setState(() {});
+    }
   }
 
   void _addToCart() async {
