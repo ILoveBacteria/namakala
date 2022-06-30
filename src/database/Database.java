@@ -90,11 +90,12 @@ public class Database {
         return "null".getBytes(StandardCharsets.UTF_8);
     }
     
-    public static String writeImage(byte[] bytes) throws IOException {
-        try (FileOutputStream out = new FileOutputStream("1.png")) {
+    public static String writeImage(byte[] bytes, long id) throws IOException {
+        String name = "src/database/data/" + id + ".png";
+        try (FileOutputStream out = new FileOutputStream(name)) {
             out.write(bytes);
         }
-        return "1.png";
+        return name;
     }
     
     public static Category readCategory(String name) throws IOException, ClassNotFoundException {

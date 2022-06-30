@@ -111,7 +111,8 @@ public class Product implements Serializable {
             i++;
         }
         
-        return new Product(++Database.countProduct, name, Database.writeImage(bytes), detail, (int) price, category, new Market(market), (int) count, colorList, sizeList);
+        long id = ++Database.countProduct;
+        return new Product(id, name, Database.writeImage(bytes, id), detail, (int) price, category, new Market(market), (int) count, colorList, sizeList);
     }
     
     public boolean purchase() {
