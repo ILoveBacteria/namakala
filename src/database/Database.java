@@ -90,6 +90,13 @@ public class Database {
         return "null".getBytes(StandardCharsets.UTF_8);
     }
     
+    public static String writeImage(byte[] bytes) throws IOException {
+        try (FileOutputStream out = new FileOutputStream("1.png")) {
+            out.write(bytes);
+        }
+        return "1.png";
+    }
+    
     public static Category readCategory(String name) throws IOException, ClassNotFoundException {
         Path path = getCategoryPath(name);
         try (ObjectInputStream in = new ObjectInputStream(Files.newInputStream(path))) {
@@ -118,6 +125,12 @@ public class Database {
     public static void writeEditedProduct(Product newProduct) throws IOException, ClassNotFoundException {
         Category category = readCategory(newProduct.getCategory());
         category.getProducts().remove(newProduct);
+        category.getProducts().add(newProduct);
+        writeCategory(category);
+    }
+    
+    public static void writeProduct(Product newProduct) throws IOException, ClassNotFoundException {
+        Category category = readCategory(newProduct.getCategory());
         category.getProducts().add(newProduct);
         writeCategory(category);
     }
