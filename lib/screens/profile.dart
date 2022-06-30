@@ -51,16 +51,12 @@ class _ProfileState extends State<Profile> {
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Row(
             children: [
-              Container(
-                width: 100.0,
-                height: 100.0,
-                decoration: BoxDecoration(
-                  border: Border.all(),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.person,
-                  size: 50.0,
+              CircleAvatar(
+                backgroundColor: Colors.grey,
+                radius: 51,
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundImage: MemoryImage(person.image!),
                 ),
               ),
               const SizedBox(width: 20.0),
