@@ -17,7 +17,7 @@ class Product {
   late List<String> size = [];
 
   Product(this.name, this.image, this.price, this.category, this.detail,
-      this.color, this.size, this.market);
+      this.color, this.size, this.count, this.market);
 
   Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -49,6 +49,18 @@ class Product {
         'id': id,
         'category':category,
       };
+
+  Map<String, dynamic> toJson2() => {
+    'category':category,
+    'name': name,
+    'detail': detail,
+    'price': price,
+    'market': market.name,
+    'count': count,
+    'size': size,
+    'color': color.map((e) => e.value).toList(),
+    'image': image.toList(),
+  };
 
   @override
   bool operator ==(Object other) =>

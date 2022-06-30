@@ -4,7 +4,9 @@ import database.Database;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Product implements Serializable {
@@ -77,6 +79,39 @@ public class Product implements Serializable {
         long id = (Long) jsonObject.get("id");
         
         return new Product(id, category);
+    }
+    
+    public static Product fromJsonComplete(JSONObject jsonObject) throws IOException {
+        String category = (String) jsonObject.get("category");
+        String name = (String) jsonObject.get("name");
+        String detail = (String) jsonObject.get("detail");
+        long price = (Long) jsonObject.get("price");
+        String market = (String) jsonObject.get("market");
+        long count = (Long) jsonObject.get("count");
+        
+        JSONArray joSizes = (JSONArray) jsonObject.get("size");
+        List<String> sizeList = new ArrayList<>();
+        for (Object o : joSizes) {
+            sizeList.add((String) o);
+        }
+    
+        JSONArray joColors = (JSONArray) jsonObject.get("color");
+        List<Integer> colorList = new ArrayList<>();
+        for (Object o : joColors) {
+            Long l = (Long) o;
+            colorList.add(l.intValue());
+        }
+        
+        JSONArray joImage = (JSONArray) jsonObject.get("image");
+        byte[] bytes = new byte[joImage.size()];
+        int i = 0;
+        for (Object o : joImage) {
+            Long l = (Long) o;
+            bytes[i] = l.byteValue();
+            i++;
+        }
+        
+        return new Product(++Database.countProduct, name, Database.writeImage(bytes), detail, (int) price, category, new Market(market), (int) count, colorList, sizeList);
     }
     
     public boolean purchase() {
