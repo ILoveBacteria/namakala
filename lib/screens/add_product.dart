@@ -319,6 +319,7 @@ class _AddProductState extends State<AddProduct> {
     if (pickedFile != null) {
       setState(() {
         imageFile = File(pickedFile.path);
+        _changeButtonEnabled();
       });
     }
   }
@@ -363,7 +364,7 @@ class _AddProductState extends State<AddProduct> {
 
   bool _colorValidator(String? value) {
     if (value == null ||
-        !RegExp(r'^[0-9A-Fx]*$').hasMatch(value) ||
+        !RegExp(r'^[0-9A-Fx ]*$').hasMatch(value) ||
         value.isEmpty) {
       return false;
     }
@@ -372,7 +373,7 @@ class _AddProductState extends State<AddProduct> {
 
   bool _sizeValidator(String? value) {
     if (value == null ||
-        !RegExp(r'^[0-9]*$').hasMatch(value) ||
+        !RegExp(r'^[0-9 ]*$').hasMatch(value) ||
         value.isEmpty) {
       return false;
     }
