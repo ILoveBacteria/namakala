@@ -247,6 +247,11 @@ class _SignUpState extends State<SignUp> {
     if (value == 'false') {
       SnackMessage('Failed to get response from the server. Try again').build(context);
       return false;
+    } else if (value == 'phoneFalse') {
+      SnackMessage('This phone has already used').build(context);
+      _phoneStatus = FieldStatus.error;
+      setState(() {});
+      return false;
     }
     return true;
   }
