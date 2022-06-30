@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:namakala/utilities/font.dart';
 import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/field.dart';
@@ -12,24 +15,29 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
-  List<Widget> _sizeChips = <Widget>[];
-  List _size = [];
   final _titleFocus = FocusNode();
   final _priceFocus = FocusNode();
   final _colorFocus = FocusNode();
   final _sizeFocus = FocusNode();
   final _detailFocus = FocusNode();
+  final _countFocus = FocusNode();
+  final _categoryFocus = FocusNode();
   FieldStatus _titleStatus = FieldStatus.none;
   FieldStatus _priceStatus = FieldStatus.none;
   FieldStatus _colorStatus = FieldStatus.none;
   FieldStatus _sizeStatus = FieldStatus.none;
   FieldStatus _detailStatus = FieldStatus.none;
+  FieldStatus _categoryStatus = FieldStatus.none;
+  FieldStatus _countStatus = FieldStatus.none;
   final _titleController = TextEditingController();
   final _priceController = TextEditingController();
   final _colorController = TextEditingController();
   final _sizeController = TextEditingController();
   final _detailController = TextEditingController();
+  final _countController = TextEditingController();
+  final _categoryController = TextEditingController();
   VoidCallback? _submitButton;
+  File? imageFile;
 
   @override
   void dispose() {
@@ -39,6 +47,8 @@ class _AddProductState extends State<AddProduct> {
     _colorFocus.dispose();
     _sizeFocus.dispose();
     _detailFocus.dispose();
+    _countFocus.dispose();
+    _categoryFocus.dispose();
   }
 
   @override
@@ -129,6 +139,44 @@ class _AddProductState extends State<AddProduct> {
             ),
             Field.separate(),
             Field.field(
+              label: 'Count',
+              hintText: 'Number of products inventory',
+              prefixIcon: Icons.shopping_bag_outlined,
+              focusNode: _countFocus,
+              controller: _countController,
+              status: _countStatus,
+              onTap: () => setState(() {}),
+              onEditingComplete: () {
+                _countValidate();
+                setState(() {});
+              },
+              onChanged: (_) {
+                _countStatus = FieldStatus.none;
+                _changeButtonEnabled();
+                setState(() {});
+              },
+            ),
+            Field.separate(),
+            Field.field(
+              label: 'Category',
+              hintText: 'Mobiles, Laptops, ...',
+              prefixIcon: Icons.category_outlined,
+              focusNode: _categoryFocus,
+              controller: _categoryController,
+              status: _categoryStatus,
+              onTap: () => setState(() {}),
+              onEditingComplete: () {
+                _categoryValidate();
+                setState(() {});
+              },
+              onChanged: (_) {
+                _categoryStatus = FieldStatus.none;
+                _changeButtonEnabled();
+                setState(() {});
+              },
+            ),
+            Field.separate(),
+            Field.field(
               label: 'More Detail',
               hintText: 'Write more information about your product...',
               keyboardType: TextInputType.multiline,
@@ -148,6 +196,29 @@ class _AddProductState extends State<AddProduct> {
                 setState(() {});
               },
             ),
+            Field.separate(),
+            Field.container(
+              height: 100.0,
+              leftPadding: 10.0,
+              child: Row(
+                children: <Widget>[
+                  SizedBox(
+                    width: 80.0,
+                    height: 80.0,
+                    child: imageFile != null
+                        ? Image.file(imageFile!)
+                        : Image.asset('assets/images/image.png'),
+                  ),
+                  const Spacer(),
+                  Button.elevatedIcon(
+                    icon: Icons.add_photo_alternate_outlined,
+                    label: 'ADD IMAGE',
+                    color: Colors.lightGreen,
+                    onPressed: _getFromGallery,
+                  ),
+                ],
+              ),
+            ),
             Button.separate(),
             Button.elevated(
               text: 'ADD PRODUCT',
@@ -160,12 +231,30 @@ class _AddProductState extends State<AddProduct> {
     );
   }
 
+  List<String> categoryNameList() {
+    return <String>[
+      'Mobiles',
+      'Laptops',
+      'Camera',
+      'Tablets',
+      'Men',
+      'Women',
+      'Kids & Baby',
+      'Athletic Clothings',
+      'Sports Equipments',
+      'Camping',
+    ];
+  }
+
   void _changeButtonEnabled() {
     setState(() {
       _titleController.text.isNotEmpty &&
               _priceController.text.isNotEmpty &&
               _colorController.text.isNotEmpty &&
               _sizeController.text.isNotEmpty &&
+              _countController.text.isNotEmpty &&
+              _categoryController.text.isNotEmpty &&
+              imageFile != null &&
               _detailController.text.isNotEmpty
           ? _submitButton = () => _onAddProductButtonPressed()
           : _submitButton = null;
@@ -186,11 +275,26 @@ class _AddProductState extends State<AddProduct> {
     // Product product =
   }
 
+  _getFromGallery() async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
+    }
+  }
+
   bool _isValidateAllFields() {
     return _titleStatus == FieldStatus.validate &&
         _priceStatus == FieldStatus.validate &&
         _colorStatus == FieldStatus.validate &&
         _sizeStatus == FieldStatus.validate &&
+        _countStatus == FieldStatus.validate &&
+        _categoryStatus == FieldStatus.validate &&
         _detailStatus == FieldStatus.validate;
   }
 
@@ -200,6 +304,8 @@ class _AddProductState extends State<AddProduct> {
     _colorValidate();
     _sizeValidate();
     _detailValidate();
+    _countValidate();
+    _categoryValidate();
   }
 
   bool _titleValidator(String? value) {
@@ -233,6 +339,22 @@ class _AddProductState extends State<AddProduct> {
     if (value == null ||
         !RegExp(r'^[0-9]*$').hasMatch(value) ||
         value.isEmpty) {
+      return false;
+    }
+    return true;
+  }
+
+  bool _countValidator(String? value) {
+    if (value == null ||
+        !RegExp(r'^[0-9]*$').hasMatch(value) ||
+        value.isEmpty) {
+      return false;
+    }
+    return true;
+  }
+
+  bool _categoryValidator(String? value) {
+    if (value == null || !categoryNameList().contains(value) || value.isEmpty) {
       return false;
     }
     return true;
@@ -275,6 +397,22 @@ class _AddProductState extends State<AddProduct> {
         : _sizeStatus = FieldStatus.error;
 
     _sizeFocus.unfocus();
+  }
+
+  void _countValidate() {
+    _countValidator(_countController.text)
+        ? _countStatus = FieldStatus.validate
+        : _countStatus = FieldStatus.error;
+
+    _countFocus.unfocus();
+  }
+
+  void _categoryValidate() {
+    _categoryValidator(_categoryController.text)
+        ? _categoryStatus = FieldStatus.validate
+        : _categoryStatus = FieldStatus.error;
+
+    _categoryFocus.unfocus();
   }
 
   void _detailValidate() {
