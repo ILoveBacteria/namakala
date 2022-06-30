@@ -79,7 +79,7 @@ class ScreenSetting {
     );
   }
 
-  static sliverAppBar({String? title, required BuildContext context}) {
+  static sliverAppBar({String? title, required BuildContext context, required Widget background}) {
     return SliverAppBar(
       backgroundColor: Colors.white,
       elevation: 5.0,
@@ -91,7 +91,7 @@ class ScreenSetting {
       ),
       flexibleSpace: FlexibleSpaceBar(
         // centerTitle: true,
-        background: const FlutterLogo(),
+        background: background,
         title: title == null ? null : Text(
           title,
           style: Font.styleHeadline6(color: Colors.black),
