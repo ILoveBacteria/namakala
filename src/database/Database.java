@@ -90,7 +90,7 @@ public class Database {
         return "null".getBytes(StandardCharsets.UTF_8);
     }
     
-    public static String writeImage(byte[] bytes, long id) throws IOException {
+    public static String writeImage(byte[] bytes, String id) throws IOException {
         String name = "src/database/data/" + id + ".png";
         try (FileOutputStream out = new FileOutputStream(name)) {
             out.write(bytes);
