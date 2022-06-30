@@ -106,10 +106,15 @@ public class Database {
         return name;
     }
     
-    public static Category readCategory(String name) throws IOException, ClassNotFoundException, NoSuchFileException {
+    public static Category readCategory(String name) throws IOException, ClassNotFoundException {
         Path path = getCategoryPath(name);
         try (ObjectInputStream in = new ObjectInputStream(Files.newInputStream(path))) {
             return (Category) in.readObject();
+        } catch (NoSuchFileException e) {
+            e.printStackTrace();
+            Category newCategory = new Category(new ArrayList<>(), name);
+            writeCategory(newCategory);
+            return newCategory;
         }
     }
     
