@@ -15,6 +15,14 @@ public class Database {
     private static final Path personPath = Paths.get("src/database/data/person.txt");
     private static final Path mobilesPath = Paths.get("src/database/data/mobiles.txt");
     private static final Path laptopsPath = Paths.get("src/database/data/laptops.txt");
+    private static final Path cameraPath = Paths.get("src/database/data/camera.txt");
+    private static final Path tabletsPath = Paths.get("src/database/data/tablets.txt");
+    private static final Path menPath = Paths.get("src/database/data/men.txt");
+    private static final Path womenPath = Paths.get("src/database/data/women.txt");
+    private static final Path kidsPath = Paths.get("src/database/data/kids.txt");
+    private static final Path athleticClothingsPath = Paths.get("src/database/data/athleticClothings.txt");
+    private static final Path sportsEquipmentsPath = Paths.get("src/database/data/sportsEquipments.txt");
+    private static final Path campingPath = Paths.get("src/database/data/camping.txt");
     
     /**
      * This method takes a phone number and searches for a {@link Person} in the database and returns it if present
@@ -98,7 +106,7 @@ public class Database {
         return name;
     }
     
-    public static Category readCategory(String name) throws IOException, ClassNotFoundException {
+    public static Category readCategory(String name) throws IOException, ClassNotFoundException, NoSuchFileException {
         Path path = getCategoryPath(name);
         try (ObjectInputStream in = new ObjectInputStream(Files.newInputStream(path))) {
             return (Category) in.readObject();
@@ -148,6 +156,22 @@ public class Database {
                 return mobilesPath;
             case "Laptops":
                 return laptopsPath;
+            case "Camera":
+                return cameraPath;
+            case "Tablets":
+                return tabletsPath;
+            case "Men":
+                return menPath;
+            case "Women":
+                return womenPath;
+            case "Kids & Baby":
+                return kidsPath;
+            case "Athletic Clothings":
+                return athleticClothingsPath;
+            case "Sports Equipments":
+                return sportsEquipmentsPath;
+            case "Camping":
+                return campingPath;
             default:
                 return null;
         }
