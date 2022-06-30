@@ -414,17 +414,18 @@ class _AccountState extends State<Account> {
   }
 
   Future<String> _sendEditedDataToServer() async {
-    Person person = Person(
+    Person editedPerson = Person(
       _firstNameController.text,
       _lastNameController.text,
       _phoneController.text,
       _passwordController.text,
     );
-    person.email = _emailController.text;
-    person.market = Market(_marketController.text);
+    editedPerson.email = _emailController.text;
+    editedPerson.market = Market(_marketController.text);
+    editedPerson.image = person.image;
 
     MySocket socket =
-        MySocket(UserData.phone, Command.editProfile, [jsonEncode(person)]);
+        MySocket(UserData.phone, Command.editProfile, [jsonEncode(editedPerson)]);
     String response = await socket.sendAndReceive();
     return response;
   }
