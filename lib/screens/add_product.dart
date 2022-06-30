@@ -71,13 +71,23 @@ class _AddProductState extends State<AddProduct> {
     product = arguments.product;
 
     if (!controllerInitialized) {
-      _titleController = TextEditingController(text: product?.name);
-      _priceController = TextEditingController(text: '${product?.price}');
-      _colorController = TextEditingController(text: '${product?.color.map((e) => e.value).toList().join(' ')}');
-      _sizeController = TextEditingController(text: '${product?.size.join(' ')}');
-      _detailController = TextEditingController(text: product?.detail);
-      _countController = TextEditingController(text: '${product?.count}');
-      _categoryController = TextEditingController(text: product?.category);
+      if (product == null) {
+        _titleController = TextEditingController();
+        _priceController = TextEditingController();
+        _colorController = TextEditingController();
+        _sizeController = TextEditingController();
+        _detailController = TextEditingController();
+        _countController = TextEditingController();
+        _categoryController = TextEditingController();
+      } else {
+        _titleController = TextEditingController(text: product?.name);
+        _priceController = TextEditingController(text: '${product?.price}');
+        _colorController = TextEditingController(text: '${product?.color.map((e) => e.value).toList().join(' ')}');
+        _sizeController = TextEditingController(text: '${product?.size.join(' ')}');
+        _detailController = TextEditingController(text: product?.detail);
+        _countController = TextEditingController(text: '${product?.count}');
+        _categoryController = TextEditingController(text: product?.category);
+      }
       controllerInitialized = true;
     }
 
