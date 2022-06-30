@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:namakala/data/user_data.dart';
 import 'package:namakala/utilities/font.dart';
 import 'package:namakala/widgets/button.dart';
@@ -48,6 +50,7 @@ class _AccountState extends State<Account> {
   bool _obscurePasswordConfirm = true;
   bool controllerInitialized = false;
   late Person person;
+  File? imageFile;
 
   @override
   Widget build(BuildContext context) {
@@ -269,6 +272,29 @@ class _AccountState extends State<Account> {
             },
           ),
         ),
+        Field.separate(),
+        Field.container(
+          height: 100.0,
+          leftPadding: 10.0,
+          child: Row(
+            children: <Widget>[
+              SizedBox(
+                width: 80.0,
+                height: 80.0,
+                child: imageFile != null
+                    ? Image.file(imageFile!)
+                    : Image.asset('assets/images/image.png'),
+              ),
+              const Spacer(),
+              Button.elevatedIcon(
+                icon: Icons.add_photo_alternate_outlined,
+                label: 'ADD IMAGE',
+                color: Colors.lightGreen,
+                onPressed: _getFromGallery,
+              ),
+            ],
+          ),
+        ),
         Button.separate(),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -290,6 +316,19 @@ class _AccountState extends State<Account> {
         )
       ],
     );
+  }
+
+  _getFromGallery() async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
+    }
   }
 
   void _changeButtonEnabled() {
@@ -422,7 +461,7 @@ class _AccountState extends State<Account> {
     );
     editedPerson.email = _emailController.text;
     editedPerson.market = Market(_marketController.text);
-    editedPerson.image = person.image;
+    editedPerson.image = await imageFile?.readAsBytes() ?? person.image;
 
     MySocket socket =
         MySocket(UserData.phone, Command.editProfile, [jsonEncode(editedPerson)]);

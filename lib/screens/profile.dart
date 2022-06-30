@@ -92,7 +92,7 @@ class _ProfileState extends State<Profile> {
                   color: Colors.grey,
                 ),
                 const Spacer(),
-                _userActivity(title: 'Sold', number: '2'),
+                _userActivity(title: 'Sold', number: '0'),
                 const Spacer(),
                 const VerticalDivider(
                   color: Colors.grey,
