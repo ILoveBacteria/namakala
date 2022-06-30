@@ -1,8 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:namakala/utilities/cart.dart';
 import 'package:namakala/utilities/market.dart';
 import 'package:namakala/utilities/product.dart';
 
 class Person {
+  Uint8List? image;
   late String firstname;
   late String lastname;
   String? email;
@@ -37,6 +40,12 @@ class Person {
     for (var i in dynamicScores) {
       scores.add(i);
     }
+
+    List<int> imageBytes = [];
+    for (int i in json['image']) {
+      imageBytes.add(i);
+    }
+    image = Uint8List.fromList(imageBytes);
   }
 
   Map<String, dynamic> toJson() => {
@@ -46,6 +55,7 @@ class Person {
         'password': password,
         'phone': phone,
         'market': market.name,
+        'image': image?.toList(),
       };
 
   @override

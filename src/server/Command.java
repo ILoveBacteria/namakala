@@ -119,10 +119,10 @@ public class Command {
             boolean result = Database.saveNewPerson(person);
             return String.valueOf(result).getBytes(StandardCharsets.UTF_8);
             
-        } catch (ParseException e) {
+        } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
-        
+    
         return "false".getBytes(StandardCharsets.UTF_8);
     }
     
@@ -263,6 +263,7 @@ public class Command {
             sender.getMarket().setName(person.getMarket().getName());
             sender.setPassword(person.getPassword());
             sender.setPhone(person.getPhone());
+            sender.setImage(person.getImage());
             Database.saveEditedPerson(sender);
             return "true".getBytes(StandardCharsets.UTF_8);
         } catch (ParseException | ClassNotFoundException | IOException e) {
@@ -315,7 +316,7 @@ public class Command {
         return "false".getBytes(StandardCharsets.UTF_8);
     }
     
-    private Person jsonToPerson() throws ParseException {
+    private Person jsonToPerson() throws ParseException, IOException {
         Object obj = new JSONParser().parse(data[0]);
         JSONObject jsonObject = (JSONObject) obj;
         return Person.fromJson(jsonObject);

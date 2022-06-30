@@ -1,14 +1,17 @@
 package utilities;
 
+import database.Database;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Person implements Serializable {
+    private String image = "assets/images/user.png";
     private String firstname;
     private String lastname;
     private String email;
@@ -29,13 +32,35 @@ public class Person implements Serializable {
         this.market = market;
     }
     
-    public static Person fromJson(JSONObject jsonObject) {
+    public Person(String firstname, String lastname, String email, String phone, String password, Market market, String image) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.market = market;
+        this.image = image;
+    }
+    
+    public static Person fromJson(JSONObject jsonObject) throws IOException {
         String firstname = (String) jsonObject.get("firstname");
         String lastname = (String) jsonObject.get("lastname");
         String email = (String) jsonObject.get("email");
         String phone = (String) jsonObject.get("phone");
         String password = (String) jsonObject.get("password");
         String marketName = (String) jsonObject.get("market");
+        
+        Object obj = jsonObject.get("image");
+        if (obj != null) {
+            JSONArray joImage = (JSONArray) obj;
+            byte[] bytes = new byte[joImage.size()];
+            int i = 0;
+            for (Object o : joImage) {
+                bytes[i] = ((Long) o).byteValue();
+                i++;
+            }
+            return new Person(firstname, lastname, email, phone, password, new Market(marketName), Database.writeImage(bytes, phone));
+        }
     
         return new Person(firstname, lastname, email, phone, password, new Market(marketName));
     }
@@ -67,6 +92,12 @@ public class Person implements Serializable {
             jaScores.add(i);
         }
         jo.put("scores", jaScores);
+    
+        JSONArray jsonImage = new JSONArray();
+        for (byte b : Database.readImage(image)) {
+            jsonImage.add(b);
+        }
+        jo.put("image", jsonImage);
         
         jo.put("cart", cart.toJson());
         
@@ -136,6 +167,14 @@ public class Person implements Serializable {
     
     public List<Integer> getScores() {
         return scores;
+    }
+    
+    public String getImage() {
+        return image;
+    }
+    
+    public void setImage(String image) {
+        this.image = image;
     }
     
     public void setScores(List<Integer> scores) {
