@@ -3,18 +3,18 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:namakala/data/user_data.dart';
 import 'package:namakala/socket/command.dart';
 import 'package:namakala/socket/socket.dart';
-import 'package:namakala/utilities/font.dart';
 import 'package:namakala/utilities/market.dart';
+import 'package:namakala/utilities/person.dart';
 import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/field.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 import 'package:namakala/widgets/snack_message.dart';
 
+import '../utilities/arguments.dart';
 import '../utilities/product.dart';
 
 class AddProduct extends StatefulWidget {
@@ -48,6 +48,8 @@ class _AddProductState extends State<AddProduct> {
   final _categoryController = TextEditingController();
   VoidCallback? _submitButton;
   File? imageFile;
+  late Person person;
+  Product? product;
 
   @override
   void dispose() {
@@ -63,6 +65,10 @@ class _AddProductState extends State<AddProduct> {
 
   @override
   Widget build(BuildContext context) {
+    Arguments arguments = ModalRoute.of(context)!.settings.arguments as Arguments;
+    person = arguments.person!;
+    product = arguments.product;
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: ScreenSetting.initScreen(
@@ -292,7 +298,7 @@ class _AddProductState extends State<AddProduct> {
       _colorController.text.split(' ').map((e) => Color(int.parse(e))).toList(),
       _sizeController.text.split(' '),
       int.parse(_countController.text),
-      Market('my')
+      Market(person.market.name),
     );
 
     MySocket socket = MySocket(UserData.phone, Command.addProductMarket, [jsonEncode(product.toJson2())]);

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:namakala/screens/add_product.dart';
+import 'package:namakala/utilities/arguments.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
 import '../data/user_data.dart';
@@ -27,8 +28,8 @@ class _MyMarketState extends State<MyMarket> {
 
   @override
   Widget build(BuildContext context) {
-     person = ModalRoute.of(context)!.settings.arguments as Person;
-     products = person.market.products;
+    person = ModalRoute.of(context)!.settings.arguments as Person;
+    products = person.market.products;
 
     return ScreenSetting.initScreen(
       context: context,
@@ -37,7 +38,9 @@ class _MyMarketState extends State<MyMarket> {
         context: context,
         actions: _actionButtons(),
       ),
-      child: products.isEmpty ? _buildEmptyMarketScreen(context) : _buildMainScreen(),
+      child: products.isEmpty
+          ? _buildEmptyMarketScreen(context)
+          : _buildMainScreen(),
     );
   }
 
@@ -90,9 +93,9 @@ class _MyMarketState extends State<MyMarket> {
   }
 
   List<Detail> _details(
-      Product p,
-      BuildContext context,
-      ) {
+    Product p,
+    BuildContext context,
+  ) {
     List<Detail> list = <Detail>[
       Detail.text(Icons.attach_money, 'Price', '${p.price}\$'),
       Detail.text(Icons.shopping_bag_outlined, 'Remain', '${p.count}'),
@@ -105,7 +108,12 @@ class _MyMarketState extends State<MyMarket> {
     return <Widget>[
       IconButton(
         onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const AddProduct()),
+          MaterialPageRoute(
+            builder: (context) => const AddProduct(),
+            settings: RouteSettings(
+              arguments: Arguments.person(person),
+            ),
+          ),
         ),
         icon: const Icon(
           Icons.add,
@@ -124,15 +132,20 @@ class _MyMarketState extends State<MyMarket> {
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
       ),
+      const IconButton(
+        onPressed: null,
+        icon: Icon(Icons.edit_note),
+        color: Colors.yellow,
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
+      ),
       IconButton(
         onPressed: () => _onPressFavoriteButton(product),
         icon: Icon(
           person.favorites.contains(product)
               ? Icons.favorite
               : Icons.favorite_outline,
-          color: person.favorites.contains(product)
-              ? Colors.red
-              : Colors.blue,
+          color: person.favorites.contains(product) ? Colors.red : Colors.blue,
         ),
       ),
     ];
@@ -170,19 +183,22 @@ class _MyMarketState extends State<MyMarket> {
   }
 
   Future<String> _sendRemoveProductDataToServer(Product product) async {
-    MySocket socket = MySocket(UserData.phone, Command.removeProductMarket, [jsonEncode(product)]);
+    MySocket socket = MySocket(
+        UserData.phone, Command.removeProductMarket, [jsonEncode(product)]);
     String response = await socket.sendAndReceive();
     return response;
   }
 
   Future<String> _sendAddFavoriteDataToServer(Product product) async {
-    MySocket socket = MySocket(UserData.phone, Command.addFavorites, [jsonEncode(product)]);
+    MySocket socket =
+        MySocket(UserData.phone, Command.addFavorites, [jsonEncode(product)]);
     String response = await socket.sendAndReceive();
     return response;
   }
 
   Future<String> _sendRemoveFavoriteDataToServer(Product product) async {
-    MySocket socket = MySocket(UserData.phone, Command.removeFavorites, [jsonEncode(product)]);
+    MySocket socket = MySocket(
+        UserData.phone, Command.removeFavorites, [jsonEncode(product)]);
     String response = await socket.sendAndReceive();
     return response;
   }

@@ -11,4 +11,6 @@ class Arguments {
   Arguments.favoriteCategory(this.person, this.category);
 
   Arguments.category(this.category);
+
+  Arguments.person(this.person);
 }
