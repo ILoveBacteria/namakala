@@ -17,7 +17,7 @@ class Product {
   late List<String> size = [];
 
   Product(this.name, this.image, this.price, this.category, this.detail,
-      this.color, this.size, this.count, this.market);
+      this.color, this.size, this.count, this.market, this.id);
 
   Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -51,6 +51,7 @@ class Product {
       };
 
   Map<String, dynamic> toJson2() => {
+    'id': id,
     'category':category,
     'name': name,
     'detail': detail,

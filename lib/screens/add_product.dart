@@ -39,17 +39,18 @@ class _AddProductState extends State<AddProduct> {
   FieldStatus _detailStatus = FieldStatus.none;
   FieldStatus _categoryStatus = FieldStatus.none;
   FieldStatus _countStatus = FieldStatus.none;
-  final _titleController = TextEditingController();
-  final _priceController = TextEditingController();
-  final _colorController = TextEditingController();
-  final _sizeController = TextEditingController();
-  final _detailController = TextEditingController();
-  final _countController = TextEditingController();
-  final _categoryController = TextEditingController();
+  late final TextEditingController _titleController;
+  late final TextEditingController _priceController;
+  late final TextEditingController _colorController;
+  late final TextEditingController _sizeController;
+  late final TextEditingController _detailController;
+  late final TextEditingController _countController;
+  late final TextEditingController _categoryController;
   VoidCallback? _submitButton;
   File? imageFile;
   late Person person;
   Product? product;
+  bool controllerInitialized = false;
 
   @override
   void dispose() {
@@ -68,6 +69,17 @@ class _AddProductState extends State<AddProduct> {
     Arguments arguments = ModalRoute.of(context)!.settings.arguments as Arguments;
     person = arguments.person!;
     product = arguments.product;
+
+    if (!controllerInitialized) {
+      _titleController = TextEditingController(text: product?.name);
+      _priceController = TextEditingController(text: '${product?.price}');
+      _colorController = TextEditingController(text: '${product?.color.map((e) => e.value).toList().join(' ')}');
+      _sizeController = TextEditingController(text: '${product?.size.join(' ')}');
+      _detailController = TextEditingController(text: product?.detail);
+      _countController = TextEditingController(text: '${product?.count}');
+      _categoryController = TextEditingController(text: product?.category);
+      controllerInitialized = true;
+    }
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -289,7 +301,7 @@ class _AddProductState extends State<AddProduct> {
   Future<bool> _createNewProduct() async {
     Uint8List bytes = await imageFile!.readAsBytes();
 
-    Product product = Product(
+    Product newProduct = Product(
       _titleController.text,
       bytes,
       int.parse(_priceController.text),
@@ -299,9 +311,24 @@ class _AddProductState extends State<AddProduct> {
       _sizeController.text.split(' '),
       int.parse(_countController.text),
       Market(person.market.name),
+      0,
     );
 
+    return product == null ? _sendNewProductData(newProduct) : _sendEditedProductData(newProduct);
+  }
+
+  Future<bool> _sendNewProductData(Product product) async {
     MySocket socket = MySocket(UserData.phone, Command.addProductMarket, [jsonEncode(product.toJson2())]);
+    String response = await socket.sendAndReceive();
+    if (response == 'false') {
+      SnackMessage('Failed to send data to server').build(context);
+      return false;
+    }
+    return true;
+  }
+
+  Future<bool> _sendEditedProductData(Product product) async {
+    MySocket socket = MySocket(UserData.phone, Command.editProductMarket, [jsonEncode(product.toJson2())]);
     String response = await socket.sendAndReceive();
     if (response == 'false') {
       SnackMessage('Failed to send data to server').build(context);

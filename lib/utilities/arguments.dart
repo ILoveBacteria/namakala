@@ -13,4 +13,6 @@ class Arguments {
   Arguments.category(this.category);
 
   Arguments.person(this.person);
+
+  Arguments.all(this.person, this.product, this.category);
 }

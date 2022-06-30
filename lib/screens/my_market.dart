@@ -132,9 +132,16 @@ class _MyMarketState extends State<MyMarket> {
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
       ),
-      const IconButton(
-        onPressed: null,
-        icon: Icon(Icons.edit_note),
+      IconButton(
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const AddProduct(),
+            settings: RouteSettings(
+              arguments: Arguments.all(person, product, null),
+            ),
+          ),
+        ),
+        icon: const Icon(Icons.edit_note),
         color: Colors.yellow,
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
