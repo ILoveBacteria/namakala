@@ -67,7 +67,10 @@ class _AccountState extends State<Account> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: ScreenSetting.initScreenWithSliverBar(
-        appBar: ScreenSetting.sliverAppBar(context: context),
+        appBar: ScreenSetting.sliverAppBar(
+          context: context,
+          background: Image.memory(person.image!),
+        ),
         context: context,
         child: _mainStateWidget(),
       ),
@@ -186,7 +189,11 @@ class _AccountState extends State<Account> {
             _emailValidate();
             setState(() {});
           },
-          onChanged: (_) => setState(() => _emailStatus = FieldStatus.none),
+          onChanged: (_) {
+            _emailStatus = FieldStatus.none;
+            _changeButtonEnabled();
+            setState(() {});
+          },
         ),
         Field.separate(),
         Field.market(
@@ -198,7 +205,11 @@ class _AccountState extends State<Account> {
             _marketValidate();
             setState(() {});
           },
-          onChanged: (_) => setState(() => _marketStatus = FieldStatus.none),
+          onChanged: (_) {
+            _marketStatus = FieldStatus.none;
+            _changeButtonEnabled();
+            setState(() {});
+          },
         ),
         Field.separate(),
         Field.password(
@@ -412,7 +423,8 @@ class _AccountState extends State<Account> {
     person.email = _emailController.text;
     person.market = Market(_marketController.text);
 
-    MySocket socket = MySocket(UserData.phone, Command.editProfile, [jsonEncode(person)]);
+    MySocket socket =
+        MySocket(UserData.phone, Command.editProfile, [jsonEncode(person)]);
     String response = await socket.sendAndReceive();
     return response;
   }
