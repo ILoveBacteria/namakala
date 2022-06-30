@@ -1,11 +1,21 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:namakala/data/user_data.dart';
+import 'package:namakala/socket/command.dart';
+import 'package:namakala/socket/socket.dart';
 import 'package:namakala/utilities/font.dart';
+import 'package:namakala/utilities/market.dart';
 import 'package:namakala/widgets/button.dart';
 import 'package:namakala/widgets/field.dart';
 import 'package:namakala/widgets/screen_setting.dart';
+import 'package:namakala/widgets/snack_message.dart';
+
+import '../utilities/product.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({Key? key}) : super(key: key);
@@ -261,18 +271,37 @@ class _AddProductState extends State<AddProduct> {
     });
   }
 
-  void _onAddProductButtonPressed() {
+  void _onAddProductButtonPressed() async {
     _validateAllFields();
     setState(() {});
 
-    if (_isValidateAllFields()) {
-      _createNewProduct();
+    if (_isValidateAllFields() && await _createNewProduct()) {
       Navigator.of(context).pop();
     }
   }
 
-  void _createNewProduct() {
-    // Product product =
+  Future<bool> _createNewProduct() async {
+    Uint8List bytes = await imageFile!.readAsBytes();
+
+    Product product = Product(
+      _titleController.text,
+      bytes,
+      int.parse(_priceController.text),
+      _categoryController.text,
+      _detailController.text,
+      _colorController.text.split(' ').map((e) => Color(int.parse(e))).toList(),
+      _sizeController.text.split(' '),
+      int.parse(_countController.text),
+      Market('my')
+    );
+
+    MySocket socket = MySocket(UserData.phone, Command.addProductMarket, [jsonEncode(product.toJson2())]);
+    String response = await socket.sendAndReceive();
+    if (response == 'false') {
+      SnackMessage('Failed to send data to server').build(context);
+      return false;
+    }
+    return true;
   }
 
   _getFromGallery() async {
@@ -328,7 +357,7 @@ class _AddProductState extends State<AddProduct> {
 
   bool _colorValidator(String? value) {
     if (value == null ||
-        !RegExp(r'^[0-9]*$').hasMatch(value) ||
+        !RegExp(r'^[0-9A-Fx]*$').hasMatch(value) ||
         value.isEmpty) {
       return false;
     }
