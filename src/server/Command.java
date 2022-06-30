@@ -4,12 +4,15 @@ import database.Database;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import utilities.Category;
 import utilities.Person;
 import utilities.Product;
 import utilities.SelectedProduct;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.NoSuchFileException;
+import java.util.ArrayList;
 
 public class Command {
     private String command;
@@ -116,6 +119,9 @@ public class Command {
     private byte[] signUpCommand() {
         try {
             Person person = jsonToPerson();
+            if (Database.findByPhone(person.getPhone()) != null) {
+                return "phoneFalse".getBytes(StandardCharsets.UTF_8);
+            }
             boolean result = Database.saveNewPerson(person);
             return String.valueOf(result).getBytes(StandardCharsets.UTF_8);
             
@@ -159,6 +165,9 @@ public class Command {
     private byte[] categoryCommand() {
         try {
             return Database.readCategory(data[0]).toJson().toJSONString().getBytes(StandardCharsets.UTF_8);
+        } catch (NoSuchFileException e) {
+            e.printStackTrace();
+            return new Category(new ArrayList<>(), data[0]).toJson().toJSONString().getBytes(StandardCharsets.UTF_8);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -205,14 +214,15 @@ public class Command {
         try {
             SelectedProduct selectedProduct = jsonToSelectedProduct();
             
-            if (selectedProduct.getProduct().purchase()) {
-                sender.getCart().add(selectedProduct);
-                Database.saveEditedPerson(sender);
-                Database.writeEditedProduct(selectedProduct.getProduct());
-                return ("true;" + selectedProduct.getProduct().getCount()).getBytes(StandardCharsets.UTF_8);
+            synchronized (selectedProduct.getProduct()) {
+                if (selectedProduct.getProduct().purchase()) {
+                    sender.getCart().add(selectedProduct);
+                    Database.saveEditedPerson(sender);
+                    Database.writeEditedProduct(selectedProduct.getProduct());
+                    return ("true;" + selectedProduct.getProduct().getCount()).getBytes(StandardCharsets.UTF_8);
+                }
+                return ("false;" + selectedProduct.getProduct().getCount()).getBytes(StandardCharsets.UTF_8);
             }
-            return ("false;" + selectedProduct.getProduct().getCount()).getBytes(StandardCharsets.UTF_8);
-    
         } catch (ParseException | ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
