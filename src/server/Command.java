@@ -69,6 +69,8 @@ public class Command {
                 return removeProductMarket();
             case "score":
                 return scoreCommand();
+            case "addProductMarket":
+                return addProductMarket();
         }
         
         return null;
@@ -292,6 +294,21 @@ public class Command {
             Database.saveEditedPerson(sender);
             return String.valueOf(newAverageScore).getBytes(StandardCharsets.UTF_8);
             
+        } catch (ParseException | IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "false".getBytes(StandardCharsets.UTF_8);
+    }
+    
+    private byte[] addProductMarket() {
+        try {
+            Object obj = new JSONParser().parse(data[0]);
+            JSONObject jsonObject = (JSONObject) obj;
+            Product product = Product.fromJsonComplete(jsonObject);
+            sender.getMarket().getProducts().add(product);
+            Database.writeProduct(product);
+            Database.saveEditedPerson(sender);
+            return "true".getBytes(StandardCharsets.UTF_8);
         } catch (ParseException | IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
