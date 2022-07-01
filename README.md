@@ -1,5 +1,13 @@
 # namakala
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Issues](https://img.shields.io/github/issues/ILoveBacteria/namakala)](https://github.com/ILoveBacteria/namakala/issues)
+[![Forks](https://img.shields.io/github/forks/ILoveBacteria/namakala)](https://github.com/ILoveBacteria/namakala/network/members)
+[![Stars](https://img.shields.io/github/stars/ILoveBacteria/namakala)]()
+[![Latest release](https://img.shields.io/github/release/ILoveBacteria/namakala)](https://github.com/ILoveBacteria/namakala/releases)
+[![Watchers](https://img.shields.io/github/watchers/ILoveBacteria/namakala)]()
+[![Last commit](https://img.shields.io/github/last-commit/ILoveBacteria/namakala)](https://github.com/ILoveBacteria/namakala/commits/master)
+
 AP project
 
 ## Getting Started
