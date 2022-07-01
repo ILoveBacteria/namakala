@@ -1,4 +1,4 @@
-# namakala
+# Namakala
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Issues](https://img.shields.io/github/issues/ILoveBacteria/namakala)](https://github.com/ILoveBacteria/namakala/issues)
@@ -8,17 +8,19 @@
 [![Watchers](https://img.shields.io/github/watchers/ILoveBacteria/namakala)]()
 [![Last commit](https://img.shields.io/github/last-commit/ILoveBacteria/namakala)](https://github.com/ILoveBacteria/namakala/commits/master)
 
-AP project
+## Description
 
-## Getting Started
+This is my project for the Advanced Programming course associated with Shahid Beheshti University.
+This application was created with the Flutter framework and in connection with the Java server.
 
-This project is a starting point for a Flutter application.
+Namakala is a place for buying and selling your products. Create your profile and set up your market.
 
-A few resources to get you started if this is your first Flutter project:
+## License
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+This project is using **GNU General Public License v3.0**
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Read full LICENSE [here](https://github.com/ILoveBacteria/namakala/blob/master/LICENSE)
+
+## Last Release
+
+Find the last version of the application for your Android or iOS device [here]()
