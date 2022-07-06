@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:namakala/data/sample_data.dart';
 import 'package:namakala/data/user_data.dart';
 import 'package:namakala/socket/command.dart';
 import 'package:namakala/socket/socket.dart';
@@ -9,6 +8,7 @@ import 'package:namakala/utilities/arguments.dart';
 import 'package:namakala/utilities/decoration.dart';
 import 'package:namakala/utilities/font.dart';
 import 'package:namakala/utilities/person.dart';
+import 'package:namakala/widgets/favorite_button.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 import 'package:namakala/widgets/snack_message.dart';
 
@@ -142,26 +142,7 @@ class _ProductDetailState extends State<ProductDetail> {
 
   List<Widget> _actionButtons() {
     return <Widget>[
-      IconButton(
-        onPressed: () {
-          setState(() {
-            // Add product to person.favorites if not already added or remove if already added
-            if (SampleData.person.favorites.contains(product)) {
-              SampleData.person.favorites.remove(product);
-            } else {
-              SampleData.person.favorites.add(product);
-            }
-          });
-        },
-        icon: Icon(
-          SampleData.person.favorites.contains(product)
-              ? Icons.favorite
-              : Icons.favorite_outline,
-          color: SampleData.person.favorites.contains(product)
-              ? Colors.red
-              : Colors.blue,
-        ),
-      ),
+      FavoriteButton(product, person).build(context, setState),
       IconButton(
         onPressed: () =>
             Navigator.push(

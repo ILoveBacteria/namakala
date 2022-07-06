@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:namakala/utilities/arguments.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
-import '../../data/sample_data.dart';
 import '../../utilities/cart.dart';
 import '../../utilities/person.dart';
 import '../../utilities/product.dart';
 import '../../utilities/selected_product.dart';
 import '../../widgets/card/detail.dart';
 import '../../widgets/card/product_card.dart';
+import '../../widgets/favorite_button.dart';
 
 class PurchasedProductList extends StatefulWidget {
   const PurchasedProductList({Key? key}) : super(key: key);
@@ -17,11 +18,13 @@ class PurchasedProductList extends StatefulWidget {
 }
 
 class _PurchasedProductListState extends State<PurchasedProductList> {
-  final Person person = SampleData.person;
+  late Person person;
 
   @override
   Widget build(BuildContext context) {
-    final Cart cart = ModalRoute.of(context)!.settings.arguments as Cart;
+    Arguments arguments = ModalRoute.of(context)!.settings.arguments as Arguments;
+    person = arguments.person!;
+    Cart cart = arguments.cart!;
 
     return ScreenSetting.initScreen(
       context: context,
@@ -64,26 +67,7 @@ class _PurchasedProductListState extends State<PurchasedProductList> {
 
   List<Widget> _buttonList(Product product) {
     return <Widget>[
-      IconButton(
-        onPressed: () {
-          setState(() {
-            // Add product to person.favorites if not already added or remove if already added
-            if (SampleData.person.favorites.contains(product)) {
-              SampleData.person.favorites.remove(product);
-            } else {
-              SampleData.person.favorites.add(product);
-            }
-          });
-        },
-        icon: Icon(
-          SampleData.person.favorites.contains(product)
-              ? Icons.favorite
-              : Icons.favorite_outline,
-          color: SampleData.person.favorites.contains(product)
-              ? Colors.red
-              : Colors.blue,
-        ),
-      ),
+      FavoriteButton(product, person).build(context, setState),
     ];
   }
 }

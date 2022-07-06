@@ -3,16 +3,17 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:namakala/screens/add_product.dart';
 import 'package:namakala/utilities/arguments.dart';
+import 'package:namakala/widgets/empty_screen.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
 import '../data/user_data.dart';
 import '../socket/command.dart';
 import '../socket/socket.dart';
-import '../utilities/font.dart';
 import '../utilities/person.dart';
 import '../utilities/product.dart';
 import '../widgets/card/detail.dart';
 import '../widgets/card/product_card.dart';
+import '../widgets/favorite_button.dart';
 import '../widgets/snack_message.dart';
 
 class MyMarket extends StatefulWidget {
@@ -39,32 +40,8 @@ class _MyMarketState extends State<MyMarket> {
         actions: _actionButtons(),
       ),
       child: products.isEmpty
-          ? _buildEmptyMarketScreen(context)
+          ? EmptyScreen(Icons.store_outlined, 'You don\'t have any products yet').build(context)
           : _buildMainScreen(),
-    );
-  }
-
-  Widget _buildEmptyMarketScreen(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height / 2,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const Icon(
-              Icons.store_outlined,
-              size: 100.0,
-              color: Color.fromARGB(255, 179, 179, 179),
-            ),
-            Text(
-              'You don\'t have any products yet',
-              style: Font.styleBody1(
-                  color: const Color.fromARGB(255, 179, 179, 179)),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -146,15 +123,7 @@ class _MyMarketState extends State<MyMarket> {
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
       ),
-      IconButton(
-        onPressed: () => _onPressFavoriteButton(product),
-        icon: Icon(
-          person.favorites.contains(product)
-              ? Icons.favorite
-              : Icons.favorite_outline,
-          color: person.favorites.contains(product) ? Colors.red : Colors.blue,
-        ),
-      ),
+      FavoriteButton(product, person).build(context, setState),
     ];
   }
 
@@ -168,44 +137,9 @@ class _MyMarketState extends State<MyMarket> {
     setState(() {});
   }
 
-  void _onPressFavoriteButton(Product product) async {
-    // Add product to person.favorites if not already added or remove if already added
-    if (person.favorites.contains(product)) {
-      String response = await _sendRemoveFavoriteDataToServer(product);
-      if (response == 'true') {
-        person.favorites.remove(product);
-        setState(() {});
-      } else {
-        SnackMessage('Failed to remove this from favorites').build(context);
-      }
-    } else {
-      String response = await _sendAddFavoriteDataToServer(product);
-      if (response == 'true') {
-        person.favorites.add(product);
-        setState(() {});
-      } else {
-        SnackMessage('Failed to add this to favorites').build(context);
-      }
-    }
-  }
-
   Future<String> _sendRemoveProductDataToServer(Product product) async {
     MySocket socket = MySocket(
         UserData.phone, Command.removeProductMarket, [jsonEncode(product)]);
-    String response = await socket.sendAndReceive();
-    return response;
-  }
-
-  Future<String> _sendAddFavoriteDataToServer(Product product) async {
-    MySocket socket =
-        MySocket(UserData.phone, Command.addFavorites, [jsonEncode(product)]);
-    String response = await socket.sendAndReceive();
-    return response;
-  }
-
-  Future<String> _sendRemoveFavoriteDataToServer(Product product) async {
-    MySocket socket = MySocket(
-        UserData.phone, Command.removeFavorites, [jsonEncode(product)]);
     String response = await socket.sendAndReceive();
     return response;
   }

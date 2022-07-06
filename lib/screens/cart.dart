@@ -5,6 +5,7 @@ import 'package:namakala/data/user_data.dart';
 import 'package:namakala/socket/command.dart';
 import 'package:namakala/socket/socket.dart';
 import 'package:namakala/widgets/card/product_card.dart';
+import 'package:namakala/widgets/empty_screen.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
 import '../utilities/cart.dart';
@@ -52,10 +53,8 @@ class _CartScreenState extends State<CartScreen> {
 
   Widget _buildMainScreen() {
     return cart.products.isEmpty
-        ? _buildEmptyCartScreen(context)
-        : Column(
-            children: _buildScreen(),
-          );
+        ? EmptyScreen(Icons.production_quantity_limits_outlined, 'Cart is empty!').build(context)
+        : _buildScreen();
   }
 
   FloatingActionButton? _buildFloatingActionButton() {
@@ -74,31 +73,7 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget _buildEmptyCartScreen(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height / 2,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const Icon(
-              Icons.production_quantity_limits_outlined,
-              size: 100.0,
-              color: Color.fromARGB(255, 179, 179, 179),
-            ),
-            Text(
-              'Cart is empty!',
-              style: Font.styleBody1(
-                  color: const Color.fromARGB(255, 179, 179, 179)),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  List<Widget> _buildScreen() {
+  Widget _buildScreen() {
     List<Widget> list = [];
     for (SelectedProduct p in cart.products) {
       ProductCard card = ProductCard(
@@ -122,7 +97,7 @@ class _CartScreenState extends State<CartScreen> {
     );
     list.add(const SizedBox(height: 50.0));
 
-    return list;
+    return Column(children: list);
   }
 
   List<Detail> _details(SelectedProduct p, BuildContext context) {

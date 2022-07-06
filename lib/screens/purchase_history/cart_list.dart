@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:namakala/screens/purchase_history/product_list.dart';
+import 'package:namakala/utilities/arguments.dart';
+import 'package:namakala/widgets/empty_screen.dart';
 import 'package:namakala/widgets/screen_setting.dart';
 
 import '../../utilities/cart.dart';
@@ -19,34 +21,8 @@ class PurchasedCartList extends StatelessWidget {
       context: context,
       appBar: ScreenSetting.appBar(context: context, title: 'Purchase History'),
       child: person.purchases.isEmpty
-          ? _buildEmptyPurchaseScreen(context)
-          : Column(
-        children: _buildScreen(context),
-      ),
-    );
-  }
-
-  Widget _buildEmptyPurchaseScreen(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height / 2,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const Icon(
-              Icons.production_quantity_limits_outlined,
-              size: 100.0,
-              color: Color.fromARGB(255, 179, 179, 179),
-            ),
-            Text(
-              'No purchases have been made yet!',
-              style: Font.styleBody1(
-                  color: const Color.fromARGB(255, 179, 179, 179)),
-            ),
-          ],
-        ),
-      ),
+          ? EmptyScreen(Icons.production_quantity_limits_outlined, 'No purchases have been made yet!',).build(context)
+          : _buildScreen(context),
     );
   }
 
@@ -96,7 +72,7 @@ class PurchasedCartList extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => const PurchasedProductList(),
             settings: RouteSettings(
-              arguments: cart,
+              arguments: Arguments.cart(person, cart),
             ),
           ),
         );
@@ -132,12 +108,12 @@ class PurchasedCartList extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildScreen(BuildContext context) {
+  Widget _buildScreen(BuildContext context) {
     List<Widget> list = [];
     for (Cart c in person.purchases) {
       list.add(_buildCard(context, c));
       list.add(const SizedBox(height: 20.0));
     }
-    return list;
+    return Column(children: list);
   }
 }
