@@ -23,28 +23,14 @@ class Account extends StatefulWidget {
 }
 
 class _AccountState extends State<Account> {
+  late Field firstNameField;
+  late Field lastNameField;
+  late Field emailField;
+  late Field passwordField;
+  late Field passwordConfirmField;
+  late Field phoneField;
+  late Field marketField;
   bool _editScreen = false;
-  final _firstNameFocus = FocusNode();
-  final _lastNameFocus = FocusNode();
-  final _phoneFocus = FocusNode();
-  final _emailFocus = FocusNode();
-  final _marketFocus = FocusNode();
-  final _passwordFocus = FocusNode();
-  final _passwordConfirmFocus = FocusNode();
-  FieldStatus _firstNameStatus = FieldStatus.none;
-  FieldStatus _lastNameStatus = FieldStatus.none;
-  FieldStatus _phoneStatus = FieldStatus.none;
-  FieldStatus _emailStatus = FieldStatus.none;
-  FieldStatus _marketStatus = FieldStatus.none;
-  FieldStatus _passwordStatus = FieldStatus.none;
-  FieldStatus _passwordConfirmStatus = FieldStatus.none;
-  late TextEditingController _firstNameController;
-  late TextEditingController _lastNameController;
-  late TextEditingController _phoneController;
-  late TextEditingController _emailController;
-  late TextEditingController _marketController;
-  late TextEditingController _passwordController;
-  late TextEditingController _passwordConfirmController;
   VoidCallback? _submitButton;
   bool _obscurePassword = true;
   bool _obscurePasswordConfirm = true;
@@ -53,17 +39,88 @@ class _AccountState extends State<Account> {
   File? imageFile;
 
   @override
+  void initState() {
+    super.initState();
+    firstNameField = Field.firstName(
+      setState: setState,
+      validator: Field.nameValidate,
+      changeEnablingSubmitButton: _changeButtonEnabled,
+    );
+
+    lastNameField = Field.lastName(
+      setState: setState,
+      validator: Field.nameValidate,
+      changeEnablingSubmitButton: _changeButtonEnabled,
+    );
+
+    phoneField = Field.phone(
+      setState: setState,
+      validator: Field.phoneValidate,
+      changeEnablingSubmitButton: _changeButtonEnabled,
+    );
+
+    emailField = Field.email(
+      setState: setState,
+      validator: Field.emailValidate,
+      changeEnablingSubmitButton: _changeButtonEnabled,
+    );
+
+    marketField = Field.market(
+      setState: setState,
+      validator: Field.marketValidate,
+      changeEnablingSubmitButton: _changeButtonEnabled,
+    );
+
+    passwordField = Field.password(
+      obscureText: _obscurePassword,
+      setState: setState,
+      validator: Field.passwordValidate,
+      changeEnablingSubmitButton: _changeButtonEnabled,
+      suffixButton: IconButton(
+        icon: _obscurePassword
+            ? const Icon(Icons.visibility_off_outlined)
+            : const Icon(Icons.visibility_outlined),
+        color: Colors.grey,
+        onPressed: () {
+          setState(() {
+            _obscurePassword = !_obscurePassword;
+          });
+        },
+      ),
+    );
+
+    passwordConfirmField = Field.passwordConfirm(
+      obscureText: _obscurePasswordConfirm,
+      setState: setState,
+      validator: () =>
+          passwordField.controller.text == passwordConfirmField.controller.text,
+      changeEnablingSubmitButton: _changeButtonEnabled,
+      suffixButton: IconButton(
+        icon: _obscurePasswordConfirm
+            ? const Icon(Icons.visibility_off_outlined)
+            : const Icon(Icons.visibility_outlined),
+        color: Colors.grey,
+        onPressed: () {
+          setState(() {
+            _obscurePasswordConfirm = !_obscurePasswordConfirm;
+          });
+        },
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     person = ModalRoute.of(context)!.settings.arguments as Person;
 
     if (!controllerInitialized) {
-      _firstNameController = TextEditingController(text: person.firstname);
-      _lastNameController = TextEditingController(text: person.lastname);
-      _phoneController = TextEditingController(text: person.phone);
-      _emailController = TextEditingController(text: person.email);
-      _marketController = TextEditingController(text: person.market.name);
-      _passwordController = TextEditingController(text: person.password);
-      _passwordConfirmController = TextEditingController(text: person.password);
+      firstNameField.controller.text = person.firstname;
+      lastNameField.controller.text = person.lastname;
+      phoneField.controller.text = person.phone;
+      emailField.controller.text = person.email!;
+      marketField.controller.text = person.market.name;
+      passwordField.controller.text = person.password;
+      passwordConfirmField.controller.text = person.password;
       controllerInitialized = true;
     }
 
@@ -90,7 +147,7 @@ class _AccountState extends State<Account> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Field.label(label: label),
+        Field.labelWidget(label: label),
         const SizedBox(height: 5.0),
         Text(
           text,
@@ -132,146 +189,19 @@ class _AccountState extends State<Account> {
   Widget _userEditInformationWidgets() {
     return Column(
       children: <Widget>[
-        Field.firstName(
-          focusNode: _firstNameFocus,
-          status: _firstNameStatus,
-          controller: _firstNameController,
-          onTap: () => setState(() {}),
-          onEditingComplete: () {
-            _firstNameValidate();
-            setState(() {});
-          },
-          onChanged: (_) {
-            setState(() {
-              _firstNameStatus = FieldStatus.none;
-              _changeButtonEnabled();
-            });
-          },
-        ),
+        firstNameField.build(),
         Field.separate(),
-        Field.lastName(
-          focusNode: _lastNameFocus,
-          status: _lastNameStatus,
-          controller: _lastNameController,
-          onTap: () => setState(() {}),
-          onEditingComplete: () {
-            _lastNameValidate();
-            setState(() {});
-          },
-          onChanged: (_) {
-            setState(() {
-              _lastNameStatus = FieldStatus.none;
-              _changeButtonEnabled();
-            });
-          },
-        ),
+        lastNameField.build(),
         Field.separate(),
-        Field.phone(
-          focusNode: _phoneFocus,
-          status: _phoneStatus,
-          controller: _phoneController,
-          onTap: () => setState(() {}),
-          onEditingComplete: () {
-            _phoneValidate();
-            setState(() {});
-          },
-          onChanged: (_) {
-            setState(() {
-              _phoneStatus = FieldStatus.none;
-              _changeButtonEnabled();
-            });
-          },
-        ),
+        phoneField.build(),
         Field.separate(),
-        Field.email(
-          focusNode: _emailFocus,
-          status: _emailStatus,
-          controller: _emailController,
-          onTap: () => setState(() {}),
-          onEditingComplete: () {
-            _emailValidate();
-            setState(() {});
-          },
-          onChanged: (_) {
-            _emailStatus = FieldStatus.none;
-            _changeButtonEnabled();
-            setState(() {});
-          },
-        ),
+        emailField.build(),
         Field.separate(),
-        Field.market(
-          focusNode: _marketFocus,
-          status: _marketStatus,
-          controller: _marketController,
-          onTap: () => setState(() {}),
-          onEditingComplete: () {
-            _marketValidate();
-            setState(() {});
-          },
-          onChanged: (_) {
-            _marketStatus = FieldStatus.none;
-            _changeButtonEnabled();
-            setState(() {});
-          },
-        ),
+        marketField.build(),
         Field.separate(),
-        Field.password(
-          obscureText: _obscurePassword,
-          focusNode: _passwordFocus,
-          status: _passwordStatus,
-          controller: _passwordController,
-          onTap: () => setState(() {}),
-          onEditingComplete: () {
-            _passwordValidate();
-            setState(() {});
-          },
-          onChanged: (_) {
-            setState(() {
-              _passwordStatus = FieldStatus.none;
-              _changeButtonEnabled();
-            });
-          },
-          suffixButton: IconButton(
-            icon: _obscurePassword
-                ? const Icon(Icons.visibility_off_outlined)
-                : const Icon(Icons.visibility_outlined),
-            color: Colors.grey,
-            onPressed: () {
-              setState(() {
-                _obscurePassword = !_obscurePassword;
-              });
-            },
-          ),
-        ),
+        passwordField.build(),
         Field.separate(),
-        Field.passwordConfirm(
-          obscureText: _obscurePasswordConfirm,
-          focusNode: _passwordConfirmFocus,
-          status: _passwordConfirmStatus,
-          controller: _passwordConfirmController,
-          onTap: () => setState(() {}),
-          onEditingComplete: () {
-            _passwordConfirmValidate();
-            setState(() {});
-          },
-          onChanged: (_) {
-            setState(() {
-              _passwordConfirmStatus = FieldStatus.none;
-              _changeButtonEnabled();
-            });
-          },
-          suffixButton: IconButton(
-            icon: _obscurePasswordConfirm
-                ? const Icon(Icons.visibility_off_outlined)
-                : const Icon(Icons.visibility_outlined),
-            color: Colors.grey,
-            onPressed: () {
-              setState(() {
-                _obscurePasswordConfirm = !_obscurePasswordConfirm;
-              });
-            },
-          ),
-        ),
+        passwordConfirmField.build(),
         Field.separate(),
         Field.container(
           height: 100.0,
@@ -332,17 +262,16 @@ class _AccountState extends State<Account> {
   }
 
   void _changeButtonEnabled() {
-    setState(() {
-      _firstNameController.text.isNotEmpty &&
-              _lastNameController.text.isNotEmpty &&
-              _phoneController.text.isNotEmpty &&
-              _emailController.text.isNotEmpty &&
-              _marketController.text.isNotEmpty &&
-              _passwordController.text.isNotEmpty &&
-              _passwordConfirmController.text.isNotEmpty
-          ? _submitButton = () => _onSaveButtonPressed()
-          : _submitButton = null;
-    });
+    firstNameField.controller.text.isNotEmpty &&
+            lastNameField.controller.text.isNotEmpty &&
+            phoneField.controller.text.isNotEmpty &&
+            emailField.controller.text.isNotEmpty &&
+            marketField.controller.text.isNotEmpty &&
+            passwordField.controller.text.isNotEmpty &&
+            passwordConfirmField.controller.text.isNotEmpty
+        ? _submitButton = () => _onSaveButtonPressed()
+        : _submitButton = null;
+    setState(() {});
   }
 
   void _onSaveButtonPressed() async {
@@ -354,13 +283,13 @@ class _AccountState extends State<Account> {
         _changeUserInformation();
         _editScreen = !_editScreen;
         setState(() {});
-        _firstNameStatus = FieldStatus.none;
-        _lastNameStatus = FieldStatus.none;
-        _phoneStatus = FieldStatus.none;
-        _emailStatus = FieldStatus.none;
-        _marketStatus = FieldStatus.none;
-        _passwordStatus = FieldStatus.none;
-        _passwordConfirmStatus = FieldStatus.none;
+        firstNameField.status = FieldStatus.none;
+        lastNameField.status = FieldStatus.none;
+        phoneField.status = FieldStatus.none;
+        emailField.status = FieldStatus.none;
+        marketField.status = FieldStatus.none;
+        passwordField.status = FieldStatus.none;
+        passwordConfirmField.status = FieldStatus.none;
       } else {
         SnackMessage('Failed to edit data').build(context);
       }
@@ -368,103 +297,47 @@ class _AccountState extends State<Account> {
   }
 
   void _changeUserInformation() {
-    person.firstname = _firstNameController.text;
-    person.lastname = _lastNameController.text;
-    person.phone = _phoneController.text;
-    person.email = _emailController.text;
-    person.market.name = _marketController.text;
-    person.password = _passwordController.text;
+    person.firstname = firstNameField.controller.text;
+    person.lastname = lastNameField.controller.text;
+    person.phone = phoneField.controller.text;
+    person.email = emailField.controller.text;
+    person.market.name = marketField.controller.text;
+    person.password = passwordField.controller.text;
   }
 
   bool _isValidateAllFields() {
-    return _firstNameStatus == FieldStatus.validate &&
-        _lastNameStatus == FieldStatus.validate &&
-        _phoneStatus == FieldStatus.validate &&
-        _emailStatus == FieldStatus.validate &&
-        _marketStatus == FieldStatus.validate &&
-        _passwordStatus == FieldStatus.validate &&
-        _passwordConfirmStatus == FieldStatus.validate;
+    return firstNameField.status == FieldStatus.validate &&
+        lastNameField.status == FieldStatus.validate &&
+        phoneField.status == FieldStatus.validate &&
+        emailField.status == FieldStatus.validate &&
+        marketField.status == FieldStatus.validate &&
+        passwordField.status == FieldStatus.validate &&
+        passwordConfirmField.status == FieldStatus.validate;
   }
 
   void _validateAllFields() {
-    _firstNameValidate();
-    _lastNameValidate();
-    _phoneValidate();
-    _emailValidate();
-    _marketValidate();
-    _passwordValidate();
-    _passwordConfirmValidate();
-  }
-
-  void _firstNameValidate() {
-    Field.nameValidate(_firstNameController.text)
-        ? _firstNameStatus = FieldStatus.validate
-        : _firstNameStatus = FieldStatus.error;
-
-    _firstNameFocus.unfocus();
-  }
-
-  void _lastNameValidate() {
-    Field.nameValidate(_lastNameController.text)
-        ? _lastNameStatus = FieldStatus.validate
-        : _lastNameStatus = FieldStatus.error;
-
-    _lastNameFocus.unfocus();
-  }
-
-  void _phoneValidate() {
-    Field.phoneValidate(_phoneController.text)
-        ? _phoneStatus = FieldStatus.validate
-        : _phoneStatus = FieldStatus.error;
-
-    _phoneFocus.unfocus();
-  }
-
-  void _emailValidate() {
-    Field.emailValidate(_emailController.text, false)
-        ? _emailStatus = FieldStatus.validate
-        : _emailStatus = FieldStatus.error;
-
-    _emailFocus.unfocus();
-  }
-
-  void _marketValidate() {
-    Field.marketValidate(_marketController.text, false)
-        ? _marketStatus = FieldStatus.validate
-        : _marketStatus = FieldStatus.error;
-
-    _marketFocus.unfocus();
-  }
-
-  void _passwordValidate() {
-    Field.passwordValidate(_passwordController.text)
-        ? _passwordStatus = FieldStatus.validate
-        : _passwordStatus = FieldStatus.error;
-
-    _passwordFocus.unfocus();
-  }
-
-  void _passwordConfirmValidate() {
-    _passwordConfirmController.text == _passwordController.text
-        ? _passwordConfirmStatus = FieldStatus.validate
-        : _passwordConfirmStatus = FieldStatus.error;
-
-    _passwordConfirmFocus.unfocus();
+    firstNameField.checkValid();
+    lastNameField.checkValid();
+    phoneField.checkValid();
+    emailField.checkValid();
+    marketField.checkValid();
+    passwordField.checkValid();
+    passwordConfirmField.checkValid();
   }
 
   Future<String> _sendEditedDataToServer() async {
     Person editedPerson = Person(
-      _firstNameController.text,
-      _lastNameController.text,
-      _phoneController.text,
-      _passwordController.text,
+      firstNameField.controller.text,
+      lastNameField.controller.text,
+      phoneField.controller.text,
+      passwordField.controller.text,
     );
-    editedPerson.email = _emailController.text;
-    editedPerson.market = Market(_marketController.text);
+    editedPerson.email = emailField.controller.text;
+    editedPerson.market = Market(marketField.controller.text);
     editedPerson.image = await imageFile?.readAsBytes() ?? person.image;
 
-    MySocket socket =
-        MySocket(UserData.phone, Command.editProfile, [jsonEncode(editedPerson)]);
+    MySocket socket = MySocket(
+        UserData.phone, Command.editProfile, [jsonEncode(editedPerson)]);
     String response = await socket.sendAndReceive();
     return response;
   }

@@ -25,27 +25,13 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
-  final _titleFocus = FocusNode();
-  final _priceFocus = FocusNode();
-  final _colorFocus = FocusNode();
-  final _sizeFocus = FocusNode();
-  final _detailFocus = FocusNode();
-  final _countFocus = FocusNode();
-  final _categoryFocus = FocusNode();
-  FieldStatus _titleStatus = FieldStatus.none;
-  FieldStatus _priceStatus = FieldStatus.none;
-  FieldStatus _colorStatus = FieldStatus.none;
-  FieldStatus _sizeStatus = FieldStatus.none;
-  FieldStatus _detailStatus = FieldStatus.none;
-  FieldStatus _categoryStatus = FieldStatus.none;
-  FieldStatus _countStatus = FieldStatus.none;
-  late final TextEditingController _titleController;
-  late final TextEditingController _priceController;
-  late final TextEditingController _colorController;
-  late final TextEditingController _sizeController;
-  late final TextEditingController _detailController;
-  late final TextEditingController _countController;
-  late final TextEditingController _categoryController;
+  late Field titleField;
+  late Field priceField;
+  late Field colorField;
+  late Field sizeField;
+  late Field detailField;
+  late Field countField;
+  late Field categoryField;
   VoidCallback? _submitButton;
   File? imageFile;
   late Person person;
@@ -53,40 +39,92 @@ class _AddProductState extends State<AddProduct> {
   bool controllerInitialized = false;
 
   @override
-  void dispose() {
-    super.dispose();
-    _titleFocus.dispose();
-    _priceFocus.dispose();
-    _colorFocus.dispose();
-    _sizeFocus.dispose();
-    _detailFocus.dispose();
-    _countFocus.dispose();
-    _categoryFocus.dispose();
+  void initState() {
+    super.initState();
+    titleField = Field.field(
+      label: 'Product title',
+      hintText: 'iPhone 13',
+      prefixIcon: Icons.title_outlined,
+      setState: setState,
+      validator: _titleValidator,
+      changeEnablingSubmitButton: _changeButtonEnabled,
+    );
+
+    priceField = Field.field(
+      label: 'Price',
+      hintText: '599',
+      keyboardType: TextInputType.number,
+      prefixIcon: Icons.attach_money,
+      setState: setState,
+      validator: _priceValidator,
+      changeEnablingSubmitButton: _changeButtonEnabled,
+    );
+
+    colorField = Field.field(
+      label: 'Color',
+      hintText: '0xAARRGGBB',
+      prefixIcon: Icons.palette_outlined,
+      setState: setState,
+      validator: _colorValidator,
+      changeEnablingSubmitButton: _changeButtonEnabled,
+    );
+
+    sizeField = Field.field(
+      label: 'Size',
+      hintText: 'Write your size then press done button',
+      prefixIcon: Icons.straighten_outlined,
+      setState: setState,
+      validator: _sizeValidator,
+      changeEnablingSubmitButton: _changeButtonEnabled,
+    );
+
+    countField = Field.field(
+      label: 'Count',
+      hintText: 'Number of products inventory',
+      prefixIcon: Icons.shopping_bag_outlined,
+      setState: setState,
+      validator: _countValidator,
+      changeEnablingSubmitButton: _changeButtonEnabled,
+    );
+
+    categoryField = Field.field(
+      label: 'Category',
+      hintText: 'Mobiles, Laptops, ...',
+      prefixIcon: Icons.category_outlined,
+      setState: setState,
+      validator: _categoryValidator,
+      changeEnablingSubmitButton: _changeButtonEnabled,
+    );
+
+    detailField = Field.field(
+      label: 'More Detail',
+      hintText: 'Write more information about your product...',
+      keyboardType: TextInputType.multiline,
+      maxLines: 10,
+      height: 200.0,
+      setState: setState,
+      validator: _detailValidator,
+      changeEnablingSubmitButton: _changeButtonEnabled,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    Arguments arguments = ModalRoute.of(context)!.settings.arguments as Arguments;
+    Arguments arguments =
+        ModalRoute.of(context)!.settings.arguments as Arguments;
     person = arguments.person!;
     product = arguments.product;
 
     if (!controllerInitialized) {
-      if (product == null) {
-        _titleController = TextEditingController();
-        _priceController = TextEditingController();
-        _colorController = TextEditingController();
-        _sizeController = TextEditingController();
-        _detailController = TextEditingController();
-        _countController = TextEditingController();
-        _categoryController = TextEditingController();
-      } else {
-        _titleController = TextEditingController(text: product?.name);
-        _priceController = TextEditingController(text: '${product?.price}');
-        _colorController = TextEditingController(text: '${product?.color.map((e) => e.value).toList().join(' ')}');
-        _sizeController = TextEditingController(text: '${product?.size.join(' ')}');
-        _detailController = TextEditingController(text: product?.detail);
-        _countController = TextEditingController(text: '${product?.count}');
-        _categoryController = TextEditingController(text: product?.category);
+      if (product != null) {
+        titleField.controller.text = product!.name;
+        priceField.controller.text = '${product!.price}';
+        colorField.controller.text =
+            product!.color.map((e) => e.value).toList().join(' ');
+        sizeField.controller.text = '${product?.size.join(' ')}';
+        detailField.controller.text = product!.detail;
+        countField.controller.text = '${product!.count}';
+        categoryField.controller.text = product!.category;
       }
       controllerInitialized = true;
     }
@@ -99,141 +137,19 @@ class _AddProductState extends State<AddProduct> {
             ScreenSetting.appBar(title: 'Add A New Product', context: context),
         child: Column(
           children: <Widget>[
-            Field.field(
-              label: 'Product title',
-              hintText: 'iPhone 13',
-              prefixIcon: Icons.title_outlined,
-              focusNode: _titleFocus,
-              controller: _titleController,
-              status: _titleStatus,
-              onTap: () => setState(() {}),
-              onEditingComplete: () {
-                _titleValidate();
-                setState(() {});
-              },
-              onChanged: (_) {
-                _titleStatus = FieldStatus.none;
-                _changeButtonEnabled();
-                setState(() {});
-              },
-            ),
+            titleField.build(),
             Field.separate(),
-            Field.field(
-              label: 'Price',
-              hintText: '599',
-              keyboardType: TextInputType.number,
-              prefixIcon: Icons.attach_money,
-              focusNode: _priceFocus,
-              controller: _priceController,
-              status: _priceStatus,
-              onTap: () => setState(() {}),
-              onEditingComplete: () {
-                _priceValidate();
-                setState(() {});
-              },
-              onChanged: (_) {
-                _priceStatus = FieldStatus.none;
-                _changeButtonEnabled();
-                setState(() {});
-              },
-            ),
+            priceField.build(),
             Field.separate(),
-            Field.field(
-              label: 'Color',
-              hintText: '0xAARRGGBB',
-              prefixIcon: Icons.palette_outlined,
-              focusNode: _colorFocus,
-              controller: _colorController,
-              status: _colorStatus,
-              onTap: () => setState(() {}),
-              onEditingComplete: () {
-                _colorValidate();
-                setState(() {});
-              },
-              onChanged: (_) {
-                _colorStatus = FieldStatus.none;
-                _changeButtonEnabled();
-                setState(() {});
-              },
-            ),
+            colorField.build(),
             Field.separate(),
-            Field.field(
-              label: 'Size',
-              hintText: 'Write your size then press done button',
-              prefixIcon: Icons.straighten_outlined,
-              focusNode: _sizeFocus,
-              controller: _sizeController,
-              status: _sizeStatus,
-              onTap: () => setState(() {}),
-              onEditingComplete: () {
-                _sizeValidate();
-                setState(() {});
-              },
-              onChanged: (_) {
-                _sizeStatus = FieldStatus.none;
-                _changeButtonEnabled();
-                setState(() {});
-              },
-            ),
+            sizeField.build(),
             Field.separate(),
-            Field.field(
-              label: 'Count',
-              hintText: 'Number of products inventory',
-              prefixIcon: Icons.shopping_bag_outlined,
-              focusNode: _countFocus,
-              controller: _countController,
-              status: _countStatus,
-              onTap: () => setState(() {}),
-              onEditingComplete: () {
-                _countValidate();
-                setState(() {});
-              },
-              onChanged: (_) {
-                _countStatus = FieldStatus.none;
-                _changeButtonEnabled();
-                setState(() {});
-              },
-            ),
+            countField.build(),
             Field.separate(),
-            Field.field(
-              label: 'Category',
-              hintText: 'Mobiles, Laptops, ...',
-              prefixIcon: Icons.category_outlined,
-              focusNode: _categoryFocus,
-              controller: _categoryController,
-              status: _categoryStatus,
-              onTap: () => setState(() {}),
-              onEditingComplete: () {
-                _categoryValidate();
-                setState(() {});
-              },
-              onChanged: (_) {
-                _categoryStatus = FieldStatus.none;
-                _changeButtonEnabled();
-                setState(() {});
-              },
-            ),
+            categoryField.build(),
             Field.separate(),
-            Field.field(
-              label: 'More Detail',
-              hintText: 'Write more information about your product...',
-              keyboardType: TextInputType.multiline,
-              maxLines: 10,
-              height: 200.0,
-              focusNode: _detailFocus,
-              controller: _detailController,
-              status: _detailStatus,
-              onTap: () => setState(() {}),
-              onEditingComplete: () {
-                _detailValidate();
-                setState(() {});
-              },
-              onChanged: (_) {
-                _detailStatus = FieldStatus.none;
-                _changeButtonEnabled();
-                setState(() {});
-              },
-            ),
+            detailField.build(),
             Field.separate(),
             Field.container(
               height: 100.0,
@@ -285,18 +201,17 @@ class _AddProductState extends State<AddProduct> {
   }
 
   void _changeButtonEnabled() {
-    setState(() {
-      _titleController.text.isNotEmpty &&
-              _priceController.text.isNotEmpty &&
-              _colorController.text.isNotEmpty &&
-              _sizeController.text.isNotEmpty &&
-              _countController.text.isNotEmpty &&
-              _categoryController.text.isNotEmpty &&
-              imageFile != null &&
-              _detailController.text.isNotEmpty
-          ? _submitButton = () => _onAddProductButtonPressed()
-          : _submitButton = null;
-    });
+    titleField.controller.text.isNotEmpty &&
+            priceField.controller.text.isNotEmpty &&
+            colorField.controller.text.isNotEmpty &&
+            sizeField.controller.text.isNotEmpty &&
+            countField.controller.text.isNotEmpty &&
+            categoryField.controller.text.isNotEmpty &&
+            imageFile != null &&
+            detailField.controller.text.isNotEmpty
+        ? _submitButton = () => _onAddProductButtonPressed()
+        : _submitButton = null;
+    setState(() {});
   }
 
   void _onAddProductButtonPressed() async {
@@ -312,23 +227,26 @@ class _AddProductState extends State<AddProduct> {
     Uint8List bytes = await imageFile!.readAsBytes();
 
     Product newProduct = Product(
-      _titleController.text,
+      titleField.controller.text,
       bytes,
-      int.parse(_priceController.text),
-      _categoryController.text,
-      _detailController.text,
-      _colorController.text.split(' ').map((e) => Color(int.parse(e))).toList(),
-      _sizeController.text.split(' '),
-      int.parse(_countController.text),
+      int.parse(priceField.controller.text),
+      categoryField.controller.text,
+      detailField.controller.text,
+      colorField.controller.text.split(' ').map((e) => Color(int.parse(e))).toList(),
+      sizeField.controller.text.split(' '),
+      int.parse(countField.controller.text),
       Market(person.market.name),
       0,
     );
 
-    return product == null ? _sendNewProductData(newProduct) : _sendEditedProductData(newProduct);
+    return product == null
+        ? _sendNewProductData(newProduct)
+        : _sendEditedProductData(newProduct);
   }
 
   Future<bool> _sendNewProductData(Product product) async {
-    MySocket socket = MySocket(UserData.phone, Command.addProductMarket, [jsonEncode(product.toJson2())]);
+    MySocket socket = MySocket(UserData.phone, Command.addProductMarket,
+        [jsonEncode(product.toJson2())]);
     String response = await socket.sendAndReceive();
     if (response == 'false') {
       SnackMessage('Failed to send data to server').build(context);
@@ -338,7 +256,8 @@ class _AddProductState extends State<AddProduct> {
   }
 
   Future<bool> _sendEditedProductData(Product product) async {
-    MySocket socket = MySocket(UserData.phone, Command.editProductMarket, [jsonEncode(product.toJson2())]);
+    MySocket socket = MySocket(UserData.phone, Command.editProductMarket,
+        [jsonEncode(product.toJson2())]);
     String response = await socket.sendAndReceive();
     if (response == 'false') {
       SnackMessage('Failed to send data to server').build(context);
@@ -362,23 +281,23 @@ class _AddProductState extends State<AddProduct> {
   }
 
   bool _isValidateAllFields() {
-    return _titleStatus == FieldStatus.validate &&
-        _priceStatus == FieldStatus.validate &&
-        _colorStatus == FieldStatus.validate &&
-        _sizeStatus == FieldStatus.validate &&
-        _countStatus == FieldStatus.validate &&
-        _categoryStatus == FieldStatus.validate &&
-        _detailStatus == FieldStatus.validate;
+    return titleField.status == FieldStatus.validate &&
+        priceField.status == FieldStatus.validate &&
+        colorField.status == FieldStatus.validate &&
+        sizeField.status == FieldStatus.validate &&
+        countField.status == FieldStatus.validate &&
+        categoryField.status == FieldStatus.validate &&
+        detailField.status == FieldStatus.validate;
   }
 
   void _validateAllFields() {
-    _titleValidate();
-    _priceValidate();
-    _colorValidate();
-    _sizeValidate();
-    _detailValidate();
-    _countValidate();
-    _categoryValidate();
+    titleField.checkValid();
+    priceField.checkValid();
+    colorField.checkValid();
+    sizeField.checkValid();
+    detailField.checkValid();
+    countField.checkValid();
+    categoryField.checkValid();
   }
 
   bool _titleValidator(String? value) {
@@ -438,61 +357,5 @@ class _AddProductState extends State<AddProduct> {
       return false;
     }
     return true;
-  }
-
-  void _titleValidate() {
-    _titleValidator(_titleController.text)
-        ? _titleStatus = FieldStatus.validate
-        : _titleStatus = FieldStatus.error;
-
-    _titleFocus.unfocus();
-  }
-
-  void _priceValidate() {
-    _priceValidator(_priceController.text)
-        ? _priceStatus = FieldStatus.validate
-        : _priceStatus = FieldStatus.error;
-
-    _priceFocus.unfocus();
-  }
-
-  void _colorValidate() {
-    _colorValidator(_colorController.text)
-        ? _colorStatus = FieldStatus.validate
-        : _colorStatus = FieldStatus.error;
-
-    _colorFocus.unfocus();
-  }
-
-  void _sizeValidate() {
-    _sizeValidator(_sizeController.text)
-        ? _sizeStatus = FieldStatus.validate
-        : _sizeStatus = FieldStatus.error;
-
-    _sizeFocus.unfocus();
-  }
-
-  void _countValidate() {
-    _countValidator(_countController.text)
-        ? _countStatus = FieldStatus.validate
-        : _countStatus = FieldStatus.error;
-
-    _countFocus.unfocus();
-  }
-
-  void _categoryValidate() {
-    _categoryValidator(_categoryController.text)
-        ? _categoryStatus = FieldStatus.validate
-        : _categoryStatus = FieldStatus.error;
-
-    _categoryFocus.unfocus();
-  }
-
-  void _detailValidate() {
-    _detailValidator(_detailController.text)
-        ? _detailStatus = FieldStatus.validate
-        : _detailStatus = FieldStatus.error;
-
-    _detailFocus.unfocus();
   }
 }
