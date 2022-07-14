@@ -210,6 +210,10 @@ public class Command {
         return "false".getBytes(StandardCharsets.UTF_8);
     }
     
+    /**
+     * Executes the addCart command. Adds the product to the cart
+     * @return The success of removing product in bytes
+     */
     private byte[] addCart() {
         try {
             SelectedProduct selectedProduct = jsonToSelectedProduct();
@@ -230,6 +234,10 @@ public class Command {
         return "false".getBytes(StandardCharsets.UTF_8);
     }
     
+    /**
+     * Executes the removeCart command. Removes one of the products from the cart
+     * @return The success of removing a product in bytes
+     */
     private byte[] removeCart() {
         try {
             SelectedProduct selectedProduct = jsonToSelectedProduct();
@@ -247,6 +255,10 @@ public class Command {
         return "false".getBytes(StandardCharsets.UTF_8);
     }
     
+    /**
+     * Executes the removeAllCart command. Removes all the product from the cart
+     * @return The success of removing all product in bytes
+     */
     private byte[] removeAllCart() {
         try {
             SelectedProduct selectedProduct = jsonToSelectedProduct();
@@ -264,6 +276,10 @@ public class Command {
         return "false".getBytes(StandardCharsets.UTF_8);
     }
     
+    /**
+     * Executes the editProfile command. Saves new data of the person
+     * @return The success of removing product in bytes
+     */
     private byte[] editProfile() {
         try {
             Person person = jsonToPerson();
@@ -282,6 +298,10 @@ public class Command {
         return "false".getBytes(StandardCharsets.UTF_8);
     }
     
+    /**
+     * Executes the removeProductMarket command. Removes the product from user's market
+     * @return The success of removing product in bytes
+     */
     private byte[] removeProductMarket() {
         try {
             Product product = jsonToIncompleteProduct();
@@ -295,11 +315,15 @@ public class Command {
         return "false".getBytes(StandardCharsets.UTF_8);
     }
     
+    /**
+     * Executes the score Command. Adds a new score to the product
+     * @return The new score of product after recalculate
+     */
     private byte[] scoreCommand() {
         try {
             Product product = Database.readProduct(jsonToIncompleteProduct());
             double score = Double.parseDouble(data[1]);
-            double newAverageScore =  product.addNewRate(score);
+            double newAverageScore = product.addNewRate(score);
             sender.getScores().add((int) product.getId());
             Database.writeEditedProduct(product);
             Database.saveEditedPerson(sender);
@@ -311,6 +335,10 @@ public class Command {
         return "false".getBytes(StandardCharsets.UTF_8);
     }
     
+    /**
+     * Executes the addProductMarket command. Adds the new product to user's market and category product list
+     * @return The success of adding a product in bytes
+     */
     private byte[] addProductMarket() {
         try {
             Object obj = new JSONParser().parse(data[0]);
@@ -326,18 +354,36 @@ public class Command {
         return "false".getBytes(StandardCharsets.UTF_8);
     }
     
+    /**
+     * Creates a new {@link Person} object from json data
+     * @return A new {@link Person} object
+     * @throws ParseException if an error occurs in parsing from json
+     * @throws IOException if an I/O error occurs while reading stream header
+     */
     private Person jsonToPerson() throws ParseException, IOException {
         Object obj = new JSONParser().parse(data[0]);
         JSONObject jsonObject = (JSONObject) obj;
         return Person.fromJson(jsonObject);
     }
     
+    /**
+     * Creates a new {@link Product} object from json data
+     * @return A new {@link Product} object
+     * @throws ParseException if an error occurs in parsing from json
+     */
     private Product jsonToIncompleteProduct() throws ParseException {
         Object obj = new JSONParser().parse(data[0]);
         JSONObject jsonObject = (JSONObject) obj;
         return Product.fromJson(jsonObject);
     }
     
+    /**
+     * Creates a new {@link SelectedProduct} object from json data
+     * @return A new {@link SelectedProduct} object
+     * @throws ParseException if an error occurs in parsing from json
+     * @throws IOException if an I/O error occurs while reading stream header
+     * @throws ClassNotFoundException Class of a serialized object cannot be found
+     */
     private SelectedProduct jsonToSelectedProduct() throws ParseException, IOException, ClassNotFoundException {
         Object obj = new JSONParser().parse(data[0]);
         JSONObject jsonObject = (JSONObject) obj;

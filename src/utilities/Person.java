@@ -18,10 +18,10 @@ public class Person implements Serializable {
     private String phone;
     private String password;
     private Market market;
-    private List<Cart> purchases = new ArrayList<>();
-    private List<Product> favorites = new ArrayList<>();
+    private final List<Cart> purchases = new ArrayList<>();
+    private final List<Product> favorites = new ArrayList<>();
     private Cart cart = new Cart();
-    private List<Integer> scores = new ArrayList<>();
+    private final List<Integer> scores = new ArrayList<>();
     
     public Person(String firstname, String lastname, String email, String phone, String password, Market market) {
         this.firstname = firstname;
@@ -175,10 +175,6 @@ public class Person implements Serializable {
     
     public void setImage(String image) {
         this.image = image;
-    }
-    
-    public void setScores(List<Integer> scores) {
-        this.scores = scores;
     }
     
     @Override

@@ -37,9 +37,4 @@ public class Cart implements Serializable {
     public void removeAll(SelectedProduct p) {
         products.remove(p);
     }
-    
-    public int sumOfPrice() {
-        Optional<Integer> sum = products.stream().map(x -> x.getProduct().getPrice() * x.getCount()).reduce(Integer::sum);
-        return sum.orElse(0);
-    }
 }

@@ -302,7 +302,7 @@ class _AddProductState extends State<AddProduct> {
 
   bool _titleValidator(String? value) {
     if (value == null ||
-        !RegExp(r'^[a-zA-Z0-9-() ]*$').hasMatch(value) ||
+        !RegExp(r'^[a-zA-Z\d-() ]*$').hasMatch(value) ||
         value.isEmpty) {
       return false;
     }
@@ -311,7 +311,7 @@ class _AddProductState extends State<AddProduct> {
 
   bool _priceValidator(String? value) {
     if (value == null ||
-        !RegExp(r'^[0-9]*$').hasMatch(value) ||
+        !RegExp(r'^\d*$').hasMatch(value) ||
         value.isEmpty) {
       return false;
     }
@@ -320,7 +320,7 @@ class _AddProductState extends State<AddProduct> {
 
   bool _colorValidator(String? value) {
     if (value == null ||
-        !RegExp(r'^[0-9A-Fx ]*$').hasMatch(value) ||
+        !RegExp(r'^[\dA-Fx ]*$').hasMatch(value) ||
         value.isEmpty) {
       return false;
     }
@@ -329,7 +329,7 @@ class _AddProductState extends State<AddProduct> {
 
   bool _sizeValidator(String? value) {
     if (value == null ||
-        !RegExp(r'^[0-9 ]*$').hasMatch(value) ||
+        !RegExp(r'^[\d ]*$').hasMatch(value) ||
         value.isEmpty) {
       return false;
     }
@@ -338,7 +338,7 @@ class _AddProductState extends State<AddProduct> {
 
   bool _countValidator(String? value) {
     if (value == null ||
-        !RegExp(r'^[0-9]*$').hasMatch(value) ||
+        !RegExp(r'^\d*$').hasMatch(value) ||
         value.isEmpty) {
       return false;
     }

@@ -225,7 +225,7 @@ class Field {
 
   static bool marketValidate(String? value) {
     if (value == null ||
-        !RegExp(r'^[a-zA-Z0-9-() ]*$').hasMatch(value)) {
+        !RegExp(r'^[a-zA-Z\d-() ]*$').hasMatch(value)) {
       return false;
     }
     return true;
@@ -233,7 +233,7 @@ class Field {
 
   static bool phoneValidate(String? value) {
     if (value == null ||
-        !RegExp(r'^(09[0-9]{9})$').hasMatch(value) ||
+        !RegExp(r'^(09\d{9})$').hasMatch(value) ||
         value.isEmpty) {
       return false;
     }
