@@ -150,8 +150,7 @@ class Field {
     this.suffixButton,
     required this.obscureText,
     required this.setState,
-  })  : obscureText = true,
-        label = 'Password',
+  })  : label = 'Password',
         hintText = 'Contains at least 8 characters',
         prefixIcon = Icons.password_outlined;
 
@@ -225,7 +224,7 @@ class Field {
 
   static bool marketValidate(String? value) {
     if (value == null ||
-        !RegExp(r'^[a-zA-Z\d-() ]*$').hasMatch(value)) {
+        !RegExp(r'^[a-zA-Z\d() ]*$').hasMatch(value) || value.isEmpty) {
       return false;
     }
     return true;

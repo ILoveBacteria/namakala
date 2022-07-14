@@ -86,8 +86,7 @@ class _SignUpState extends State<SignUp> {
     passwordConfirmField = Field.passwordConfirm(
       obscureText: _obscurePasswordConfirm,
       setState: setState,
-      validator: () =>
-          passwordField.controller.text == passwordConfirmField.controller.text,
+      validator: _passwordConfirmValidate,
       changeEnablingSubmitButton: _changeButtonEnabled,
       suffixButton: IconButton(
         icon: _obscurePasswordConfirm
@@ -151,6 +150,8 @@ class _SignUpState extends State<SignUp> {
     firstNameField.controller.text.isNotEmpty &&
             lastNameField.controller.text.isNotEmpty &&
             phoneField.controller.text.isNotEmpty &&
+            emailField.controller.text.isNotEmpty &&
+            marketField.controller.text.isNotEmpty &&
             passwordField.controller.text.isNotEmpty &&
             passwordConfirmField.controller.text.isNotEmpty
         ? _submitButton = () => _onSignUpButtonPressed()
@@ -224,5 +225,9 @@ class _SignUpState extends State<SignUp> {
     marketField.checkValid();
     passwordField.checkValid();
     passwordConfirmField.checkValid();
+  }
+
+  bool _passwordConfirmValidate(String? value) {
+    return passwordField.controller.text == value;
   }
 }
