@@ -49,3 +49,5 @@ app.*.map.json
 # Others
 /test/
 src/database/data/*.txt
+/src/main/resources/
+/src/test/
