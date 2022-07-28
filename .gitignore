@@ -51,3 +51,4 @@ app.*.map.json
 src/database/data/*.txt
 /src/main/resources/
 /src/test/
+/target/
