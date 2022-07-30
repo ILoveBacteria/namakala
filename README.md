@@ -10,6 +10,8 @@
 
 ## Description
 
+![thumbnail](https://github.com/ILoveBacteria/namakala/blob/master/assets/github/namakala-thumbnail.png)
+
 This is my project for the Advanced Programming course associated with Shahid Beheshti University.
 This application was created with the Flutter framework and in connection with the Java server.
 
