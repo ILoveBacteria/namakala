@@ -12,17 +12,17 @@ import java.util.List;
 
 public class Database {
     public static int countProduct = 0;
-    private static final Path personPath = Paths.get("src/database/data/person.txt");
-    private static final Path mobilesPath = Paths.get("src/database/data/mobiles.txt");
-    private static final Path laptopsPath = Paths.get("src/database/data/laptops.txt");
-    private static final Path cameraPath = Paths.get("src/database/data/camera.txt");
-    private static final Path tabletsPath = Paths.get("src/database/data/tablets.txt");
-    private static final Path menPath = Paths.get("src/database/data/men.txt");
-    private static final Path womenPath = Paths.get("src/database/data/women.txt");
-    private static final Path kidsPath = Paths.get("src/database/data/kids.txt");
-    private static final Path athleticClothingsPath = Paths.get("src/database/data/athleticClothings.txt");
-    private static final Path sportsEquipmentsPath = Paths.get("src/database/data/sportsEquipments.txt");
-    private static final Path campingPath = Paths.get("src/database/data/camping.txt");
+    private static final Path personPath = Paths.get("src/main/java/database/data/person.txt");
+    private static final Path mobilesPath = Paths.get("src/main/java/database/data/mobiles.txt");
+    private static final Path laptopsPath = Paths.get("src/main/java/database/data/laptops.txt");
+    private static final Path cameraPath = Paths.get("src/main/java/database/data/camera.txt");
+    private static final Path tabletsPath = Paths.get("src/main/java/database/data/tablets.txt");
+    private static final Path menPath = Paths.get("src/main/java/database/data/men.txt");
+    private static final Path womenPath = Paths.get("src/main/java/database/data/women.txt");
+    private static final Path kidsPath = Paths.get("src/main/java/database/data/kids.txt");
+    private static final Path athleticClothingsPath = Paths.get("src/main/java/database/data/athleticClothings.txt");
+    private static final Path sportsEquipmentsPath = Paths.get("src/main/java/database/data/sportsEquipments.txt");
+    private static final Path campingPath = Paths.get("src/main/java/database/data/camping.txt");
     
     /**
      * This method takes a phone number and searches for a {@link Person} in the database and returns it if present
