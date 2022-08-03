@@ -52,3 +52,4 @@ src/database/data/*.txt
 /src/main/resources/
 /src/test/
 /target/
+/database/

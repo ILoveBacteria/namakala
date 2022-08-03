@@ -12,17 +12,17 @@ import java.util.List;
 
 public class Database {
     public static int countProduct = 0;
-    private static final Path personPath = Paths.get("src/main/java/database/data/person.txt");
-    private static final Path mobilesPath = Paths.get("src/main/java/database/data/mobiles.txt");
-    private static final Path laptopsPath = Paths.get("src/main/java/database/data/laptops.txt");
-    private static final Path cameraPath = Paths.get("src/main/java/database/data/camera.txt");
-    private static final Path tabletsPath = Paths.get("src/main/java/database/data/tablets.txt");
-    private static final Path menPath = Paths.get("src/main/java/database/data/men.txt");
-    private static final Path womenPath = Paths.get("src/main/java/database/data/women.txt");
-    private static final Path kidsPath = Paths.get("src/main/java/database/data/kids.txt");
-    private static final Path athleticClothingsPath = Paths.get("src/main/java/database/data/athleticClothings.txt");
-    private static final Path sportsEquipmentsPath = Paths.get("src/main/java/database/data/sportsEquipments.txt");
-    private static final Path campingPath = Paths.get("src/main/java/database/data/camping.txt");
+    private static final Path personPath = Paths.get("database/person.txt");
+    private static final Path mobilesPath = Paths.get("database/mobiles.txt");
+    private static final Path laptopsPath = Paths.get("database/laptops.txt");
+    private static final Path cameraPath = Paths.get("database/camera.txt");
+    private static final Path tabletsPath = Paths.get("database/tablets.txt");
+    private static final Path menPath = Paths.get("database/men.txt");
+    private static final Path womenPath = Paths.get("database/women.txt");
+    private static final Path kidsPath = Paths.get("database/kids.txt");
+    private static final Path athleticClothingsPath = Paths.get("database/athleticClothings.txt");
+    private static final Path sportsEquipmentsPath = Paths.get("database/sportsEquipments.txt");
+    private static final Path campingPath = Paths.get("database/camping.txt");
     
     /**
      * This method takes a phone number and searches for a {@link Person} in the database and returns it if present
@@ -256,6 +256,17 @@ public class Database {
                 return campingPath;
             default:
                 throw new IOException("Can't find the path of category");
+        }
+    }
+    
+    /**
+     * Before the server starts, creates directory if not exist
+     * @throws IOException Directory path cannot be found
+     */
+    public static void createDirectory() throws IOException {
+        Path database = Paths.get("database");
+        if (Files.notExists(database)) {
+            Files.createDirectory(database);
         }
     }
 }
