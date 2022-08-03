@@ -38,7 +38,7 @@ Namakala is a place for buying and selling your products. Create your profile an
 1. Download the last release of the server from [here](https://github.com/ILoveBacteria/namakala/releases)
 2. To run the `jar` file, use this command:
 ```shell
-java -jar namakala-x.x.x.jar
+java -jar namakala-x.x.x-jar-with-dependencies.jar
 ```
 
 #### Second Way
@@ -71,6 +71,11 @@ git clone https://github.com/ILoveBacteria/namakala.git
 
 **Important:** You need to build and run **both** the server and flutter app. 
 
+### Sample Data
+
+If you run the app, you will see the product lists are empty. To have better experience with this app you should build
+and run `database.SampleData` from java source codes. This will create a prepared data for the app.
+
 ## License
 
 This project is using **GNU General Public License v3.0**
@@ -79,4 +84,4 @@ Read full LICENSE [here](https://github.com/ILoveBacteria/namakala/blob/master/L
 
 ## Last Release
 
-Find the last version of the application for your Android or iOS device [here](https://github.com/ILoveBacteria/namakala/releases)
+Find the last version of the application for your Android device [here](https://github.com/ILoveBacteria/namakala/releases)
